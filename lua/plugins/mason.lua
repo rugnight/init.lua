@@ -1,0 +1,11 @@
+--------------------------------------------------
+--- LSP
+--- https://zenn.dev/futsuuu/articles/3b74a8acec166e
+--- https://zenn.dev/botamotch/articles/21073d78bc68bf
+--------------------------------------------------
+--return {
+--	"williamboman/mason.nvim",
+--	build = ":MasonUpdate",
+--	opts = {},
+--}
+
