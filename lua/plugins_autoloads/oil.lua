@@ -24,7 +24,8 @@ return {
 				["~"] = { "actions.cd", opts = { scope = "tab" }, desc = ":tcd to the current oil directory", mode = "n" },
 				["gs"] = "actions.change_sort",
 				["gx"] = "actions.open_external",
-				["g."] = "actions.toggle_hidden",
+				["."] = "actions.toggle_hidden",
+				--["g."] = "actions.toggle_hidden",
 				["g\\"] = "actions.toggle_trash",
 			},
 		}
