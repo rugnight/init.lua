@@ -99,9 +99,12 @@ local disabled_plugins = {
 --- }}}
 
 -- 設定編集のショートカット
-vim.keymap.set("n", "<C-,>i", ":edit ~/.config/nvim/init.lua<CR>",   { desc="init.luaを開く" })
-vim.keymap.set("n", "<C-,>s", ":source ~/.config/nvim/init.lua<CR>", { desc="init.lua再読込" })
-vim.keymap.set("n", "<C-,>p", ":FZF ~/.config/nvim/lua<CR>",         { desc="plugin設定" })
+--vim.keymap.set("n", "<C-,>i", ":edit ~/.config/nvim/init.lua<CR>",   { desc="init.luaを開く" })
+--vim.keymap.set("n", "<C-,>s", ":source ~/.config/nvim/init.lua<CR>", { desc="init.lua再読込" })
+--vim.keymap.set("n", "<C-,>p", ":FZF ~/.config/nvim/lua<CR>",         { desc="plugin設定" })
+vim.keymap.set("n", "<Leader>ii", ":edit $MYVIMRC<CR>", { desc="init.luaを開く" })
+vim.keymap.set("n", "<Leader>is", ":source $MYVIMRC<CR>", { desc="init.lua再読込" })
+vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="plugin設定" })
 
 vim.keymap.set("n",    "<Leader>;", "<C-^>",                                  { desc = "直前のバッファと切替"} )
 vim.keymap.set("n",    "<C-j>",     ":bprev<CR>",                             { desc = ""} )
@@ -109,5 +112,5 @@ vim.keymap.set("n",    "<C-k>",     ":bnext<CR>",                             { 
 -- vim.keymap.set("n", "<C-w>",     ":bdelete<CR>",                           { desc = ""} )
 
 -- require("plugins")
+require("ime")
 require("plugins_setup")
-
