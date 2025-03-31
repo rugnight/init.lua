@@ -18,7 +18,6 @@ return {
                     },
                     sorting_strategy = "ascending", -- 結果を上から下に表示
                     prompt_prefix = " ",
-                    selection_caret = " ",
                     path_display = {"truncate"},
                 },
             })
