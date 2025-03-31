@@ -3,8 +3,25 @@ return {
 		'nvim-telescope/telescope.nvim', 
 		tag = '0.1.8',
 		config = function() 
+            local telescope = require('telescope')
+            local actions = require('telescope.actions')
 			require("telescope").load_extension "file_browser"
 			require'telescope'.load_extension('project')
+
+            telescope.setup({
+                defaults = {
+                    layout_strategy = "bottom_pane",
+                    layout_config = {
+                        height = 0.4,  -- 画面の40%の高さを使用
+                        width = 0.9,   -- 画面の90%の幅を使用
+                        prompt_position = "top", -- プロンプトを上部に配置
+                    },
+                    sorting_strategy = "ascending", -- 結果を上から下に表示
+                    prompt_prefix = " ",
+                    selection_caret = " ",
+                    path_display = {"truncate"},
+                },
+            })
 
 			local builtin = require('telescope.builtin')
 			local actions = require('telescope.actions')
@@ -13,24 +30,6 @@ return {
 			vim.keymap.set('n', '<leader>b', builtin.buffers,    { desc = 'バッファ一覧' })
 			vim.keymap.set("n", "<C-S-P>",    builtin.commands,   { desc = 'コマンド一覧' })
 			vim.keymap.set("n", "<leader>c",    builtin.commands,   { desc = 'コマンド一覧' })
-
-			--vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
-			-- vim.keymap.set('n', '<leader>fh', actions.history.get_simple_history(), { desc = 'Telescope help tags' })
-
-			-- local opts = {...} -- picker options
-			-- local builtin = require('telescope.builtin')
-			-- local themes = require('telescope.themes')
-			-- builtin.find_files(themes.get_dropdown(opts))
-			--
-			-- local opts = {...} -- picker options
-			-- local builtin = require('telescope.builtin')
-			-- local themes = require('telescope.themes')
-			-- builtin.find_files(themes.get_cursor(opts))
-
-			-- local opts = {...} -- picker options
-			-- local builtin = require('telescope.builtin')
-			-- local themes = require('telescope.themes')
-			-- builtin.find_files(themes.get_ivy(opts))
 		end,
 	},
 	{
