@@ -57,12 +57,14 @@ vim.o.foldenable = true
 vim.o.foldmethod = 'marker'
 
 -- フォント
+-- https://github.com/yuru7/HackGen
+-- WindowsTerminal側の設定もしましょう
 if hostname == "GPD" then
-    vim.opt.guifont = "Cica:h12"
+    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 elseif hostname == "OMEN" then
-    vim.opt.guifont = "Cica:h11"
+    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 else
-    vim.opt.guifont = "Cica:h10"
+    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 end
 
 -- ブラウザのパスを指定
