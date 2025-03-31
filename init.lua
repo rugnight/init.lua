@@ -109,8 +109,8 @@ vim.keymap.set("n", "<Leader>is", ":source $MYVIMRC<CR>", { desc="init.lua再読
 vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="plugin設定" })
 
 vim.keymap.set("n",    "<Leader>;", "<C-^>",                                  { desc = "直前のバッファと切替"} )
-vim.keymap.set("n",    "<C-j>",     ":bprev<CR>",                             { desc = ""} )
-vim.keymap.set("n",    "<C-k>",     ":bnext<CR>",                             { desc = ""} )
+vim.keymap.set("n",    "<C-j>",     ":bnext<CR>",                             { desc = ""} )
+vim.keymap.set("n",    "<C-k>",     ":bprev<CR>",                             { desc = ""} )
 -- vim.keymap.set("n", "<C-w>",     ":bdelete<CR>",                           { desc = ""} )
 
 -- require("plugins")
