@@ -24,11 +24,29 @@ return {
 
 			local builtin = require('telescope.builtin')
 			local actions = require('telescope.actions')
-			vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'ファイル検索' })
-			vim.keymap.set('n', '<leader>g', builtin.live_grep,  { desc = 'ファイルをGrep' })
-			vim.keymap.set('n', '<leader>b', builtin.buffers,    { desc = 'バッファ一覧' })
-			vim.keymap.set("n", "<C-S-P>",    builtin.commands,   { desc = 'コマンド一覧' })
-			vim.keymap.set("n", "<leader>c",    builtin.commands,   { desc = 'コマンド一覧' })
+			vim.keymap.set('n', '<Leader>tf', builtin.find_files, { desc = 'ファイル検索' })
+			vim.keymap.set('n', '<Leader>tg', builtin.live_grep,  { desc = 'ファイルをGrep' })
+			vim.keymap.set('n', '<Leader>tb', builtin.buffers,    { desc = 'バッファ一覧' })
+			vim.keymap.set("n", "<Leader>tc", builtin.commands,   { desc = 'コマンド一覧' })
+            vim.keymap.set('n', '<leader>to', builtin.oldfiles, { desc = '最近開いたファイル(history)' })
+
+			-- TreeSitter関連のTelescopeコマンド
+			vim.keymap.set('n', '<leader>st', require('telescope.builtin').treesitter, { desc = 'TreeSitterシンボル一覧' })
+			vim.keymap.set('n', '<leader>sf', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '現在のファイル内をあいまい検索' })
+			vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = 'ドキュメントシンボル' })
+
+            -- LSP関連のキーマッピング
+            vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'LSPドキュメントシンボル' })
+            vim.keymap.set('n', '<leader>lw', builtin.lsp_dynamic_workspace_symbols, { desc = 'LSPワークスペースシンボル' })
+            vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = 'LSP参照を検索' })
+            vim.keymap.set('n', '<leader>ld', builtin.lsp_definitions, { desc = 'LSP定義を検索' })
+            vim.keymap.set('n', '<leader>li', builtin.lsp_implementations, { desc = 'LSP実装を検索' })
+            vim.keymap.set('n', '<leader>lt', builtin.lsp_type_definitions, { desc = 'LSP型定義を検索' })
+
+			-- Git系
+            vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'Gitコミット履歴' })
+            vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Gitブランチ一覧' })
+            vim.keymap.set('n', '<leader>gg', builtin.git_status, { desc = 'Git変更ファイル' })
 		end,
 	},
 	{
@@ -51,8 +69,8 @@ return {
 		version = "*",
 		config = function()
 			require("telescope").load_extension "frecency"
-			vim.keymap.set('n', '<Leader>h', ':Telescope frecency path_display={"shorten"} theme=ivy<CR>',               { desc = '最近開いたファイル' })
-			vim.keymap.set('n', '<leader>r', ':Telescope frecency workspace=CWD path_display={"shorten"} theme=ivy<CR>', { desc = 'プロジェクト内で最近開いたファイル' })
+			vim.keymap.set('n', '<Leader>tr', ':Telescope frecency path_display={"shorten"} theme=ivy<CR>',               { desc = '最近開いたファイル' })
+			--vim.keymap.set('n', '<leader>tr', ':Telescope frecency workspace=CWD path_display={"shorten"} theme=ivy<CR>', { desc = 'プロジェクト内で最近開いたファイル' })
 		end,
 	},
 }
