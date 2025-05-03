@@ -62,7 +62,7 @@ vim.o.foldmethod = 'marker'
 if hostname == "GPD" then
     vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 elseif hostname == "OMEN" then
-    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
+    --vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 else
     vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
 end

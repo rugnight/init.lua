@@ -56,13 +56,6 @@ return {
 	{
 		"nvim-telescope/telescope-project.nvim",
 	},
-	-- 最近開いたファイル
-	-- {
-	-- 	"nvim-telescope/telescope-frecency.nvim",
-	-- 	config = function()
-	-- 		require("telescope").load_extension("frecency")
-	-- 	end,
-	-- },
 	{
 		"nvim-telescope/telescope-frecency.nvim",
 		-- install the latest stable version
