@@ -53,8 +53,13 @@ vim.opt.undodir = CACHE_PATH .. "/undo" -- set an undo directory
 vim.opt.undofile = true                 -- enable persistent undo
 
 -- 折り畳み設定
+--vim.o.foldmethod = 'marker'
 vim.o.foldenable = true
-vim.o.foldmethod = 'marker'
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldcolumn = '0'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
 
 -- フォント
 -- https://github.com/yuru7/HackGen
