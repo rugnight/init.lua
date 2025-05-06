@@ -29,7 +29,7 @@ return {
 			},
 			auto_attach = true,
 			attach_to_untracked = false,
-			current_line_blame = false,
+			current_line_blame = true,
 			current_line_blame_opts = {
 				virt_text = true,
 				virt_text_pos = 'eol',
@@ -47,7 +47,7 @@ return {
 				style = 'minimal',
 				relative = 'cursor',
 				row = 0,
-				col = 1
+				col = 1,
 			},
 			-- ここにon_attach関数を移動
 			on_attach = function(bufnr)
