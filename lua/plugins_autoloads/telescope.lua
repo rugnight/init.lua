@@ -24,16 +24,16 @@ return {
 
 			local builtin = require('telescope.builtin')
 			local actions = require('telescope.actions')
-			vim.keymap.set('n', '<Leader>tf', builtin.find_files, { desc = 'ファイル検索' })
-			vim.keymap.set('n', '<Leader>tg', builtin.live_grep,  { desc = 'ファイルをGrep' })
-			vim.keymap.set('n', '<Leader>tb', builtin.buffers,    { desc = 'バッファ一覧' })
-			vim.keymap.set("n", "<Leader>tc", builtin.commands,   { desc = 'コマンド一覧' })
-            vim.keymap.set('n', '<leader>to', builtin.oldfiles, { desc = '最近開いたファイル(history)' })
+			vim.keymap.set('n', '<Leader>ff', builtin.find_files, { desc = 'ファイル検索' })
+			vim.keymap.set('n', '<Leader>fg', builtin.live_grep,  { desc = 'ファイルをGrep' })
+            vim.keymap.set('n', '<leader>fh', builtin.oldfiles, { desc = '最近開いたファイル(history)' })
+			vim.keymap.set('n', '<Leader>b', builtin.buffers,    { desc = 'バッファ一覧' })
+			vim.keymap.set("n", "<Leader>c", builtin.commands,   { desc = 'コマンド一覧' })
 
 			-- TreeSitter関連のTelescopeコマンド
-			vim.keymap.set('n', '<leader>st', require('telescope.builtin').treesitter, { desc = 'TreeSitterシンボル一覧' })
-			vim.keymap.set('n', '<leader>sf', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '現在のファイル内をあいまい検索' })
-			vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = 'ドキュメントシンボル' })
+			--vim.keymap.set('n', '<leader>st', require('telescope.builtin').treesitter, { desc = 'TreeSitterシンボル一覧' })
+			--vim.keymap.set('n', '<leader>sf', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '現在のファイル内をあいまい検索' })
+			--vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = 'ドキュメントシンボル' })
 
             -- LSP関連のキーマッピング
             vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'LSPドキュメントシンボル' })
