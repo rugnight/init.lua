@@ -61,6 +61,9 @@ vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 
+-- mark情報等の保存
+vim.o.shada = "!,'100,<50,s10,h"
+
 -- フォント
 -- https://github.com/yuru7/HackGen
 -- WindowsTerminal側の設定もしましょう
