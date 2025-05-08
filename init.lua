@@ -61,7 +61,7 @@ vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 
--- mark情報等の保存
+-- mark情報等の保存: AppData\Local\nvim-data\shada
 vim.o.shada = "!,'100,<50,s10,h"
 
 -- フォント
