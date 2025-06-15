@@ -5,9 +5,6 @@ return {
 	"folke/which-key.nvim",
 	event = "VeryLazy",
 	opts = {
-		-- your configuration comes here
-		-- or leave it empty to use the default settings
-		-- refer to the configuration section below
 		triggers = {
 			{ "<auto>", mode = "nixsotc" },
 			{ "m", mode = { "n" } },
@@ -22,4 +19,25 @@ return {
 			desc = "ローカルキーマップ",
 		},
 	},
+	config = function()
+		local wk = require("which-key")
+		wk.setup()
+		
+		-- グループ名を定義
+		wk.add({
+			{ "<leader>f", group = "📁 ファイル検索" },
+			{ "<leader>l", group = "🔍 LSP操作" },
+			{ "<leader>g", group = "🔀 Git操作" },
+			{ "<leader>h", group = "🎯 Harpoon" },
+			{ "<leader>m", group = "📝 メモ/ノート" },
+			{ "<leader>x", group = "🚨 診断/トラブル" },
+			{ "<leader>i", group = "⚙️ 設定" },
+			{ "<leader>t", group = "🔄 トグル" },
+			{ "<leader>b", group = "📋 バッファ" },
+			{ "<leader>v", group = "👁️ 表示/UI" },
+			{ "<leader>c", group = "✏️ コード操作" },
+			{ "<leader>a", group = "🤖 AI操作" },
+			{ "<leader>k", group = "📑 ブックマーク" },
+		})
+	end,
 }

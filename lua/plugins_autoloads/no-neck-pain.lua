@@ -37,7 +37,7 @@ return {
 				}
 
 				require("no-neck-pain").setup(opts)
-				vim.keymap.set("n", "<Leader>Z", "<cmd>NoNeckPain<CR>",       { desc = "no-neck-pain" } )
+				vim.keymap.set("n", "<Leader>vz", "<cmd>NoNeckPain<CR>",       { desc = "ゼンモード" } )
 				--vim.keymap.set("n", "<Leader>s", ":NoNeckPainScratchPad<CR>", { desc = "スクラッチパッド" })
 			end,
 		}

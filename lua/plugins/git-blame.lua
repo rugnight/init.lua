@@ -11,6 +11,6 @@ return {
     vim.g.gitblame_highlight_group = "LineNr"
     
     -- トグルするためのキーマッピング
-    vim.keymap.set('n', '<leader>gb', ':GitBlameToggle<CR>', { desc = 'GitBlame表示切替' })
+    vim.keymap.set('n', '<leader>gt', ':GitBlameToggle<CR>', { desc = 'GitBlame表示切替' })
   end
 }

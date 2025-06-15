@@ -25,10 +25,10 @@ return {
 			local builtin = require('telescope.builtin')
 			local actions = require('telescope.actions')
 			vim.keymap.set('n', '<Leader>ff', builtin.find_files, { desc = 'ファイル検索' })
-			vim.keymap.set('n', '<Leader>fg', builtin.live_grep,  { desc = 'ファイルをGrep' })
-            vim.keymap.set('n', '<leader>fh', builtin.oldfiles, { desc = '最近開いたファイル(history)' })
-			vim.keymap.set('n', '<Leader>b', builtin.buffers,    { desc = 'バッファ一覧' })
-			vim.keymap.set("n", "<Leader>c", builtin.commands,   { desc = 'コマンド一覧' })
+			vim.keymap.set('n', '<Leader>fg', builtin.live_grep,  { desc = '文字列検索(Grep)' })
+            vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = '最近のファイル' })
+			vim.keymap.set('n', '<Leader>fb', builtin.buffers,    { desc = 'バッファ検索' })
+			vim.keymap.set("n", "<Leader>fc", builtin.commands,   { desc = 'コマンド検索' })
 
 			-- TreeSitter関連のTelescopeコマンド
 			--vim.keymap.set('n', '<leader>st', require('telescope.builtin').treesitter, { desc = 'TreeSitterシンボル一覧' })
@@ -36,17 +36,17 @@ return {
 			--vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = 'ドキュメントシンボル' })
 
             -- LSP関連のキーマッピング
-            vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'LSPドキュメントシンボル' })
-            vim.keymap.set('n', '<leader>lw', builtin.lsp_dynamic_workspace_symbols, { desc = 'LSPワークスペースシンボル' })
-            vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = 'LSP参照を検索' })
-            vim.keymap.set('n', '<leader>ld', builtin.lsp_definitions, { desc = 'LSP定義を検索' })
+            vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'シンボル一覧' })
+            vim.keymap.set('n', '<leader>lw', builtin.lsp_dynamic_workspace_symbols, { desc = 'ワークスペースシンボル' })
+            vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = '参照箇所' })
+            vim.keymap.set('n', '<leader>ld', builtin.lsp_definitions, { desc = '定義へ移動' })
             --vim.keymap.set('n', '<leader>li', builtin.lsp_implementations, { desc = 'LSP実装を検索' })
-            vim.keymap.set('n', '<leader>lt', builtin.lsp_type_definitions, { desc = 'LSP型定義を検索' })
+            vim.keymap.set('n', '<leader>lt', builtin.lsp_type_definitions, { desc = '型定義' })
 
 			-- Git系
-            vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'Gitコミット履歴' })
-            vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Gitブランチ一覧' })
-            vim.keymap.set('n', '<leader>gg', builtin.git_status, { desc = 'Git変更ファイル' })
+            vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'コミット履歴' })
+            vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'ブランチ一覧' })
+            vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Git状態' })
 		end,
 	},
 	{
@@ -62,7 +62,7 @@ return {
 		version = "*",
 		config = function()
 			require("telescope").load_extension "frecency"
-			vim.keymap.set('n', '<Leader>tr', ':Telescope frecency path_display={"shorten"} theme=ivy<CR>',               { desc = '最近開いたファイル' })
+			vim.keymap.set('n', '<Leader>ff', ':Telescope frecency path_display={"shorten"} theme=ivy<CR>',               { desc = '頻繁に使うファイル' })
 			--vim.keymap.set('n', '<leader>tr', ':Telescope frecency workspace=CWD path_display={"shorten"} theme=ivy<CR>', { desc = 'プロジェクト内で最近開いたファイル' })
 		end,
 	},
@@ -75,8 +75,8 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>li", "<cmd>Telescope hierarchy incoming_calls<cr>", desc = "LSP: 参照元を検索", },
-			{ "<leader>lo", "<cmd>Telescope hierarchy outgoing_calls<cr>", desc = "LSP: 参照先を検索", },
+			{ "<leader>li", "<cmd>Telescope hierarchy incoming_calls<cr>", desc = "呼び出し元", },
+			{ "<leader>lo", "<cmd>Telescope hierarchy outgoing_calls<cr>", desc = "呼び出し先", },
 		},
 		opts = {
 			-- don't use `defaults = { }` here, do this in the main telescope spec

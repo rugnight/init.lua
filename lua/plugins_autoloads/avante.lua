@@ -21,6 +21,16 @@ return {
       temperature = 0.7,
       max_tokens = 2048, -- Gemini側に制限あり（OpenAIより少なめ）
     },
+    mappings = {
+      ask = "<leader>aa",
+      edit = "<leader>ae",
+      refresh = "<leader>ar",
+      toggle = {
+        debug = "<leader>ad",
+        hint = "<leader>ah",
+        sidebar = "<leader>as",
+      },
+    },
   },
   --build = "make",
   build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",

@@ -76,42 +76,42 @@ return {
 					end
 				end)
 
-				-- Actions
-				map('n', '<leader>hs', gs.stage_hunk)
-				map('n', '<leader>hr', gs.reset_hunk)
+				-- Git Hunk Actions
+				map('n', '<leader>gs', gs.stage_hunk, { desc = 'Hunkをステージ' })
+				map('n', '<leader>gr', gs.reset_hunk, { desc = 'Hunkをリセット' })
 
-				map('v', '<leader>hs', function()
+				map('v', '<leader>gs', function()
 					gs.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-				end)
+				end, { desc = '選択範囲をステージ' })
 
-				map('v', '<leader>hr', function()
+				map('v', '<leader>gr', function()
 					gs.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-				end)
+				end, { desc = '選択範囲をリセット' })
 
-				map('n', '<leader>hS', gs.stage_buffer)
-				map('n', '<leader>hR', gs.reset_buffer)
-				map('n', '<leader>hp', gs.preview_hunk)
-				map('n', '<leader>hi', gs.preview_hunk_inline)
+				map('n', '<leader>gS', gs.stage_buffer, { desc = 'バッファ全体をステージ' })
+				map('n', '<leader>gR', gs.reset_buffer, { desc = 'バッファ全体をリセット' })
+				map('n', '<leader>gp', gs.preview_hunk, { desc = 'Hunkプレビュー' })
+				map('n', '<leader>gi', gs.preview_hunk_inline, { desc = 'Hunkインラインプレビュー' })
 
-				map('n', '<leader>hb', function()
+				map('n', '<leader>gb', function()
 					gs.blame_line({ full = true })
-				end)
+				end, { desc = '行のBlame表示' })
 
-				map('n', '<leader>hd', gs.diffthis)
+				map('n', '<leader>gd', gs.diffthis, { desc = 'Diff表示' })
 
-				map('n', '<leader>hD', function()
+				map('n', '<leader>gD', function()
 					gs.diffthis('~')
-				end)
+				end, { desc = 'Diff表示(前回)' })
 
-				map('n', '<leader>hQ', function() gs.setqflist('all') end)
-				map('n', '<leader>hq', gs.setqflist)
+				map('n', '<leader>gQ', function() gs.setqflist('all') end, { desc = '全HunkをQuickFixに' })
+				map('n', '<leader>gq', gs.setqflist, { desc = 'HunkをQuickFixに' })
 
 				-- Toggles
-				map('n', '<leader>tb', gs.toggle_current_line_blame)
-				map('n', '<leader>tw', gs.toggle_word_diff)
+				map('n', '<leader>tb', gs.toggle_current_line_blame, { desc = 'Blame表示切替' })
+				map('n', '<leader>tw', gs.toggle_word_diff, { desc = '単語単位Diff切替' })
 
 				-- Text object
-				map({'o', 'x'}, 'ih', gs.select_hunk)
+				map({'o', 'x'}, 'ih', gs.select_hunk, { desc = 'Hunk選択' })
 			end
 		}
 	end

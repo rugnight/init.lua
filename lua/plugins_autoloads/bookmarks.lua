@@ -15,13 +15,13 @@ return {
 			on_attach = function(bufnr)
 				local bm = require "bookmarks"
 				local map = vim.keymap.set
-				map("n","mm",bm.bookmark_toggle, { desc = "マークをトグル" }) -- add or remove bookmark at current line
-				map("n","mi",bm.bookmark_ann, { desc = "マーク(コメント付き)" }) -- add or edit mark annotation at current line
-				map("n","mc",bm.bookmark_clean, { desc = "マークを削除" }) -- clean all marks in local buffer
-				map("n","mn",bm.bookmark_next, { desc = "次のマーク" }) -- jump to next mark in local buffer
-				map("n","mp",bm.bookmark_prev, { desc = "前のマーク" }) -- jump to previous mark in local buffer
-				map("n","ml",":Telescope bookmarks list<CR>", { desc = "マーク一覧" }) -- show marked file list in quickfix window
-				map("n","mx",bm.bookmark_clear_all, { desc = "すべてのマークを削除" }) -- removes all bookmarks
+				map("n","<leader>km",bm.bookmark_toggle, { desc = "マークをトグル" }) -- add or remove bookmark at current line
+				map("n","<leader>ki",bm.bookmark_ann, { desc = "マーク(コメント付き)" }) -- add or edit mark annotation at current line
+				map("n","<leader>kc",bm.bookmark_clean, { desc = "マークを削除" }) -- clean all marks in local buffer
+				map("n","<leader>kn",bm.bookmark_next, { desc = "次のマーク" }) -- jump to next mark in local buffer
+				map("n","<leader>kp",bm.bookmark_prev, { desc = "前のマーク" }) -- jump to previous mark in local buffer
+				map("n","<leader>kl",":Telescope bookmarks list<CR>", { desc = "マーク一覧" }) -- show marked file list in quickfix window
+				map("n","<leader>kx",bm.bookmark_clear_all, { desc = "すべてのマークを削除" }) -- removes all bookmarks
 			end
 		}
 		require('telescope').load_extension('bookmarks')

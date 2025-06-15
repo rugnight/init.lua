@@ -68,11 +68,11 @@ vim.o.shada = "!,'100,<50,s10,h"
 -- https://github.com/yuru7/HackGen
 -- WindowsTerminal側の設定もしましょう
 if hostname == "GPD" then
-    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
+	vim.o.guifont = "HackGen Console NF:h12"
 elseif hostname == "OMEN" then
-    --vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
+	vim.o.guifont = "HackGen Console NF:h12"
 else
-    vim.opt.guifont = "HackGen35ConsoleNFJ-Regular:h11"
+	vim.o.guifont = "HackGen Console NF:h12"
 end
 
 -- ブラウザのパスを指定
@@ -112,13 +112,13 @@ local disabled_plugins = {
 --vim.keymap.set("n", "<C-,>i", ":edit ~/.config/nvim/init.lua<CR>",   { desc="init.luaを開く" })
 --vim.keymap.set("n", "<C-,>s", ":source ~/.config/nvim/init.lua<CR>", { desc="init.lua再読込" })
 --vim.keymap.set("n", "<C-,>p", ":FZF ~/.config/nvim/lua<CR>",         { desc="plugin設定" })
-vim.keymap.set("n", "<Leader>ii", ":edit $MYVIMRC<CR>", { desc="init.luaを開く" })
-vim.keymap.set("n", "<Leader>is", ":source $MYVIMRC<CR>", { desc="init.lua再読込" })
-vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="plugin設定" })
+vim.keymap.set("n", "<Leader>ic", ":edit $MYVIMRC<CR>", { desc="設定ファイル編集" })
+vim.keymap.set("n", "<Leader>ir", ":source $MYVIMRC<CR>", { desc="設定再読込" })
+vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="プラグイン設定" })
 
 vim.keymap.set("n",    "<Leader>;", "<C-^>",                                  { desc = "直前のバッファと切替"} )
-vim.keymap.set("n",    "<C-j>",     ":bnext<CR>",                             { desc = ""} )
-vim.keymap.set("n",    "<C-k>",     ":bprev<CR>",                             { desc = ""} )
+vim.keymap.set("n",    "<Leader>bn",     ":bnext<CR>",                             { desc = "次のバッファ"} )
+vim.keymap.set("n",    "<Leader>bp",     ":bprev<CR>",                             { desc = "前のバッファ"} )
 -- vim.keymap.set("n", "<C-w>",     ":bdelete<CR>",                           { desc = ""} )
 
 -- require("plugins")

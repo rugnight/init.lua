@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------------------------
 return {
 	'nvimdev/dashboard-nvim',
+	enabled = false,
 	event = 'VimEnter',
 	dependencies = { 'nvim-tree/nvim-web-devicons' },
 	config = function()

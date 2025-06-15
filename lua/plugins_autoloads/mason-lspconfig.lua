@@ -65,7 +65,7 @@ return {
                     vim.keymap.set('n', 'gD',     '<cmd>lua vim.lsp.buf.declaration()<CR>',     { desc = "宣言を表示" })
                     vim.keymap.set('n', 'gi',     '<cmd>lua vim.lsp.buf.implementation()<CR>',  { desc = "実装を表示" })
                     vim.keymap.set('n', 'gn',     '<cmd>lua vim.lsp.buf.rename()<CR>',          { desc = "リネーム" })
-                    vim.keymap.set('n', 'ga',     '<cmd>lua vim.lsp.buf.code_action()<CR>',     { desc = "コードアクション" })
+                    vim.keymap.set('n', '<leader>la',     '<cmd>lua vim.lsp.buf.code_action()<CR>',     { desc = "コードアクション" })
                     vim.keymap.set('n', 'ge',     '<cmd>lua vim.diagnostic.open_float()<CR>',   { desc = "フロート表示" })
                     vim.keymap.set('n', 'g]',     '<cmd>lua vim.diagnostic.goto_next()<CR>',    { desc = "次の警告へ" })
                     vim.keymap.set('n', 'g[',     '<cmd>lua vim.diagnostic.goto_prev()<CR>',    { desc = "前の警告へ" })
