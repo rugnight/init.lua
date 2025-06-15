@@ -29,16 +29,15 @@ return {
 			},
 			auto_attach = true,
 			attach_to_untracked = false,
-			current_line_blame = false,  -- 明示的に呼び出すときのみ表示
+			current_line_blame = false,  -- GitBlameバーチャルテキストを完全無効
 			current_line_blame_opts = {
-				virt_text = true,
+				virt_text = false, -- バーチャルテキスト無効
 				virt_text_pos = 'eol',
-				delay = 300,
+				delay = 999999, -- 遅延を極端に長く
 				ignore_whitespace = false,
-				virt_text_priority = 100,
-				use_focus = true,
+				virt_text_priority = 0, -- 優先度を最低に
+				use_focus = false,
 			},
-			current_line_blame_formatter = '👤 <author> • <author_time:%Y-%m-%d> • <summary>',
 			sign_priority = 6,
 			update_debounce = 100,
 			status_formatter = nil,

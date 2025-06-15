@@ -13,11 +13,6 @@ return {
 				require("telescope").load_extension("project")
 				vim.cmd('Telescope project') 
 			end, desc = 'プロジェクト選択' },
-			{ '<leader>ls', function() require('telescope.builtin').lsp_document_symbols() end, desc = 'シンボル一覧' },
-			{ '<leader>lw', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, desc = 'ワークスペースシンボル' },
-			{ '<leader>lr', function() require('telescope.builtin').lsp_references() end, desc = '参照箇所' },
-			{ '<leader>ld', function() require('telescope.builtin').lsp_definitions() end, desc = '定義へ移動' },
-			{ '<leader>lt', function() require('telescope.builtin').lsp_type_definitions() end, desc = '型定義' },
 			{ '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = 'コミット履歴' },
 			{ '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = 'ブランチ一覧' },
 			{ '<leader>gs', function() require('telescope.builtin').git_status() end, desc = 'Git状態' },

@@ -1,24 +1,35 @@
 ----------------------------------------------------------------------------------------------------
---- IDEライクなバーチャルテキスト情報表示
+--- モダンなLSP参照数表示
 ----------------------------------------------------------------------------------------------------
 return {
 	{
-		"VidocqH/lsp-lens.nvim",
+		"Wansmer/symbol-usage.nvim",
 		event = "LspAttach",
 		config = function()
-			require'lsp-lens'.setup({
-				enable = true,
-				include_declaration = true,
-				sections = {
-					definition = true,
-					references = true,
-					implements = true,
-				},
-				ignore_filetype = {
-					"prisma",
-				},
-				-- すべてのシンボルタイプを対象に
-				target_symbol_kinds = {
+			require("symbol-usage").setup({
+				-- バーチャルテキストの設定
+				text_format = function(symbol)
+					local result = {}
+					if symbol.references then
+						local usage = symbol.references <= 1 and "usage" or "usages"
+						table.insert(result, ("👁️ %s %s"):format(symbol.references, usage))
+					end
+					if symbol.definition then
+						table.insert(result, ("📍 %s"):format(symbol.definition))
+					end
+					if symbol.implementation then
+						table.insert(result, ("🔧 %s impl"):format(symbol.implementation))
+					end
+					return table.concat(result, ", ")
+				end,
+				
+				-- 表示設定
+				vt_position = "above", -- シンボルの上の行に表示
+				request_pending_text = "loading...",
+				hl = { link = "Comment" }, -- ハイライトグループ
+				
+				-- ターゲット種別
+				kinds = {
 					vim.lsp.protocol.SymbolKind.Function,
 					vim.lsp.protocol.SymbolKind.Method,
 					vim.lsp.protocol.SymbolKind.Interface,
@@ -28,29 +39,29 @@ return {
 					vim.lsp.protocol.SymbolKind.Field,
 					vim.lsp.protocol.SymbolKind.Constructor,
 				},
-			})
-			
-			-- LSPアタッチ時に強制的に有効化
-			vim.api.nvim_create_autocmd("LspAttach", {
-				callback = function()
-					vim.defer_fn(function()
-						local ok, lens = pcall(require, "lsp-lens")
-						if ok and lens.enable then
-							lens.enable()
-						end
-					end, 1000)
-				end,
+				
+				-- 言語固有設定
+				langs = {
+					csharp = { 
+						kinds = { 
+							vim.lsp.protocol.SymbolKind.Method, 
+							vim.lsp.protocol.SymbolKind.Function, 
+							vim.lsp.protocol.SymbolKind.Class 
+						} 
+					},
+				},
+				
+				-- 除外設定
+				filetypes = {},
+				references = { enabled = true, include_declaration = false },
+				definition = { enabled = true },
+				implementation = { enabled = true },
 			})
 		end,
 		keys = {
 			{ "<leader>vl", function() 
-				local ok, lens = pcall(require, "lsp-lens")
-				if ok and lens.toggle then
-					lens.toggle()
-				else
-					vim.notify("LSP Lens not available", vim.log.levels.WARN)
-				end
-			end, desc = "LSP Lens切替" },
+				require("symbol-usage").toggle()
+			end, desc = "シンボル使用状況切替" },
 		},
 	},
 }

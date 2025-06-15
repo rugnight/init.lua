@@ -17,6 +17,7 @@ hostname = vim.fn.substitute(vim.fn.system('hostname'), '\n', '', '')
 
 vim.g.mapleader = ";"    -- リーダーキーを設定
 vim.opt.number = true    -- 行番号表示
+vim.opt.signcolumn = "yes:2" -- サインカラムを常に2文字幅で固定表示
 vim.opt.scrolloff = 3    -- 画面端で常に指定数の余裕を持ってスクロールする
 vim.opt.showmode = false -- 現在のModeを表示しない
 vim.o.mouse = "a"        -- マウス操作を有効に
