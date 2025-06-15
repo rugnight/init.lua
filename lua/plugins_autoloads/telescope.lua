@@ -9,6 +9,10 @@ return {
 			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '最近のファイル' },
 			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = 'バッファ検索' },
 			{ '<Leader>fc', function() require('telescope.builtin').commands() end, desc = 'コマンド検索' },
+			{ '<Leader>fp', function() 
+				require("telescope").load_extension("project")
+				vim.cmd('Telescope project') 
+			end, desc = 'プロジェクト選択' },
 			{ '<leader>ls', function() require('telescope.builtin').lsp_document_symbols() end, desc = 'シンボル一覧' },
 			{ '<leader>lw', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, desc = 'ワークスペースシンボル' },
 			{ '<leader>lr', function() require('telescope.builtin').lsp_references() end, desc = '参照箇所' },
@@ -57,7 +61,7 @@ return {
 		"nvim-telescope/telescope-frecency.nvim",
 		version = "*",
 		keys = {
-			{ '<Leader>fr', function() 
+			{ '<Leader>fq', function() 
 				require("telescope").load_extension "frecency"
 				vim.cmd('Telescope frecency path_display={"shorten"} theme=ivy')
 			end, desc = '頻繁に使うファイル' },
@@ -65,12 +69,7 @@ return {
 	},
 	{
 		"jmacadie/telescope-hierarchy.nvim",
-		dependencies = {
-			{
-				"nvim-telescope/telescope.nvim",
-				dependencies = { "nvim-lua/plenary.nvim" },
-			},
-		},
+		dependencies = { "nvim-telescope/telescope.nvim" },
 		keys = {
 			{ "<leader>li", function()
 				require("telescope").load_extension("hierarchy")
@@ -80,15 +79,6 @@ return {
 				require("telescope").load_extension("hierarchy")
 				vim.cmd("Telescope hierarchy outgoing_calls")
 			end, desc = "呼び出し先", },
-		},
-		opts = {
-			-- don't use `defaults = { }` here, do this in the main telescope spec
-			extensions = {
-				hierarchy = {
-					-- telescope-hierarchy.nvim config, see below
-				},
-				-- no other extensions here, they can have their own spec too
-			},
 		},
 	},
 	{

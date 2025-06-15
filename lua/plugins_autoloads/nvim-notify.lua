@@ -20,16 +20,17 @@ return {
 			end,
 		})
 		
-		-- LSPの情報メッセージのみを抑制（シンプル版）
-		local original_handler = vim.lsp.handlers["window/logMessage"]
+		-- LSPの情報メッセージを完全に抑制
 		vim.lsp.handlers["window/logMessage"] = function(err, result, ctx)
-			-- csharp_lsの情報メッセージは無視
-			if result and result.message and string.find(result.message, "csharp%-ls:") then
-				return  -- 無視
-			end
-			-- その他のメッセージは通常通り処理
-			if original_handler then
-				original_handler(err, result, ctx)
+			-- すべてのLSP logMessageを無視
+			return
+		end
+		
+		-- LSPの表示メッセージも抑制
+		vim.lsp.handlers["window/showMessage"] = function(err, result, ctx)
+			-- ERRORレベルのみ表示
+			if result and result.type == vim.lsp.protocol.MessageType.Error then
+				vim.notify(result.message, vim.log.levels.ERROR, { title = "LSP Error" })
 			end
 		end
 	end,

@@ -3,11 +3,12 @@
 ----------------------------------------------------------------------------------------------------
 return {
 	'Wansmer/treesj',
-	keys = { '<space>m', '<space>j', '<space>s' },
-	dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+	dependencies = { 'nvim-treesitter/nvim-treesitter' },
 	config = function()
-		require('treesj').setup({--[[ your config ]]})
-		vim.keymap.set("nv", "<Leader>cj", require('treesj').join(), { desc = "行結合" })
-		vim.keymap.set("nv", "<Leader>cs", require('treesj').split(), { desc = "行分割" })
-	end
+		require('treesj').setup({})
+	end,
+	keys = {
+		{ "<Leader>cj", function() require('treesj').join() end, desc = "行結合" },
+		{ "<Leader>cs", function() require('treesj').split() end, desc = "行分割" },
+	},
 }
