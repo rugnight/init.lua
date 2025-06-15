@@ -19,7 +19,7 @@ return {
 				-- LSPの状態を表示するカスタムコンポーネント
 				{
 					function()
-						local clients = vim.lsp.get_active_clients()
+						local clients = vim.lsp.get_clients()
 						if next(clients) == nil then
 							return "LSP未接続"
 						end
