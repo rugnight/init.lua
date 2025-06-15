@@ -9,8 +9,14 @@ DATA_PATH = vim.fn.stdpath("data")
 CACHE_PATH = vim.fn.stdpath("cache")
 TERMINAL = vim.fn.expand("$TERMINAL")
 
--- マシン名
-hostname = vim.fn.substitute(vim.fn.system('hostname'), '\n', '', '')
+-- マシン名（遅延読み込み）
+local hostname
+local function get_hostname()
+  if not hostname then
+    hostname = vim.fn.substitute(vim.fn.system('hostname'), '\n', '', '')
+  end
+  return hostname
+end
 
 -- vim.opt.shell = "powershell"
 
@@ -47,7 +53,7 @@ vim.o.ignorecase = true -- 検索で大文字小文字を無視する
 vim.o.smartcase = true  -- ignorecase 指定時に大文字入力するとignorecaseを無効化して検索する
 vim.o.incsearch = true  -- インクリメンタルサーチを有効に
 vim.o.hlsearch = true -- 検索語をハイライトする
-vim.opt.grepprg = "rg --vimgrep" -- ripgrepを使用
+vim.opt.grepprg = "rg --vimgrep --smart-case --follow --hidden" -- ripgrepを使用
 vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- エンコーディング
@@ -77,16 +83,19 @@ vim.o.foldlevelstart = 99
 -- mark情報等の保存: AppData\Local\nvim-data\shada
 vim.o.shada = "!,'100,<50,s10,h"
 
--- フォント
+-- フォント（遅延設定）
 -- https://github.com/yuru7/HackGen
 -- WindowsTerminal側の設定もしましょう
-if hostname == "GPD" then
-	vim.o.guifont = "HackGen Console NF:h12"
-elseif hostname == "OMEN" then
-	vim.o.guifont = "HackGen Console NF:h12"
-else
-	vim.o.guifont = "HackGen Console NF:h12"
-end
+vim.defer_fn(function()
+  local current_hostname = get_hostname()
+  if current_hostname == "GPD" then
+    vim.o.guifont = "HackGen Console NF:h12"
+  elseif current_hostname == "OMEN" then
+    vim.o.guifont = "HackGen Console NF:h12"
+  else
+    vim.o.guifont = "HackGen Console NF:h12"
+  end
+end, 100)
 
 -- ブラウザのパスを指定
 vim.g.openerprio = {
@@ -231,6 +240,126 @@ vim.deprecate = function() end
 vim.keymap.set("n", "<Leader>;", "<C-^>", { desc = "直前のバッファと切替" })
 vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "次のバッファ" })
 vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "前のバッファ" })
+
+-- QuickFix操作の包括的キーマップ
+vim.keymap.set("n", "<Leader>qo", ":copen<CR>", { desc = "QuickFix開く" })
+vim.keymap.set("n", "<Leader>qc", ":cclose<CR>", { desc = "QuickFix閉じる" })
+vim.keymap.set("n", "<Leader>qn", ":cnext<CR>", { desc = "次のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qp", ":cprev<CR>", { desc = "前のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qf", ":cfirst<CR>", { desc = "最初のQuickFix項目" })
+vim.keymap.set("n", "<Leader>ql", ":clast<CR>", { desc = "最後のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qh", ":chistory<CR>", { desc = "QuickFix履歴" })
+
+-- Location List操作
+vim.keymap.set("n", "<Leader>qO", ":lopen<CR>", { desc = "LocationList開く" })
+vim.keymap.set("n", "<Leader>qC", ":lclose<CR>", { desc = "LocationList閉じる" })
+vim.keymap.set("n", "<Leader>qN", ":lnext<CR>", { desc = "次のLocationList項目" })
+vim.keymap.set("n", "<Leader>qP", ":lprev<CR>", { desc = "前のLocationList項目" })
+
+-- LSP結果をQuickFixに集約
+vim.keymap.set("n", "<Leader>qr", function()
+  vim.lsp.buf.references()
+  vim.defer_fn(function() vim.cmd("copen") end, 200)
+end, { desc = "LSP参照→QuickFix" })
+
+vim.keymap.set("n", "<Leader>qd", function()
+  vim.diagnostic.setqflist()
+  vim.cmd("copen")
+end, { desc = "診断→QuickFix" })
+
+vim.keymap.set("n", "<Leader>qD", function()
+  vim.diagnostic.setqflist({severity = vim.diagnostic.severity.ERROR})
+  vim.cmd("copen")
+end, { desc = "エラーのみ→QuickFix" })
+
+-- 検索結果をQuickFixに
+vim.keymap.set("n", "<Leader>qg", function()
+  local pattern = vim.fn.input("Grep pattern: ")
+  if pattern ~= "" then
+    -- ripgrepが利用可能かチェック
+    if vim.fn.executable("rg") == 1 then
+      local cmd = "rg --vimgrep --smart-case --follow --hidden " .. vim.fn.shellescape(pattern) .. " ."
+      local output = vim.fn.systemlist(cmd)
+      if vim.v.shell_error == 0 and #output > 0 then
+        vim.fn.setqflist({}, 'r', {
+          title = 'rg: ' .. pattern,
+          lines = output
+        })
+        vim.cmd("copen")
+      else
+        print("No matches found for: " .. pattern)
+      end
+    else
+      -- fallback to vimgrep
+      vim.cmd("silent vimgrep /" .. pattern .. "/j **/*")
+      vim.cmd("copen")
+    end
+  end
+end, { desc = "Grep→QuickFix" })
+
+vim.keymap.set("n", "<Leader>qG", function()
+  local pattern = vim.fn.expand("<cword>")
+  if pattern ~= "" then
+    -- ripgrepが利用可能かチェック
+    if vim.fn.executable("rg") == 1 then
+      local cmd = "rg --vimgrep --smart-case --follow --hidden " .. vim.fn.shellescape(pattern) .. " ."
+      local output = vim.fn.systemlist(cmd)
+      if vim.v.shell_error == 0 and #output > 0 then
+        vim.fn.setqflist({}, 'r', {
+          title = 'rg: ' .. pattern,
+          lines = output
+        })
+        vim.cmd("copen")
+      else
+        print("No matches found for: " .. pattern)
+      end
+    else
+      -- fallback to vimgrep
+      vim.cmd("silent vimgrep /" .. pattern .. "/j **/*")
+      vim.cmd("copen")
+    end
+  end
+end, { desc = "カーソル下Grep→QuickFix" })
+
+-- バッファローカル検索
+vim.keymap.set("n", "<Leader>qb", function()
+  local pattern = vim.fn.input("Buffer grep pattern: ")
+  if pattern ~= "" then
+    vim.cmd("silent vimgrep /" .. pattern .. "/j %")
+    vim.cmd("copen")
+  end
+end, { desc = "バッファ内検索→QuickFix" })
+
+-- TODOコメント検索
+vim.keymap.set("n", "<Leader>qt", function()
+  if vim.fn.executable("rg") == 1 then
+    local cmd = "rg --vimgrep --smart-case 'TODO|FIXME|HACK|BUG|NOTE' ."
+    local output = vim.fn.systemlist(cmd)
+    if vim.v.shell_error == 0 and #output > 0 then
+      vim.fn.setqflist({}, 'r', {
+        title = 'TODO/FIXME/HACK/BUG/NOTE',
+        lines = output
+      })
+      vim.cmd("copen")
+    else
+      print("No TODO comments found")
+    end
+  else
+    -- fallback to vimgrep
+    vim.cmd("silent vimgrep /TODO\\|FIXME\\|HACK\\|BUG\\|NOTE/j **/*")
+    vim.cmd("copen")
+  end
+end, { desc = "TODO検索→QuickFix" })
+
+-- QuickFix操作ヘルパー
+vim.keymap.set("n", "<Leader>qe", ":cexpr []<CR>", { desc = "QuickFix空にする" })
+vim.keymap.set("n", "<Leader>q;", function()
+  if vim.tbl_isempty(vim.fn.getqflist()) then
+    print("QuickFix list is empty")
+  else
+    vim.cmd("copen")
+  end
+end, { desc = "QuickFix再表示" })
 
 -- 検索ハイライトを簡単に消す
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })

@@ -5,6 +5,8 @@ return {
 	-- Optional dependencies
 	-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+	cmd = "Oil",
+	keys = { { "-", "<CMD>Oil<CR>", desc = "Open parent directory" } },
 	config = function()
 		opts = {
 			keymaps = {
@@ -32,8 +34,7 @@ return {
 		}
 
 		require("oil").setup(opts)
-		vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-		--vim.keymap.set("n", "-", function() require("oil").toggle_float(CWD) end, { desc = "Open parent directory" })
+		-- キーマップは keys で定義済み
 	end,
 }
 

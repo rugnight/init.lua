@@ -38,6 +38,7 @@ return {
 			{ "<leader>c", group = "✏️ コード操作" },
 			{ "<leader>a", group = "🤖 AI操作" },
 			{ "<leader>k", group = "📑 ブックマーク" },
+			{ "<leader>q", group = "📋 QuickFix操作" },
 		})
 	end,
 }

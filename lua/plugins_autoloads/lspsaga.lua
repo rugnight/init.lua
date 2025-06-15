@@ -9,6 +9,19 @@ return {
     -- 主要LSP機能（lspsaga中心）
     { "<Leader>lf", "<cmd>Lspsaga finder<CR>", desc = "参照・定義検索" },
     { "<Leader>lr", "<cmd>Lspsaga finder ref<CR>", desc = "参照一覧" },
+    { "<Leader>lR", function()
+        vim.lsp.buf.references()
+        vim.defer_fn(function() vim.cmd("copen") end, 100)
+      end, desc = "参照一覧（quickfix）" },
+    { "<Leader>l;", function() 
+        -- 標準のquickfixリストを表示（LSP参照結果がある場合）
+        if not vim.tbl_isempty(vim.fn.getqflist()) then
+          vim.cmd("copen")
+        else
+          -- quickfixが空の場合は再度finder実行
+          vim.cmd("Lspsaga finder")
+        end
+      end, desc = "前回の参照結果再表示" },
     { "<Leader>ld", "<cmd>Lspsaga goto_definition<CR>", desc = "定義へ移動" },
     { "<Leader>lp", "<cmd>Lspsaga peek_definition<CR>", desc = "定義プレビュー" },
     { "<Leader>lh", "<cmd>Lspsaga hover_doc<CR>", desc = "ホバー情報" },
@@ -31,10 +44,11 @@ return {
         max_height = 0.8,
       },
       finder = {
-        max_height = 0.3,
-        left_width = 0.3,
+        max_height = 0.4,
+        left_width = 0.4,
+        right_width = 0.4,
         default = "ref+def+imp",
-        layout = "normal",
+        layout = "float",
         sp_inexist = false,
         sp_global = false,
         ly_botright = true,
@@ -44,6 +58,7 @@ return {
           split = "i", 
           tabe = "t",
           quit = "q",
+          close_in_preview = "<C-c>",
         },
       },
       outline = {

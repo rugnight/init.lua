@@ -42,14 +42,14 @@ return {
 		cmd = "Telescope file_browser",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 		config = function()
-			require("telescope").load_extension "file_browser"
+			-- extensionは使用時にロード
 		end,
 	},
 	{
 		"nvim-telescope/telescope-project.nvim",
 		cmd = "Telescope project",
 		config = function()
-			require'telescope'.load_extension('project')
+			-- extensionは使用時（キーマップ）でロード
 		end,
 	},
 	{
