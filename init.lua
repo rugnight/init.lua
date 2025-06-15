@@ -16,11 +16,17 @@ hostname = vim.fn.substitute(vim.fn.system('hostname'), '\n', '', '')
 
 
 vim.g.mapleader = ";"    -- リーダーキーを設定
+vim.g.maplocalleader = "," -- ローカルリーダーキー設定
 vim.opt.number = true    -- 行番号表示
+vim.opt.relativenumber = false -- 相対行番号は無効（お好みで有効化可能）
 vim.opt.signcolumn = "yes:2" -- サインカラムを常に2文字幅で固定表示
 vim.opt.scrolloff = 3    -- 画面端で常に指定数の余裕を持ってスクロールする
+vim.opt.sidescrolloff = 8 -- 水平スクロール時の余裕
 vim.opt.showmode = false -- 現在のModeを表示しない
 vim.o.mouse = "a"        -- マウス操作を有効に
+vim.opt.cursorline = true -- カーソル行をハイライト
+vim.opt.wrap = false     -- 行の折り返しを無効
+vim.opt.linebreak = true -- 折り返し時に単語で区切る
 
 -- ポップアップ表示
 vim.opt.pumheight = 10 -- ポップアップ表示の高さ
@@ -41,6 +47,8 @@ vim.o.ignorecase = true -- 検索で大文字小文字を無視する
 vim.o.smartcase = true  -- ignorecase 指定時に大文字入力するとignorecaseを無効化して検索する
 vim.o.incsearch = true  -- インクリメンタルサーチを有効に
 vim.o.hlsearch = true -- 検索語をハイライトする
+vim.opt.grepprg = "rg --vimgrep" -- ripgrepを使用
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- エンコーディング
 vim.opt.fileencoding = "utf-8" -- 書き込むときのエンコーディング
@@ -51,8 +59,11 @@ vim.opt.clipboard = "unnamedplus"
 -- システムが自動生成するファイル関連
 vim.opt.swapfile = false                -- creates a swapfile
 vim.opt.backup = false                  -- creates a backup file
+vim.opt.writebackup = false             -- バックアップファイルを作成しない
 vim.opt.undodir = CACHE_PATH .. "/undo" -- set an undo directory
 vim.opt.undofile = true                 -- enable persistent undo
+vim.opt.updatetime = 250                -- CursorHoldイベントの間隔（ミリ秒）
+vim.opt.timeoutlen = 400                -- キーマップのタイムアウト
 
 -- 折り畳み設定
 --vim.o.foldmethod = 'marker'
@@ -108,6 +119,10 @@ local disabled_plugins = {
     "zip",
     "zipPlugin",
 }
+
+for _, plugin in pairs(disabled_plugins) do
+  vim.g["loaded_" .. plugin] = 1
+end
 --- }}}
 
 -- 設定編集のショートカット
@@ -212,11 +227,67 @@ vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="LSP情報表示" })
 -- 非推奨API警告を抑制
 vim.deprecate = function() end
 
-vim.keymap.set("n",    "<Leader>;", "<C-^>",                                  { desc = "直前のバッファと切替"} )
-vim.keymap.set("n",    "<Leader>bn",     ":bnext<CR>",                             { desc = "次のバッファ"} )
-vim.keymap.set("n",    "<Leader>bp",     ":bprev<CR>",                             { desc = "前のバッファ"} )
--- vim.keymap.set("n", "<C-w>",     ":bdelete<CR>",                           { desc = ""} )
+-- 基本的なキーマップ
+vim.keymap.set("n", "<Leader>;", "<C-^>", { desc = "直前のバッファと切替" })
+vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "次のバッファ" })
+vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "前のバッファ" })
+
+-- 検索ハイライトを簡単に消す
+vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })
+
+-- ウィンドウ移動を簡単に
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "左のウィンドウへ移動" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "下のウィンドウへ移動" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "上のウィンドウへ移動" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "右のウィンドウへ移動" })
+
+-- ウィンドウサイズ調整（絶対的な位置基準）
+-- 高さ調整は従来通り
+vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "ウィンドウ高さ増加", silent = true })
+vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "ウィンドウ高さ減少", silent = true })
+
+-- 幅調整は絶対的な位置基準
+vim.keymap.set("n", "<C-Left>", function()
+  -- 現在のウィンドウが左端かどうかチェック
+  local current_win = vim.api.nvim_get_current_win()
+  vim.cmd("wincmd h") -- 左に移動を試す
+  local after_win = vim.api.nvim_get_current_win()
+  
+  if current_win == after_win then
+    -- 左に移動できない = 左端のウィンドウ
+    vim.cmd("vertical resize -2") -- 左に縮小
+  else
+    -- 左に移動できた = 右側のウィンドウ
+    vim.cmd("wincmd l") -- 元の位置に戻る
+    vim.cmd("vertical resize +2") -- 左に拡張（右側を縮小）
+  end
+end, { desc = "左側を拡張", silent = true })
+
+vim.keymap.set("n", "<C-Right>", function()
+  -- 現在のウィンドウが右端かどうかチェック
+  local current_win = vim.api.nvim_get_current_win()
+  vim.cmd("wincmd l") -- 右に移動を試す
+  local after_win = vim.api.nvim_get_current_win()
+  
+  if current_win == after_win then
+    -- 右に移動できない = 右端のウィンドウ
+    vim.cmd("vertical resize -2") -- 右に縮小
+  else
+    -- 右に移動できた = 左側のウィンドウ
+    vim.cmd("wincmd h") -- 元の位置に戻る
+    vim.cmd("vertical resize +2") -- 右に拡張（左側を縮小）
+  end
+end, { desc = "右側を拡張", silent = true })
+
+-- インデント調整（ビジュアルモードで選択を保持）
+vim.keymap.set("v", "<", "<gv", { desc = "インデント減少（選択保持）" })
+vim.keymap.set("v", ">", ">gv", { desc = "インデント増加（選択保持）" })
+
+-- 行移動（ビジュアルモード）
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "選択行を下に移動", silent = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "選択行を上に移動", silent = true })
 
 -- require("plugins")
 require("ime")
 require("plugins_setup")
+require("filetype_keymaps")

@@ -132,32 +132,32 @@ return {
 			-- キーマッピング：基本操作
 			local map = vim.keymap.set
 
-			-- メインコマンド
+			-- グローバル機能（どこからでも使用可能）
 			map("n", "<leader>mz", "<cmd>Telekasten panel<CR>", { desc = "Telekastenパネル" })
-
-			-- ノート操作
 			map("n", "<leader>mf", "<cmd>Telekasten find_notes<CR>", { desc = "ノート検索" })
 			map("n", "<leader>mg", "<cmd>Telekasten search_notes<CR>", { desc = "ノート内検索" })
 			map("n", "<leader>mn", "<cmd>Telekasten new_note<CR>", { desc = "新規ノート" })
-			map("n", "<leader>mt", "<cmd>Telekasten toggle_todo<CR>", { desc = "TODO切替" })
-
-			-- 日記・週報
 			map("n", "<leader>md", "<cmd>Telekasten goto_today<CR>", { desc = "今日の日記" })
 			map("n", "<leader>mw", "<cmd>Telekasten goto_thisweek<CR>", { desc = "今週の週報" })
-
-			-- ブラウジング
-			map("n", "<leader>mb", "<cmd>Telekasten show_backlinks<CR>", { desc = "バックリンク" })
 			map("n", "<leader>m#", "<cmd>Telekasten show_tags<CR>", { desc = "タグ一覧" })
-			--map("n", "<leader>mc", "<cmd>Telekasten show_calendar<CR>", { desc = "カレンダー" })
 
-			-- リンク操作
-			map("n", "<leader>ml", "<cmd>Telekasten follow_link<CR>", { desc = "リンクをたどる" })
-			map("n", "<leader>mi", "<cmd>Telekasten insert_link<CR>", { desc = "リンクを挿入" })
-			map("i", "[[", "<cmd>Telekasten insert_link<CR>", { desc = "リンクを挿入" })
-
-			-- メディア
-			map("n", "<leader>mp", "<cmd>Telekasten preview_img<CR>", { desc = "画像プレビュー" })
-			map("n", "<leader>mm", "<cmd>Telekasten insert_img_link<CR>", { desc = "画像リンク挿入" })
+			-- マークダウンファイル内専用機能（ローカルリーダー）
+			-- ファイルタイプによる条件付きマッピング
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "markdown",
+				callback = function()
+					-- リンク操作
+					map("n", "<localleader>l", "<cmd>Telekasten follow_link<CR>", { desc = "リンクをたどる", buffer = true })
+					map("n", "<localleader>i", "<cmd>Telekasten insert_link<CR>", { desc = "リンクを挿入", buffer = true })
+					map("n", "<localleader>t", "<cmd>Telekasten toggle_todo<CR>", { desc = "TODO切替", buffer = true })
+					map("n", "<localleader>b", "<cmd>Telekasten show_backlinks<CR>", { desc = "バックリンク", buffer = true })
+					-- メディア操作
+					map("n", "<localleader>p", "<cmd>Telekasten preview_img<CR>", { desc = "画像プレビュー", buffer = true })
+					map("n", "<localleader>m", "<cmd>Telekasten insert_img_link<CR>", { desc = "画像リンク挿入", buffer = true })
+					-- インサートモード
+					map("i", "[[", "<cmd>Telekasten insert_link<CR>", { desc = "リンクを挿入", buffer = true })
+				end,
+			})
 		end
 	}
 }

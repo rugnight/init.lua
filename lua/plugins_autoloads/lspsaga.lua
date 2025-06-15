@@ -16,6 +16,7 @@ return {
     { "<Leader>la", "<cmd>Lspsaga code_action<CR>", desc = "コードアクション" },
     { "<Leader>lo", "<cmd>Lspsaga outline<CR>", desc = "アウトライン" },
     { "<Leader>ls", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "行診断表示" },
+    { "<Leader>lF", function() vim.lsp.buf.format({ async = true }) end, desc = "コードフォーマット" },
   },
   config = function()
     require("lspsaga").setup({

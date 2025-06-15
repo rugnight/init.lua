@@ -24,17 +24,20 @@
 - **エンコーディング**: UTF-8
 - **タブ設定**: 4スペース
 - **日本語IME対応**: 有効（遅延初期化）
+- **サインカラム**: 固定2文字幅（アイコン表示安定化）
 
 ## 主要プラグイン
 - **lazy.nvim**: プラグインマネージャー（rocks無効化）
 - **telescope.nvim**: ファジーファインダー（extensions遅延読み込み）
+- **lspsaga.nvim**: 美しいLSP UI（参照・定義検索、アウトライン等）
+- **symbol-usage.nvim**: LSP参照数バーチャルテキスト表示
+- **nvim-tree.lua**: プロジェクトツリー表示
 - **nvim-treesitter**: シンタックスハイライト（イベント遅延）
 - **lualine.nvim**: ステータスライン（非推奨API修正済み）
 - **mason.nvim**: LSPサーバー管理（コマンド遅延）
 - **blink.cmp**: 補完エンジン
-- **oil.nvim**: ファイルエクスプローラー
+- **oil.nvim**: ファイル操作特化エクスプローラー
 - **harpoon2**: ファイル間移動
-- **lazygit**: Git統合
 - **avante.nvim**: AI支援（カスタムキーマップ）
 
 ## キーマップ体系
@@ -42,16 +45,21 @@
 
 ### 📁 ファイル検索 (`<Leader>f*`)
 - `ff` - ファイル検索, `fg` - 文字列検索, `fr` - 最近のファイル
-- `fb` - バッファ検索, `fc` - コマンド検索
+- `fb` - バッファ検索, `fc` - コマンド検索, `fp` - プロジェクト選択
+- `fq` - 頻繁に使うファイル
 
-### 🔍 LSP操作 (`<Leader>l*`)
-- `ls` - シンボル一覧, `lr` - 参照箇所, `ld` - 定義へ移動
-- `la` - コードアクション, `li/lo` - 呼び出し元/先
+### 🔍 LSP操作 (`<Leader>l*`) - lspsaga統合
+- `lf` - 参照・定義検索（統合ビュー）, `lr` - 参照一覧, `ld` - 定義へ移動
+- `lp` - 定義プレビュー, `lh` - ホバー情報, `ln` - リネーム
+- `la` - コードアクション, `lo` - アウトライン, `ls` - 行診断表示
+- `li` - 呼び出し元, `lo` - 呼び出し先
 
-### 🔀 Git操作 (`<Leader>g*`)
-- `gg` - LazyGit, `gs` - Git状態, `gc` - コミット履歴
-- `gb` - ブランチ一覧, `gt` - GitBlame切替
-- Hunk操作: `gs/gr/gp/gd` - ステージ/リセット/プレビュー/Diff
+### 📊 プロジェクト管理 (`<Leader>e`)
+- `e` - ファイルツリー切替（nvim-tree）
+- `-` - ファイル操作（oil.nvim）
+
+### 🔀 Git操作 (`<Leader>g*`) - telescope統合
+- `gc` - コミット履歴, `gb` - ブランチ一覧, `gs` - Git状態
 
 ### 🤖 AI操作 (`<Leader>a*`)
 - `aa` - AI質問, `ae` - AI編集, `ar` - AI更新
@@ -63,6 +71,7 @@
 
 ### 👁️ 表示/UI (`<Leader>v*`)
 - `vo` - アウトライン表示, `vz` - ゼンモード
+- `vl` - シンボル使用状況切替（symbol-usage）
 
 ### ✏️ コード操作 (`<Leader>c*`)
 - `cj` - 行結合, `cs` - 行分割
@@ -90,8 +99,10 @@
 - `:Mason`: LSPサーバー管理
 - `<Leader>ff`: ファイル検索
 - `<Leader>fg`: 文字列検索
-- `<Leader>gg`: LazyGit起動
-- `<Leader>vo`: アウトライン表示
+- `<Leader>fp`: プロジェクト選択
+- `<Leader>e`: ファイルツリー表示
+- `<Leader>lf`: LSP参照・定義検索
+- `<Leader>vl`: 参照数表示切替
 - `<Leader>ic`: 設定ファイル編集
 - `<Leader>ir`: 設定再読込
 
@@ -105,8 +116,22 @@
 nvim --startuptime startup.log +q
 ```
 
+## LSP統合環境
+### モダンなLSPワークフロー
+- **lspsaga.nvim**: 美しいUI付きLSP操作（参照検索、定義ジャンプ、リネーム等）
+- **symbol-usage.nvim**: シンボル上部に参照数をバーチャルテキスト表示
+- **telescope-project.nvim**: プロジェクト間の高速移動
+- **nvim-tree + oil.nvim**: プロジェクト俯瞰 + ファイル操作の最適な組み合わせ
+
+### プロジェクト管理最適化
+- **telescope-project**: `<Leader>fp`でプロジェクト選択
+- **nvim-tree**: `<Leader>e`でツリー表示、プロジェクト全体俯瞰
+- **oil.nvim**: `-`でファイル操作特化、バッファライクな編集
+- **固定サインカラム**: アイコン表示時の画面ガクガク防止
+
 ## 環境
 クロスプラットフォーム対応（Windows、macOS、Linux）
 - Windows: IME自動切替対応
 - 高速起動: lazy loading最適化
 - which-key: 視覚的キーマップガイド
+- Git統合: 基本機能はtelescope経由で軽量化
