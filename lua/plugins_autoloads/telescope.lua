@@ -2,11 +2,25 @@ return {
 	{
 		'nvim-telescope/telescope.nvim', 
 		tag = '0.1.8',
+		cmd = "Telescope",
+		keys = {
+			{ '<Leader>ff', function() require('telescope.builtin').find_files() end, desc = 'ファイル検索' },
+			{ '<Leader>fg', function() require('telescope.builtin').live_grep() end, desc = '文字列検索(Grep)' },
+			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '最近のファイル' },
+			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = 'バッファ検索' },
+			{ '<Leader>fc', function() require('telescope.builtin').commands() end, desc = 'コマンド検索' },
+			{ '<leader>ls', function() require('telescope.builtin').lsp_document_symbols() end, desc = 'シンボル一覧' },
+			{ '<leader>lw', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, desc = 'ワークスペースシンボル' },
+			{ '<leader>lr', function() require('telescope.builtin').lsp_references() end, desc = '参照箇所' },
+			{ '<leader>ld', function() require('telescope.builtin').lsp_definitions() end, desc = '定義へ移動' },
+			{ '<leader>lt', function() require('telescope.builtin').lsp_type_definitions() end, desc = '型定義' },
+			{ '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = 'コミット履歴' },
+			{ '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = 'ブランチ一覧' },
+			{ '<leader>gs', function() require('telescope.builtin').git_status() end, desc = 'Git状態' },
+		},
 		config = function() 
             local telescope = require('telescope')
             local actions = require('telescope.actions')
-			require("telescope").load_extension "file_browser"
-			require'telescope'.load_extension('project')
 
             telescope.setup({
                 defaults = {
@@ -22,49 +36,32 @@ return {
                 },
             })
 
-			local builtin = require('telescope.builtin')
-			local actions = require('telescope.actions')
-			vim.keymap.set('n', '<Leader>ff', builtin.find_files, { desc = 'ファイル検索' })
-			vim.keymap.set('n', '<Leader>fg', builtin.live_grep,  { desc = '文字列検索(Grep)' })
-            vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = '最近のファイル' })
-			vim.keymap.set('n', '<Leader>fb', builtin.buffers,    { desc = 'バッファ検索' })
-			vim.keymap.set("n", "<Leader>fc", builtin.commands,   { desc = 'コマンド検索' })
-
-			-- TreeSitter関連のTelescopeコマンド
-			--vim.keymap.set('n', '<leader>st', require('telescope.builtin').treesitter, { desc = 'TreeSitterシンボル一覧' })
-			--vim.keymap.set('n', '<leader>sf', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '現在のファイル内をあいまい検索' })
-			--vim.keymap.set('n', '<leader>ss', require('telescope.builtin').lsp_document_symbols, { desc = 'ドキュメントシンボル' })
-
-            -- LSP関連のキーマッピング
-            vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'シンボル一覧' })
-            vim.keymap.set('n', '<leader>lw', builtin.lsp_dynamic_workspace_symbols, { desc = 'ワークスペースシンボル' })
-            vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = '参照箇所' })
-            vim.keymap.set('n', '<leader>ld', builtin.lsp_definitions, { desc = '定義へ移動' })
-            --vim.keymap.set('n', '<leader>li', builtin.lsp_implementations, { desc = 'LSP実装を検索' })
-            vim.keymap.set('n', '<leader>lt', builtin.lsp_type_definitions, { desc = '型定義' })
-
-			-- Git系
-            vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'コミット履歴' })
-            vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'ブランチ一覧' })
-            vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Git状態' })
 		end,
 	},
 	{
 		"nvim-telescope/telescope-file-browser.nvim",
-		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+		cmd = "Telescope file_browser",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+		config = function()
+			require("telescope").load_extension "file_browser"
+		end,
 	},
 	{
 		"nvim-telescope/telescope-project.nvim",
+		cmd = "Telescope project",
+		config = function()
+			require'telescope'.load_extension('project')
+		end,
 	},
 	{
 		"nvim-telescope/telescope-frecency.nvim",
-		-- install the latest stable version
 		version = "*",
-		config = function()
-			require("telescope").load_extension "frecency"
-			vim.keymap.set('n', '<Leader>ff', ':Telescope frecency path_display={"shorten"} theme=ivy<CR>',               { desc = '頻繁に使うファイル' })
-			--vim.keymap.set('n', '<leader>tr', ':Telescope frecency workspace=CWD path_display={"shorten"} theme=ivy<CR>', { desc = 'プロジェクト内で最近開いたファイル' })
-		end,
+		keys = {
+			{ '<Leader>fr', function() 
+				require("telescope").load_extension "frecency"
+				vim.cmd('Telescope frecency path_display={"shorten"} theme=ivy')
+			end, desc = '頻繁に使うファイル' },
+		},
 	},
 	{
 		"jmacadie/telescope-hierarchy.nvim",
@@ -75,8 +72,14 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>li", "<cmd>Telescope hierarchy incoming_calls<cr>", desc = "呼び出し元", },
-			{ "<leader>lo", "<cmd>Telescope hierarchy outgoing_calls<cr>", desc = "呼び出し先", },
+			{ "<leader>li", function()
+				require("telescope").load_extension("hierarchy")
+				vim.cmd("Telescope hierarchy incoming_calls")
+			end, desc = "呼び出し元", },
+			{ "<leader>lo", function()
+				require("telescope").load_extension("hierarchy")
+				vim.cmd("Telescope hierarchy outgoing_calls")
+			end, desc = "呼び出し先", },
 		},
 		opts = {
 			-- don't use `defaults = { }` here, do this in the main telescope spec
@@ -87,13 +90,6 @@ return {
 				-- no other extensions here, they can have their own spec too
 			},
 		},
-		config = function(_, opts)
-			-- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
-			-- configs for us. We won't use data, as everything is in it's own namespace (telescope
-			-- defaults, as well as each extension).
-			require("telescope").setup(opts)
-			require("telescope").load_extension("hierarchy")
-		end,
 	},
 	{
 		'renerocksai/telekasten.nvim',

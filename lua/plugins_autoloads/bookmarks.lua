@@ -1,7 +1,15 @@
 return {
 	'tomasky/bookmarks.nvim',
 	-- after = "telescope.nvim",
-	event = "VimEnter",
+	keys = {
+		{ "<leader>km", desc = "マークをトグル" },
+		{ "<leader>ki", desc = "マーク(コメント付き)" },
+		{ "<leader>kc", desc = "マークを削除" },
+		{ "<leader>kn", desc = "次のマーク" },
+		{ "<leader>kp", desc = "前のマーク" },
+		{ "<leader>kl", desc = "マーク一覧" },
+		{ "<leader>kx", desc = "すべてのマークを削除" },
+	},
 	config = function()
 		require('bookmarks').setup {
 			-- sign_priority = 8,  --set bookmark sign priority to cover other sign
