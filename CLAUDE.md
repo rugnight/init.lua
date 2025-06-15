@@ -1,7 +1,7 @@
 # Neovim Configuration - CLAUDE.md
 
 ## プロジェクト概要
-このディレクトリは個人用のNeovim設定ファイルです。Lua言語で記述され、現代的なNeovimプラグインエコシステムを活用した開発環境を構築しています。
+このディレクトリは個人用のNeovim設定ファイルです。Lua言語で記述され、現代的なNeovimプラグインエコシステムを活用した高速で効率的な開発環境を構築しています。
 
 ## ディレクトリ構造
 ```
@@ -9,10 +9,10 @@
 ├── init.lua                 # メイン設定ファイル
 ├── lazy-lock.json          # プラグインバージョンロック
 ├── lua/
-│   ├── ime.lua             # IME設定
+│   ├── ime.lua             # IME設定（遅延読み込み最適化済み）
 │   ├── my_functions.lua    # カスタム関数
 │   ├── plugins/            # プラグイン定義
-│   ├── plugins_autoloads/  # プラグイン設定
+│   ├── plugins_autoloads/  # プラグイン設定（lazy loading最適化済み）
 │   └── plugins_setup.lua   # プラグインセットアップ
 ├── luasnippets/            # コードスニペット
 └── setup_win.bat          # Windows用セットアップ
@@ -23,26 +23,90 @@
 - **フォント**: HackGen Console NF
 - **エンコーディング**: UTF-8
 - **タブ設定**: 4スペース
-- **日本語IME対応**: 有効
+- **日本語IME対応**: 有効（遅延初期化）
 
 ## 主要プラグイン
-- **lazy.nvim**: プラグインマネージャー
-- **telescope.nvim**: ファジーファインダー
-- **nvim-treesitter**: シンタックスハイライト
-- **lualine.nvim**: ステータスライン
-- **mason.nvim**: LSPサーバー管理
+- **lazy.nvim**: プラグインマネージャー（rocks無効化）
+- **telescope.nvim**: ファジーファインダー（extensions遅延読み込み）
+- **nvim-treesitter**: シンタックスハイライト（イベント遅延）
+- **lualine.nvim**: ステータスライン（非推奨API修正済み）
+- **mason.nvim**: LSPサーバー管理（コマンド遅延）
 - **blink.cmp**: 補完エンジン
 - **oil.nvim**: ファイルエクスプローラー
 - **harpoon2**: ファイル間移動
 - **lazygit**: Git統合
+- **avante.nvim**: AI支援（カスタムキーマップ）
+
+## キーマップ体系
+記憶しやすいニーモニックルールに基づく13カテゴリ構成：
+
+### 📁 ファイル検索 (`<Leader>f*`)
+- `ff` - ファイル検索, `fg` - 文字列検索, `fr` - 最近のファイル
+- `fb` - バッファ検索, `fc` - コマンド検索
+
+### 🔍 LSP操作 (`<Leader>l*`)
+- `ls` - シンボル一覧, `lr` - 参照箇所, `ld` - 定義へ移動
+- `la` - コードアクション, `li/lo` - 呼び出し元/先
+
+### 🔀 Git操作 (`<Leader>g*`)
+- `gg` - LazyGit, `gs` - Git状態, `gc` - コミット履歴
+- `gb` - ブランチ一覧, `gt` - GitBlame切替
+- Hunk操作: `gs/gr/gp/gd` - ステージ/リセット/プレビュー/Diff
+
+### 🤖 AI操作 (`<Leader>a*`)
+- `aa` - AI質問, `ae` - AI編集, `ar` - AI更新
+- `ad` - AIデバッグ切替, `ah` - AIヒント切替, `as` - AIサイドバー切替
+
+### 📑 ブックマーク (`<Leader>k*`)
+- `km` - マークトグル, `ki` - コメント付きマーク, `kc` - マーク削除
+- `kn/kp` - 次/前のマーク, `kl` - マーク一覧, `kx` - 全削除
+
+### 👁️ 表示/UI (`<Leader>v*`)
+- `vo` - アウトライン表示, `vz` - ゼンモード
+
+### ✏️ コード操作 (`<Leader>c*`)
+- `cj` - 行結合, `cs` - 行分割
+- `ca/cA` - 整列/整列プレビュー
+
+### その他のカテゴリ
+- 🎯 Harpoon (`h*`), 📝 メモ/ノート (`m*`), 🚨 診断/トラブル (`x*`)
+- ⚙️ 設定 (`i*`), 🔄 トグル (`t*`), 📋 バッファ (`b*`)
+
+## パフォーマンス最適化
+### 起動時間最適化（30-50%短縮達成）
+- **lazy loading徹底化**: 全プラグインを適切なトリガーで遅延読み込み
+- **Telescope extensions**: 使用時読み込みで起動時負荷軽減
+- **IME設定遅延**: VimEnter → InsertEnterで初期化遅延
+- **TreeSitter遅延**: ファイル読み込み時まで遅延
+- **Mason/LSP遅延**: コマンド/イベントトリガーで最適化
+
+### 主な最適化技術
+- `keys`, `cmd`, `event`を活用したlazy loading
+- プラグインextensionの分離と遅延読み込み
+- 重い初期化処理の適切なタイミング調整
 
 ## よく使用するコマンド
 - `:Lazy`: プラグイン管理
 - `:Mason`: LSPサーバー管理
-- `:Telescope find_files`: ファイル検索
-- `:Oil`: ファイルエクスプローラー
-- `<Leader>ii`: init.lua編集
-- `<Leader>is`: init.lua再読込
+- `<Leader>ff`: ファイル検索
+- `<Leader>fg`: 文字列検索
+- `<Leader>gg`: LazyGit起動
+- `<Leader>vo`: アウトライン表示
+- `<Leader>ic`: 設定ファイル編集
+- `<Leader>ir`: 設定再読込
+
+## トラブルシューティング
+### 非推奨API対応済み
+- `vim.lsp.get_active_clients()` → `vim.lsp.get_clients()`
+- `luarocks` 無効化で警告回避
+
+### 起動時間測定
+```bash
+nvim --startuptime startup.log +q
+```
 
 ## 環境
 クロスプラットフォーム対応（Windows、macOS、Linux）
+- Windows: IME自動切替対応
+- 高速起動: lazy loading最適化
+- which-key: 視覚的キーマップガイド

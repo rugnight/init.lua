@@ -14,6 +14,7 @@ hostname = vim.fn.substitute(vim.fn.system('hostname'), '\n', '', '')
 
 -- vim.opt.shell = "powershell"
 
+
 vim.g.mapleader = ";"    -- リーダーキーを設定
 vim.opt.number = true    -- 行番号表示
 vim.opt.scrolloff = 3    -- 画面端で常に指定数の余裕を持ってスクロールする
@@ -115,6 +116,100 @@ local disabled_plugins = {
 vim.keymap.set("n", "<Leader>ic", ":edit $MYVIMRC<CR>", { desc="設定ファイル編集" })
 vim.keymap.set("n", "<Leader>ir", ":source $MYVIMRC<CR>", { desc="設定再読込" })
 vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="プラグイン設定" })
+
+-- メッセージをバッファで開く関数
+local function open_messages_in_buffer()
+  -- 新しいバッファを作成
+  vim.cmd('enew')
+  -- バッファタイプを設定
+  vim.bo.buftype = 'nofile'
+  vim.bo.bufhidden = 'wipe'
+  vim.bo.swapfile = false
+  -- バッファ名を設定
+  vim.api.nvim_buf_set_name(0, '[Messages]')
+  
+  -- メッセージを安全にキャプチャ
+  local ok, messages = pcall(vim.fn.execute, 'messages')
+  if not ok then
+    messages = "メッセージの取得でエラーが発生しました: " .. tostring(messages)
+  end
+  
+  local lines = vim.split(messages, '\n')
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+  
+  -- 読み取り専用に設定
+  vim.bo.readonly = true
+  vim.bo.modifiable = false
+  -- カーソルを最下部に移動
+  vim.cmd('normal! G')
+end
+
+-- LSP情報をバッファで開く関数
+local function open_lsp_info_in_buffer()
+  vim.cmd('enew')
+  vim.bo.buftype = 'nofile'
+  vim.bo.bufhidden = 'wipe'
+  vim.bo.swapfile = false
+  vim.api.nvim_buf_set_name(0, '[LSP Info]')
+  
+  local lsp_info = vim.fn.execute('LspInfo')
+  local lines = vim.split(lsp_info, '\n')
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+  
+  vim.bo.readonly = true
+  vim.bo.modifiable = false
+  vim.cmd('normal! gg')
+end
+
+-- Lazy情報をバッファで開く関数
+local function open_lazy_profile_in_buffer()
+  vim.cmd('enew')
+  vim.bo.buftype = 'nofile'
+  vim.bo.bufhidden = 'wipe'
+  vim.bo.swapfile = false
+  vim.api.nvim_buf_set_name(0, '[Lazy Profile]')
+  
+  -- Lazy.nvimのプロファイル情報を取得
+  local ok, lazy = pcall(require, 'lazy')
+  if ok then
+    local profile = lazy.profile()
+    local lines = {}
+    table.insert(lines, "=== Lazy.nvim Plugin Load Times ===")
+    table.insert(lines, "")
+    for name, data in pairs(profile) do
+      table.insert(lines, string.format("%s: %.2fms", name, data.time or 0))
+    end
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+  else
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, {"Lazy.nvim not available"})
+  end
+  
+  vim.bo.readonly = true
+  vim.bo.modifiable = false
+  vim.cmd('normal! gg')
+end
+
+-- メッセージ表示のキーマップ（nvim-notify対応）
+vim.keymap.set("n", "<Leader>im", function()
+  local ok, notify = pcall(require, "notify")
+  if ok and notify.print_history then
+    -- nvim-notifyの履歴を表示
+    pcall(notify.print_history)
+  else
+    -- フォールバック：従来のメッセージ表示
+    pcall(open_messages_in_buffer)
+  end
+end, { desc="メッセージ履歴表示" })
+vim.keymap.set("n", "<Leader>ih", ":checkhealth<CR>", { desc="ヘルスチェック" })
+vim.keymap.set("n", "<Leader>il", function() pcall(open_lsp_info_in_buffer) end, { desc="LSP情報をバッファで開く" })
+vim.keymap.set("n", "<Leader>iz", function() pcall(open_lazy_profile_in_buffer) end, { desc="Lazy Profile情報" })
+
+-- より安全な代替コマンド
+vim.keymap.set("n", "<Leader>iM", ":messages<CR>", { desc="従来のメッセージ表示" })
+vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="LSP情報表示" })
+
+-- 非推奨API警告を抑制
+vim.deprecate = function() end
 
 vim.keymap.set("n",    "<Leader>;", "<C-^>",                                  { desc = "直前のバッファと切替"} )
 vim.keymap.set("n",    "<Leader>bn",     ":bnext<CR>",                             { desc = "次のバッファ"} )

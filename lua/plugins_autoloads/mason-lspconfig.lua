@@ -49,13 +49,9 @@ return {
                 -- デフォルトハンドラ
                 function (server_name)
                     require("lspconfig")[server_name].setup {
-                        capabilities = capabilities  -- ここを修正
+                        capabilities = capabilities
                     }
                 end,
-                -- 特定のサーバー用ハンドラ例
-                --["rust_analyzer"] = function ()
-                --    require("rust-tools").setup {}
-                --end
             }
 
             vim.api.nvim_create_autocmd("LspAttach", {
