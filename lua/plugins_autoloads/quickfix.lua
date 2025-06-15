@@ -4,7 +4,6 @@ return {
     event = "QuickFixCmdPost",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "junegunn/fzf",
     },
     opts = {
       auto_enable = true,
@@ -14,16 +13,70 @@ return {
         win_vheight = 12,
         delay_syntax = 80,
         border_chars = { "┃", "━", "┏", "┓", "┗", "┛", "┣", "┫", "┳", "┻" },
+        should_preview_cb = function(bufnr, qwinid)
+          local ret = true
+          local bufname = vim.api.nvim_buf_get_name(bufnr)
+          local fsize = vim.fn.getfsize(bufname)
+          if fsize > 100 * 1024 then
+            ret = false
+          end
+          return ret
+        end,
       },
       func_map = {
-        vsplit = "",
-        ptogglemode = "z,",
-        stoggleup = "",
+        open = "<CR>",
+        vsplit = "v",
+        split = "s", 
+        tab = "t",
+        tabb = "T",
+        tabc = "<C-t>",
+        ptogglemode = "zp",
+        pscrollup = "<C-u>",
+        pscrolldown = "<C-d>",
       },
       filter = {
         fzf = {
-          action_for = { ["ctrl-s"] = "split" },
-          extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "> " },
+          action_for = { ["ctrl-s"] = "split", ["ctrl-t"] = "tab" },
+          extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "❯ " },
+        },
+      },
+    },
+  },
+  {
+    "stevearc/quicker.nvim",
+    event = "QuickFixCmdPost",
+    opts = {
+      -- 編集機能を有効化
+      edit = {
+        enabled = true,
+        autosave = true,
+      },
+      -- 表示設定
+      show = {
+        context = 3,
+        current_line = true,
+        line_numbers = true,
+      },
+      -- ハイライト
+      highlight = {
+        treesitter = true,
+        lsp = true,
+      },
+      -- キーマップ
+      keys = {
+        {
+          ">",
+          function()
+            require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+          end,
+          desc = "コンテキスト拡張",
+        },
+        {
+          "<",
+          function()
+            require("quicker").collapse()
+          end,
+          desc = "コンテキスト縮小",
         },
       },
     },

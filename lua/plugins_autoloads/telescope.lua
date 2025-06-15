@@ -32,6 +32,21 @@ return {
                     sorting_strategy = "ascending", -- 結果を上から下に表示
                     prompt_prefix = " ",
                     path_display = {"truncate"},
+                    -- QuickFix統合のキーマップ
+                    mappings = {
+                        i = {
+                            ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+                            ["<C-l>"] = actions.send_to_loclist + actions.open_loclist,
+                            ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                            ["<M-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
+                        },
+                        n = {
+                            ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+                            ["<C-l>"] = actions.send_to_loclist + actions.open_loclist,
+                            ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                            ["<M-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
+                        },
+                    },
                 },
             })
 

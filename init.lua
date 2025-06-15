@@ -361,6 +361,103 @@ vim.keymap.set("n", "<Leader>q;", function()
   end
 end, { desc = "QuickFix再表示" })
 
+-- 高度なQuickFix機能
+vim.keymap.set("n", "<Leader>qR", function()
+  -- QuickFixリストからの一括置換
+  local old_pattern = vim.fn.input("Replace pattern: ")
+  if old_pattern == "" then return end
+  local new_pattern = vim.fn.input("Replace with: ")
+  if new_pattern == "" then return end
+  
+  vim.cmd("cfdo %s/" .. vim.fn.escape(old_pattern, "/") .. "/" .. vim.fn.escape(new_pattern, "/") .. "/gc | update")
+end, { desc = "QuickFix一括置換" })
+
+vim.keymap.set("n", "<Leader>qS", function()
+  -- QuickFixセッション保存
+  local session_name = vim.fn.input("Session name: ", "quickfix_session")
+  if session_name ~= "" then
+    local qflist = vim.fn.getqflist()
+    local session_file = vim.fn.stdpath("data") .. "/qf_sessions/" .. session_name .. ".json"
+    vim.fn.mkdir(vim.fn.fnamemodify(session_file, ":h"), "p")
+    local file = io.open(session_file, "w")
+    if file then
+      file:write(vim.fn.json_encode(qflist))
+      file:close()
+      print("QuickFix session saved: " .. session_name)
+    end
+  end
+end, { desc = "QuickFixセッション保存" })
+
+vim.keymap.set("n", "<Leader>qL", function()
+  -- QuickFixセッション復元
+  local session_name = vim.fn.input("Session name: ")
+  if session_name ~= "" then
+    local session_file = vim.fn.stdpath("data") .. "/qf_sessions/" .. session_name .. ".json"
+    local file = io.open(session_file, "r")
+    if file then
+      local content = file:read("*all")
+      file:close()
+      local qflist = vim.fn.json_decode(content)
+      vim.fn.setqflist(qflist)
+      vim.cmd("copen")
+      print("QuickFix session restored: " .. session_name)
+    else
+      print("Session not found: " .. session_name)
+    end
+  end
+end, { desc = "QuickFixセッション復元" })
+
+-- LocationList vs QuickFix使い分け
+vim.keymap.set("n", "<Leader>qm", function()
+  -- QuickFixからLocationListに移動（現在のウィンドウ用）
+  local qflist = vim.fn.getqflist()
+  if not vim.tbl_isempty(qflist) then
+    vim.fn.setloclist(0, qflist)
+    vim.cmd("lopen")
+    print("QuickFix → LocationList移動完了")
+  end
+end, { desc = "QuickFix→LocationList" })
+
+vim.keymap.set("n", "<Leader>qM", function()
+  -- LocationListからQuickFixに移動（グローバル化）
+  local loclist = vim.fn.getloclist(0)
+  if not vim.tbl_isempty(loclist) then
+    vim.fn.setqflist(loclist)
+    vim.cmd("copen")
+    print("LocationList → QuickFix移動完了")
+  end
+end, { desc = "LocationList→QuickFix" })
+
+-- QuickFix自動化
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  pattern = "*",
+  callback = function()
+    -- QuickFixリストが空でない場合は自動で開く
+    if not vim.tbl_isempty(vim.fn.getqflist()) then
+      vim.cmd("copen")
+    end
+  end,
+  desc = "QuickFix自動オープン"
+})
+
+-- QuickFixウィンドウのカスタマイズ
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    -- QuickFixウィンドウ専用キーマップ
+    vim.keymap.set("n", "dd", function()
+      local line = vim.fn.line(".")
+      local qflist = vim.fn.getqflist()
+      table.remove(qflist, line)
+      vim.fn.setqflist(qflist, 'r')
+    end, { desc = "QuickFix項目削除", buffer = true })
+    
+    vim.keymap.set("n", "R", function()
+      vim.cmd("cdo edit")
+    end, { desc = "全ファイル編集", buffer = true })
+  end,
+})
+
 -- 検索ハイライトを簡単に消す
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })
 
