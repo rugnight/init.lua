@@ -69,20 +69,21 @@ return {
       -- デフォルトキーマップを無効化してウィンドウ移動キーとの競合を解消
       use_default_keymaps = false,
       keymaps = {
-        -- 基本ナビゲーション（<C-l>を避けて設定）
+        -- 基本ナビゲーション
         ["<CR>"] = "actions.select",
         ["l"] = "actions.select",
         ["h"] = "actions.parent_dir",
-        -- ディレクトリ移動は代替キーを使用
-        ["<Right>"] = "actions.goto_dir",  -- <C-l>の代替
-        ["<Left>"] = "actions.parent_dir", -- <C-h>の代替
-        -- その他の必要なキーマップ
+        ["<Right>"] = "actions.goto_dir",
+        ["<Left>"] = "actions.parent_dir",
+        -- ファイル操作
         ["o"] = "actions.open_in_oil",
         ["O"] = "actions.open_in_oil_float",
         ["r"] = "actions.refresh",
         ["f"] = "actions.focus_file",
         ["."] = "actions.toggle_hidden",
-        ["q"] = "actions.close",
+        ["q"] = "actions.close",  -- qキーで閉じる
+        ["<Esc>"] = "actions.close", -- Escキーでも閉じる
+        -- ファイル管理
         ["R"] = "actions.rename",
         ["a"] = "actions.create",
         ["d"] = "actions.delete",
@@ -91,8 +92,7 @@ return {
         ["p"] = "actions.paste",
         ["y"] = "actions.copy_name",
         ["Y"] = "actions.copy_path",
-        -- システムキーマップとの競合を回避
-        ["<C-r>"] = "actions.refresh", -- <C-l>の代替として
+        ["<C-r>"] = "actions.refresh",
       },
     })
 
