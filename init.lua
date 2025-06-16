@@ -9,6 +9,9 @@ DATA_PATH = vim.fn.stdpath("data")
 CACHE_PATH = vim.fn.stdpath("cache")
 TERMINAL = vim.fn.expand("$TERMINAL")
 
+-- カスタム関数を読み込み
+MY_FUNCTIONS = require('my_functions')
+
 -- マシン名（遅延読み込み）
 local hostname
 local function get_hostname()
@@ -242,7 +245,9 @@ vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "次のバッファ" })
 vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "前のバッファ" })
 
 -- QuickFix操作の包括的キーマップ
-vim.keymap.set("n", "<Leader>qo", ":copen<CR>", { desc = "QuickFix開く" })
+vim.keymap.set("n", "<Leader>qo", function()
+  MY_FUNCTIONS.safe_copen()
+end, { desc = "QuickFix開く" })
 vim.keymap.set("n", "<Leader>qc", ":cclose<CR>", { desc = "QuickFix閉じる" })
 vim.keymap.set("n", "<Leader>qn", ":cnext<CR>", { desc = "次のQuickFix項目" })
 vim.keymap.set("n", "<Leader>qp", ":cprev<CR>", { desc = "前のQuickFix項目" })
@@ -259,7 +264,7 @@ vim.keymap.set("n", "<Leader>qP", ":lprev<CR>", { desc = "前のLocationList項�
 -- LSP結果をQuickFixに集約
 vim.keymap.set("n", "<Leader>qr", function()
   vim.lsp.buf.references()
-  vim.defer_fn(function() vim.cmd("copen") end, 200)
+  vim.defer_fn(function() MY_FUNCTIONS.safe_copen() end, 200)
 end, { desc = "LSP参照→QuickFix" })
 
 vim.keymap.set("n", "<Leader>qd", function()
@@ -285,14 +290,14 @@ vim.keymap.set("n", "<Leader>qg", function()
           title = 'rg: ' .. pattern,
           lines = output
         })
-        vim.cmd("copen")
+        MY_FUNCTIONS.safe_copen()
       else
         print("No matches found for: " .. pattern)
       end
     else
       -- fallback to vimgrep
       vim.cmd("silent vimgrep /" .. pattern .. "/j **/*")
-      vim.cmd("copen")
+      MY_FUNCTIONS.safe_copen()
     end
   end
 end, { desc = "Grep→QuickFix" })
@@ -309,14 +314,14 @@ vim.keymap.set("n", "<Leader>qG", function()
           title = 'rg: ' .. pattern,
           lines = output
         })
-        vim.cmd("copen")
+        MY_FUNCTIONS.safe_copen()
       else
         print("No matches found for: " .. pattern)
       end
     else
       -- fallback to vimgrep
       vim.cmd("silent vimgrep /" .. pattern .. "/j **/*")
-      vim.cmd("copen")
+      MY_FUNCTIONS.safe_copen()
     end
   end
 end, { desc = "カーソル下Grep→QuickFix" })
@@ -326,7 +331,7 @@ vim.keymap.set("n", "<Leader>qb", function()
   local pattern = vim.fn.input("Buffer grep pattern: ")
   if pattern ~= "" then
     vim.cmd("silent vimgrep /" .. pattern .. "/j %")
-    vim.cmd("copen")
+    MY_FUNCTIONS.safe_copen()
   end
 end, { desc = "バッファ内検索→QuickFix" })
 
@@ -340,14 +345,14 @@ vim.keymap.set("n", "<Leader>qt", function()
         title = 'TODO/FIXME/HACK/BUG/NOTE',
         lines = output
       })
-      vim.cmd("copen")
+      MY_FUNCTIONS.safe_copen()
     else
       print("No TODO comments found")
     end
   else
     -- fallback to vimgrep
     vim.cmd("silent vimgrep /TODO\\|FIXME\\|HACK\\|BUG\\|NOTE/j **/*")
-    vim.cmd("copen")
+    MY_FUNCTIONS.safe_copen()
   end
 end, { desc = "TODO検索→QuickFix" })
 
@@ -357,7 +362,7 @@ vim.keymap.set("n", "<Leader>q;", function()
   if vim.tbl_isempty(vim.fn.getqflist()) then
     print("QuickFix list is empty")
   else
-    vim.cmd("copen")
+    MY_FUNCTIONS.safe_copen()
   end
 end, { desc = "QuickFix再表示" })
 
@@ -399,7 +404,7 @@ vim.keymap.set("n", "<Leader>qL", function()
       file:close()
       local qflist = vim.fn.json_decode(content)
       vim.fn.setqflist(qflist)
-      vim.cmd("copen")
+      MY_FUNCTIONS.safe_copen()
       print("QuickFix session restored: " .. session_name)
     else
       print("Session not found: " .. session_name)
@@ -423,7 +428,7 @@ vim.keymap.set("n", "<Leader>qM", function()
   local loclist = vim.fn.getloclist(0)
   if not vim.tbl_isempty(loclist) then
     vim.fn.setqflist(loclist)
-    vim.cmd("copen")
+    MY_FUNCTIONS.safe_copen()
     print("LocationList → QuickFix移動完了")
   end
 end, { desc = "LocationList→QuickFix" })
@@ -434,7 +439,7 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   callback = function()
     -- QuickFixリストが空でない場合は自動で開く
     if not vim.tbl_isempty(vim.fn.getqflist()) then
-      vim.cmd("copen")
+      MY_FUNCTIONS.safe_copen()
     end
   end,
   desc = "QuickFix自動オープン"

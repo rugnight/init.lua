@@ -46,7 +46,7 @@
 
 ### 🗂️ ファイル管理
 - **oil.nvim**: ファイルエクスプローラー（lazy loading最適化）
-- **Otree.nvim**: プロジェクトツリー（oil.nvim統合、ルート自動検出）
+- **Otree.nvim**: プロジェクトツリー（oil.nvim統合、ルート自動検出、プロジェクト切替対応）
 - **telescope-project.nvim**: プロジェクト管理
 
 ### 🎯 その他
@@ -199,3 +199,51 @@ nvim --startuptime startup.log +q
 - 高速起動: lazy loading最適化
 - which-key: 視覚的キーマップガイド
 - Git統合: 基本機能はtelescope経由で軽量化
+
+## Otree.nvim 設定知見
+
+### 基本設定
+Otree.nvimはnvim-treeの代替として導入し、oil.nvimとの統合を重視した設定を採用。
+
+```lua
+require("Otree").setup({
+  win_size = 30,
+  hijack_netrw = true,
+  oil = "float", -- oil.nvim連携（フロート表示）
+  git = {
+    enable = false, -- 大きなプロジェクトでのパフォーマンス改善
+  },
+  filters = {
+    dotfiles = false,
+    custom = { ".git", "node_modules", ".DS_Store" },
+  },
+})
+```
+
+### プロジェクトルート自動検出機能
+`<Leader>e`でファイルツリーを開く際、現在のファイルから自動的にプロジェクトルートを検出：
+
+- **検出パターン**: `.git`, `*.csproj`, `*.sln`, `package.json`, `Cargo.toml`, `pom.xml`, `init.lua`
+- **動的切り替え**: 異なるプロジェクトファイルを開いた際、自動的にプロジェクトルートを変更
+- **バッファ管理**: プロジェクト切り替え時は既存のOtreeバッファを削除して再作成
+
+### 制限事項と対応
+1. **ファイルフォーカス機能**: `f`キーによる現在ファイルへのフォーカスは大きなプロジェクトで不安定
+   - 自動フォーカス機能は無効化
+   - 手動での`f`キー操作に依存
+
+2. **プラグイン固有の問題**:
+   - `update_focused_file`等の設定オプションは存在しない
+   - nvim-tree互換のAPIは限定的
+   - 独自のキーマップ体系（`f`: フォーカス、`r`: リフレッシュ、`.`: 隠しファイル切替）
+
+### トグル機能
+`<Leader>e`キーマップは`vim.cmd('Otree')`でトグル動作：
+- 1回目: ツリーを開く
+- 2回目: ツリーを閉じる
+- プロジェクト切り替え時は自動的にバッファをリフレッシュ
+
+### 推奨ワークフロー
+1. `<Leader>e`: プロジェクトツリーの開閉
+2. `-`: oil.nvimでファイル操作
+3. 手動での`f`キー: 必要時のファイルフォーカス
