@@ -28,7 +28,6 @@ return {
 			{ "<leader>f", group = "📁 ファイル検索" },
 			{ "<leader>l", group = "🔍 LSP操作" },
 			{ "<leader>g", group = "🔀 Git操作" },
-			{ "<leader>h", group = "🎯 Harpoon" },
 			{ "<leader>m", group = "📝 メモ/ノート" },
 			{ "<leader>x", group = "🚨 診断/トラブル" },
 			{ "<leader>i", group = "⚙️ 設定" },
