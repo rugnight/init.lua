@@ -42,7 +42,7 @@ vim.opt.pumheight = 10 -- ポップアップ表示の高さ
 -- vim.opt.pumblend  = 75 -- ポップアップ表示の透過
 
 -- フローティングウィンドウ
-vim.opt.winblend = 10 -- FloatingWindowの透過
+vim.opt.winblend = 0 -- FloatingWindowの透過を無効化（背景を明確に表示）
 
 -- Tab
 vim.o.tabstop = 4      -- Tab幅を指定のスペース数に
