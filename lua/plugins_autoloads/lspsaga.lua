@@ -57,7 +57,7 @@ return {
           vsplit = "s",
           split = "i", 
           tabe = "t",
-          quit = "q",
+          quit = { "q", "<ESC>" },
           close_in_preview = "<C-c>",
         },
       },
@@ -70,7 +70,7 @@ return {
         layout = "normal", -- 通常ウィンドウで表示
         keys = {
           toggle_or_jump = "o",
-          quit = "q",
+          quit = { "q", "<ESC>" },
           jump = "e",
         },
       },
@@ -78,7 +78,7 @@ return {
         in_select = true,
         auto_save = false,
         keys = {
-          quit = "<C-c>",
+          quit = { "<C-c>", "<ESC>" },
           exec = "<CR>",
         },
       },
@@ -86,7 +86,7 @@ return {
         num_shortcut = true,
         show_server_name = false,
         keys = {
-          quit = "q",
+          quit = { "q", "<ESC>" },
           exec = "<CR>",
         },
       },
