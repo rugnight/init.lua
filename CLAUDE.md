@@ -46,7 +46,7 @@
 
 ### 🗂️ ファイル管理
 - **oil.nvim**: ファイルエクスプローラー（lazy loading最適化）
-- **nvim-tree.lua**: プロジェクトツリー（ルート自動検出）
+- **Otree.nvim**: プロジェクトツリー（oil.nvim統合、ルート自動検出）
 - **telescope-project.nvim**: プロジェクト管理
 
 ### 🎯 その他
@@ -186,11 +186,11 @@ nvim --startuptime startup.log +q
 - **lspsaga.nvim**: 美しいUI付きLSP操作（参照検索、定義ジャンプ、リネーム等）
 - **symbol-usage.nvim**: シンボル上部に参照数をバーチャルテキスト表示
 - **telescope-project.nvim**: プロジェクト間の高速移動
-- **nvim-tree + oil.nvim**: プロジェクト俯瞰 + ファイル操作の最適な組み合わせ
+- **Otree.nvim + oil.nvim**: 統合ファイル管理、プロジェクト俯瞰 + ファイル操作の最適な組み合わせ
 
 ### プロジェクト管理最適化
 - **telescope-project**: `<Leader>fp`でプロジェクト選択
-- **nvim-tree**: `<Leader>e`でツリー表示、プロジェクト全体俯瞰
+- **Otree.nvim**: `<Leader>e`でツリー表示、oil.nvim統合、プロジェクト全体俯瞰
 - **oil.nvim**: `-`でファイル操作特化、バッファライクな編集
 - **固定サインカラム**: アイコン表示時の画面ガクガク防止
 
