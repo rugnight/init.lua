@@ -3,6 +3,23 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
     { "<Leader>e", function()
+        -- Otreeがすでに開いているかチェック
+        local otree_win = nil
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          local buf = vim.api.nvim_win_get_buf(win)
+          local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+          if filetype == 'Otree' then
+            otree_win = win
+            break
+          end
+        end
+        
+        -- 既に開いている場合は閉じる
+        if otree_win then
+          vim.api.nvim_win_close(otree_win, false)
+          return
+        end
+        
         -- プロジェクトルートを検出
         local function find_project_root()
           local root_patterns = { '.git', '*.csproj', '*.sln', 'package.json', 'Cargo.toml', 'pom.xml', 'init.lua' }
@@ -27,12 +44,8 @@ return {
         local project_root = find_project_root()
         local current_cwd = vim.fn.getcwd()
         
-        -- 編集バッファから開く場合は常にプロジェクトチェック
-        local current_buf_type = vim.api.nvim_buf_get_option(0, 'filetype')
-        local force_refresh = current_buf_type ~= 'Otree'
-        
-        -- プロジェクトルートが変更されている、または編集バッファから開く場合
-        if (project_root and project_root ~= current_cwd) or force_refresh then
+        -- プロジェクトルートが変更されている場合
+        if project_root and project_root ~= current_cwd then
           -- 既存のOtreeバッファを削除してから変更
           for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             local buf_name = vim.api.nvim_buf_get_name(buf)
@@ -40,14 +53,10 @@ return {
               vim.api.nvim_buf_delete(buf, { force = true })
             end
           end
-          if project_root then
-            vim.cmd('cd ' .. vim.fn.fnameescape(project_root))
-          end
+          vim.cmd('cd ' .. vim.fn.fnameescape(project_root))
         end
         
         vim.cmd('Otree')
-        
-        
       end, desc = "📁 ファイルツリー切替" },
   },
   config = function()
