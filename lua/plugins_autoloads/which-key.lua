@@ -16,7 +16,7 @@ return {
 			function()
 				require("which-key").show({ global = false })
 			end,
-			desc = "ローカルキーマップ",
+			desc = "⚙️ ローカルキーマップ",
 		},
 	},
 	config = function()

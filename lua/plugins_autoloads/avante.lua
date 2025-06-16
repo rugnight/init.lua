@@ -2,6 +2,14 @@ return {
   "yetone/avante.nvim",
   event = "VeryLazy",
   version = false,
+  keys = {
+    { "<leader>aa", mode = { "n", "v" }, desc = "🤖 AI質問" },
+    { "<leader>ae", mode = { "n", "v" }, desc = "🤖 AI編集" },
+    { "<leader>ar", desc = "🤖 AI更新" },
+    { "<leader>ad", desc = "🤖 AIデバッグ切替" },
+    { "<leader>ah", desc = "🤖 AIヒント切替" },
+    { "<leader>as", desc = "🤖 AIサイドバー切替" },
+  },
   opts = {
     provider = "openai", -- 使用するAIプロバイダを指定
     --provider = "gemini",

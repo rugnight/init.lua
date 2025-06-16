@@ -12,18 +12,18 @@ return {
           fname_width = 60,
           path_display = { "smart" },
         })
-      end, desc = "参照検索" },
+      end, desc = "🎯 参照検索" },
     { "<Leader>lR", function()
         require('telescope.builtin').lsp_references({
           include_declaration = false,
           fname_width = 60,
           path_display = { "truncate" },
         })
-      end, desc = "参照検索（宣言除外）" },
+      end, desc = "🎯 参照検索（宣言除外）" },
     { "<Leader>lq", function()
         vim.lsp.buf.references()
         vim.defer_fn(function() vim.cmd("copen") end, 100)
-      end, desc = "参照→QuickFix直送" },
+      end, desc = "📋 参照→QuickFix直送" },
     { "<Leader>l;", function() 
         -- 標準のquickfixリストを表示（LSP参照結果がある場合）
         if not vim.tbl_isempty(vim.fn.getqflist()) then
@@ -32,15 +32,15 @@ return {
           -- quickfixが空の場合はTelescope参照検索実行
           require('telescope.builtin').lsp_references()
         end
-      end, desc = "前回の参照結果再表示" },
-    { "<Leader>ld", "<cmd>Lspsaga goto_definition<CR>", desc = "定義へ移動" },
-    { "<Leader>lp", "<cmd>Lspsaga peek_definition<CR>", desc = "定義プレビュー" },
-    { "<Leader>lh", "<cmd>Lspsaga hover_doc<CR>", desc = "ホバー情報" },
-    { "<Leader>ln", "<cmd>Lspsaga rename<CR>", desc = "リネーム" },
-    { "<Leader>la", "<cmd>Lspsaga code_action<CR>", desc = "コードアクション" },
-    { "<Leader>lo", "<cmd>Lspsaga outline<CR>", desc = "アウトライン" },
-    { "<Leader>ls", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "行診断表示" },
-    { "<Leader>lF", function() vim.lsp.buf.format({ async = true }) end, desc = "コードフォーマット" },
+      end, desc = "📋 前回の参照結果再表示" },
+    { "<Leader>ld", "<cmd>Lspsaga goto_definition<CR>", desc = "🎯 定義へ移動" },
+    { "<Leader>lp", "<cmd>Lspsaga peek_definition<CR>", desc = "🎯 定義プレビュー" },
+    { "<Leader>lh", "<cmd>Lspsaga hover_doc<CR>", desc = "🎯 ホバー情報" },
+    { "<Leader>ln", "<cmd>Lspsaga rename<CR>", desc = "🎯 リネーム" },
+    { "<Leader>la", "<cmd>Lspsaga code_action<CR>", desc = "🎯 コードアクション" },
+    { "<Leader>lo", "<cmd>Lspsaga outline<CR>", desc = "👁️ アウトライン" },
+    { "<Leader>ls", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "🚨 行診断表示" },
+    { "<Leader>lF", function() vim.lsp.buf.format({ async = true }) end, desc = "✏️ コードフォーマット" },
     
   },
   config = function()

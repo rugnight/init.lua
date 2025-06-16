@@ -4,18 +4,18 @@ return {
 		tag = '0.1.8',
 		cmd = "Telescope",
 		keys = {
-			{ '<Leader>ff', function() require('telescope.builtin').find_files() end, desc = 'ファイル検索' },
-			{ '<Leader>fg', function() require('telescope.builtin').live_grep() end, desc = '文字列検索(Grep)' },
-			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '最近のファイル' },
-			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = 'バッファ検索' },
-			{ '<Leader>fc', function() require('telescope.builtin').commands() end, desc = 'コマンド検索' },
+			{ '<Leader>ff', function() require('telescope.builtin').find_files() end, desc = '📁 ファイル検索' },
+			{ '<Leader>fg', function() require('telescope.builtin').live_grep() end, desc = '🔍 文字列検索' },
+			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '📁 最近のファイル' },
+			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = '📋 バッファ検索' },
+			{ '<Leader>fc', function() require('telescope.builtin').commands() end, desc = '🔍 コマンド検索' },
 			{ '<Leader>fp', function() 
 				require("telescope").load_extension("project")
 				vim.cmd('Telescope project') 
-			end, desc = 'プロジェクト選択' },
-			{ '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = 'コミット履歴' },
-			{ '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = 'ブランチ一覧' },
-			{ '<leader>gs', function() require('telescope.builtin').git_status() end, desc = 'Git状態' },
+			end, desc = '🏠 プロジェクト選択' },
+			{ '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = '🔀 コミット履歴' },
+			{ '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = '🔀 ブランチ一覧' },
+			{ '<leader>gs', function() require('telescope.builtin').git_status() end, desc = '🔀 Git状態' },
 		},
 		config = function() 
             local telescope = require('telescope')
@@ -74,7 +74,7 @@ return {
 			{ '<Leader>fq', function() 
 				require("telescope").load_extension "frecency"
 				vim.cmd('Telescope frecency path_display={"shorten"} theme=ivy')
-			end, desc = '頻繁に使うファイル' },
+			end, desc = '📁 頻繁に使うファイル' },
 		},
 	},
 	{
@@ -84,11 +84,11 @@ return {
 			{ "<leader>li", function()
 				require("telescope").load_extension("hierarchy")
 				vim.cmd("Telescope hierarchy incoming_calls")
-			end, desc = "呼び出し元", },
+			end, desc = "🎯 呼び出し元", },
 			{ "<leader>lo", function()
 				require("telescope").load_extension("hierarchy")
 				vim.cmd("Telescope hierarchy outgoing_calls")
-			end, desc = "呼び出し先", },
+			end, desc = "🎯 呼び出し先", },
 		},
 	},
 }

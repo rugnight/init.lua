@@ -6,7 +6,7 @@ return {
 	-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 	cmd = "Oil",
-	keys = { { "-", "<CMD>Oil<CR>", desc = "Open parent directory" } },
+	keys = { { "-", "<CMD>Oil<CR>", desc = "📁 親ディレクトリを開く" } },
 	config = function()
 		opts = {
 			keymaps = {

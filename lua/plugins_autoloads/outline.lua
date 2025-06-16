@@ -3,7 +3,7 @@ return {
 	lazy = true,
 	cmd = { "Outline", "OutlineOpen" },
 	keys = { -- Example mapping to toggle outline
-		{ "<leader>vo", "<cmd>Outline<CR>", desc = "アウトライン表示" },
+		{ "<leader>vo", "<cmd>Outline<CR>", desc = "👁️ アウトライン表示" },
 		{ "<leader>o", function()
 			-- 通常のファイル（特殊バッファ以外）でのみアウトラインを開く
 			local buftype = vim.bo.buftype
@@ -15,7 +15,7 @@ return {
 			else
 				vim.notify("アウトラインは通常のファイルでのみ使用できます", vim.log.levels.WARN)
 			end
-		end, desc = "アウトライン表示" },
+		end, desc = "👁️ アウトライン表示" },
 	},
 	opts = {
 		outline_window = {

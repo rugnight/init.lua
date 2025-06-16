@@ -141,9 +141,9 @@ end
 --vim.keymap.set("n", "<C-,>i", ":edit ~/.config/nvim/init.lua<CR>",   { desc="init.luaを開く" })
 --vim.keymap.set("n", "<C-,>s", ":source ~/.config/nvim/init.lua<CR>", { desc="init.lua再読込" })
 --vim.keymap.set("n", "<C-,>p", ":FZF ~/.config/nvim/lua<CR>",         { desc="plugin設定" })
-vim.keymap.set("n", "<Leader>ic", ":edit $MYVIMRC<CR>", { desc="設定ファイル編集" })
-vim.keymap.set("n", "<Leader>ir", ":source $MYVIMRC<CR>", { desc="設定再読込" })
-vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="プラグイン設定" })
+vim.keymap.set("n", "<Leader>ic", ":edit $MYVIMRC<CR>", { desc="⚙️ 設定ファイル編集" })
+vim.keymap.set("n", "<Leader>ir", ":source $MYVIMRC<CR>", { desc="⚙️ 設定再読込" })
+vim.keymap.set("n", "<Leader>ip", ":Telescope find_files cwd=~/.config/nvim/lua<CR>", { desc="⚙️ プラグイン設定" })
 
 -- メッセージをバッファで開く関数
 local function open_messages_in_buffer()
@@ -227,55 +227,55 @@ vim.keymap.set("n", "<Leader>im", function()
     -- フォールバック：従来のメッセージ表示
     pcall(open_messages_in_buffer)
   end
-end, { desc="メッセージ履歴表示" })
-vim.keymap.set("n", "<Leader>ih", ":checkhealth<CR>", { desc="ヘルスチェック" })
-vim.keymap.set("n", "<Leader>il", function() pcall(open_lsp_info_in_buffer) end, { desc="LSP情報をバッファで開く" })
-vim.keymap.set("n", "<Leader>iz", function() pcall(open_lazy_profile_in_buffer) end, { desc="Lazy Profile情報" })
+end, { desc="⚙️ メッセージ履歴表示" })
+vim.keymap.set("n", "<Leader>ih", ":checkhealth<CR>", { desc="⚙️ ヘルスチェック" })
+vim.keymap.set("n", "<Leader>il", function() pcall(open_lsp_info_in_buffer) end, { desc="⚙️ LSP情報をバッファで開く" })
+vim.keymap.set("n", "<Leader>iz", function() pcall(open_lazy_profile_in_buffer) end, { desc="⚙️ Lazy Profile情報" })
 
 -- より安全な代替コマンド
-vim.keymap.set("n", "<Leader>iM", ":messages<CR>", { desc="従来のメッセージ表示" })
-vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="LSP情報表示" })
+vim.keymap.set("n", "<Leader>iM", ":messages<CR>", { desc="⚙️ 従来のメッセージ表示" })
+vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="⚙️ LSP情報表示" })
 
 -- 非推奨API警告を抑制
 vim.deprecate = function() end
 
 -- 基本的なキーマップ
-vim.keymap.set("n", "<Leader>;", "<C-^>", { desc = "直前のバッファと切替" })
-vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "次のバッファ" })
-vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "前のバッファ" })
+vim.keymap.set("n", "<Leader>;", "<C-^>", { desc = "📋 直前のバッファと切替" })
+vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "📋 次のバッファ" })
+vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "📋 前のバッファ" })
 
 -- QuickFix操作の包括的キーマップ
 vim.keymap.set("n", "<Leader>qo", function()
   MY_FUNCTIONS.safe_copen()
-end, { desc = "QuickFix開く" })
-vim.keymap.set("n", "<Leader>qc", ":cclose<CR>", { desc = "QuickFix閉じる" })
-vim.keymap.set("n", "<Leader>qn", ":cnext<CR>", { desc = "次のQuickFix項目" })
-vim.keymap.set("n", "<Leader>qp", ":cprev<CR>", { desc = "前のQuickFix項目" })
-vim.keymap.set("n", "<Leader>qf", ":cfirst<CR>", { desc = "最初のQuickFix項目" })
-vim.keymap.set("n", "<Leader>ql", ":clast<CR>", { desc = "最後のQuickFix項目" })
-vim.keymap.set("n", "<Leader>qh", ":chistory<CR>", { desc = "QuickFix履歴" })
+end, { desc = "📋 QuickFix開く" })
+vim.keymap.set("n", "<Leader>qc", ":cclose<CR>", { desc = "📋 QuickFix閉じる" })
+vim.keymap.set("n", "<Leader>qn", ":cnext<CR>", { desc = "📋 次のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qp", ":cprev<CR>", { desc = "📋 前のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qf", ":cfirst<CR>", { desc = "📋 最初のQuickFix項目" })
+vim.keymap.set("n", "<Leader>ql", ":clast<CR>", { desc = "📋 最後のQuickFix項目" })
+vim.keymap.set("n", "<Leader>qh", ":chistory<CR>", { desc = "📋 QuickFix履歴" })
 
 -- Location List操作
-vim.keymap.set("n", "<Leader>qO", ":lopen<CR>", { desc = "LocationList開く" })
-vim.keymap.set("n", "<Leader>qC", ":lclose<CR>", { desc = "LocationList閉じる" })
-vim.keymap.set("n", "<Leader>qN", ":lnext<CR>", { desc = "次のLocationList項目" })
-vim.keymap.set("n", "<Leader>qP", ":lprev<CR>", { desc = "前のLocationList項目" })
+vim.keymap.set("n", "<Leader>qO", ":lopen<CR>", { desc = "📋 LocationList開く" })
+vim.keymap.set("n", "<Leader>qC", ":lclose<CR>", { desc = "📋 LocationList閉じる" })
+vim.keymap.set("n", "<Leader>qN", ":lnext<CR>", { desc = "📋 次のLocationList項目" })
+vim.keymap.set("n", "<Leader>qP", ":lprev<CR>", { desc = "📋 前のLocationList項目" })
 
 -- LSP結果をQuickFixに集約
 vim.keymap.set("n", "<Leader>qr", function()
   vim.lsp.buf.references()
   vim.defer_fn(function() MY_FUNCTIONS.safe_copen() end, 200)
-end, { desc = "LSP参照→QuickFix" })
+end, { desc = "📋 LSP参照→QuickFix" })
 
 vim.keymap.set("n", "<Leader>qd", function()
   vim.diagnostic.setqflist()
   vim.cmd("copen")
-end, { desc = "診断→QuickFix" })
+end, { desc = "🚨 診断→QuickFix" })
 
 vim.keymap.set("n", "<Leader>qD", function()
   vim.diagnostic.setqflist({severity = vim.diagnostic.severity.ERROR})
   vim.cmd("copen")
-end, { desc = "エラーのみ→QuickFix" })
+end, { desc = "🚨 エラーのみ→QuickFix" })
 
 -- 検索結果をQuickFixに
 vim.keymap.set("n", "<Leader>qg", function()
@@ -300,7 +300,7 @@ vim.keymap.set("n", "<Leader>qg", function()
       MY_FUNCTIONS.safe_copen()
     end
   end
-end, { desc = "Grep→QuickFix" })
+end, { desc = "🔍 Grep→QuickFix" })
 
 vim.keymap.set("n", "<Leader>qG", function()
   local pattern = vim.fn.expand("<cword>")
@@ -324,7 +324,7 @@ vim.keymap.set("n", "<Leader>qG", function()
       MY_FUNCTIONS.safe_copen()
     end
   end
-end, { desc = "カーソル下Grep→QuickFix" })
+end, { desc = "🔍 カーソル下Grep→QuickFix" })
 
 -- バッファローカル検索
 vim.keymap.set("n", "<Leader>qb", function()
@@ -333,7 +333,7 @@ vim.keymap.set("n", "<Leader>qb", function()
     vim.cmd("silent vimgrep /" .. pattern .. "/j %")
     MY_FUNCTIONS.safe_copen()
   end
-end, { desc = "バッファ内検索→QuickFix" })
+end, { desc = "🔍 バッファ内検索→QuickFix" })
 
 -- TODOコメント検索
 vim.keymap.set("n", "<Leader>qt", function()
@@ -354,17 +354,17 @@ vim.keymap.set("n", "<Leader>qt", function()
     vim.cmd("silent vimgrep /TODO\\|FIXME\\|HACK\\|BUG\\|NOTE/j **/*")
     MY_FUNCTIONS.safe_copen()
   end
-end, { desc = "TODO検索→QuickFix" })
+end, { desc = "🔍 TODO検索→QuickFix" })
 
 -- QuickFix操作ヘルパー
-vim.keymap.set("n", "<Leader>qe", ":cexpr []<CR>", { desc = "QuickFix空にする" })
+vim.keymap.set("n", "<Leader>qe", ":cexpr []<CR>", { desc = "📋 QuickFix空にする" })
 vim.keymap.set("n", "<Leader>q;", function()
   if vim.tbl_isempty(vim.fn.getqflist()) then
     print("QuickFix list is empty")
   else
     MY_FUNCTIONS.safe_copen()
   end
-end, { desc = "QuickFix再表示" })
+end, { desc = "📋 QuickFix再表示" })
 
 -- 高度なQuickFix機能
 vim.keymap.set("n", "<Leader>qR", function()
@@ -375,7 +375,7 @@ vim.keymap.set("n", "<Leader>qR", function()
   if new_pattern == "" then return end
   
   vim.cmd("cfdo %s/" .. vim.fn.escape(old_pattern, "/") .. "/" .. vim.fn.escape(new_pattern, "/") .. "/gc | update")
-end, { desc = "QuickFix一括置換" })
+end, { desc = "📋 QuickFix一括置換" })
 
 vim.keymap.set("n", "<Leader>qS", function()
   -- QuickFixセッション保存
@@ -391,7 +391,7 @@ vim.keymap.set("n", "<Leader>qS", function()
       print("QuickFix session saved: " .. session_name)
     end
   end
-end, { desc = "QuickFixセッション保存" })
+end, { desc = "📋 QuickFixセッション保存" })
 
 vim.keymap.set("n", "<Leader>qL", function()
   -- QuickFixセッション復元
@@ -410,7 +410,7 @@ vim.keymap.set("n", "<Leader>qL", function()
       print("Session not found: " .. session_name)
     end
   end
-end, { desc = "QuickFixセッション復元" })
+end, { desc = "📋 QuickFixセッション復元" })
 
 -- LocationList vs QuickFix使い分け
 vim.keymap.set("n", "<Leader>qm", function()
@@ -421,7 +421,7 @@ vim.keymap.set("n", "<Leader>qm", function()
     vim.cmd("lopen")
     print("QuickFix → LocationList移動完了")
   end
-end, { desc = "QuickFix→LocationList" })
+end, { desc = "📋 QuickFix→LocationList" })
 
 vim.keymap.set("n", "<Leader>qM", function()
   -- LocationListからQuickFixに移動（グローバル化）
@@ -431,7 +431,7 @@ vim.keymap.set("n", "<Leader>qM", function()
     MY_FUNCTIONS.safe_copen()
     print("LocationList → QuickFix移動完了")
   end
-end, { desc = "LocationList→QuickFix" })
+end, { desc = "📋 LocationList→QuickFix" })
 
 -- QuickFix自動化
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {

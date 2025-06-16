@@ -48,7 +48,7 @@ return {
         vim.cmd('Otree')
         
         
-      end, desc = "ファイルツリー切替（プロジェクトルート）" },
+      end, desc = "📁 ファイルツリー切替" },
   },
   config = function()
     -- disable netrw at the very start of your init.lua
@@ -65,6 +65,34 @@ return {
       filters = {
         dotfiles = false,
         custom = { ".git", "node_modules", ".DS_Store" },
+      },
+      -- デフォルトキーマップを無効化してウィンドウ移動キーとの競合を解消
+      use_default_keymaps = false,
+      keymaps = {
+        -- 基本ナビゲーション（<C-l>を避けて設定）
+        ["<CR>"] = "actions.select",
+        ["l"] = "actions.select",
+        ["h"] = "actions.parent_dir",
+        -- ディレクトリ移動は代替キーを使用
+        ["<Right>"] = "actions.goto_dir",  -- <C-l>の代替
+        ["<Left>"] = "actions.parent_dir", -- <C-h>の代替
+        -- その他の必要なキーマップ
+        ["o"] = "actions.open_in_oil",
+        ["O"] = "actions.open_in_oil_float",
+        ["r"] = "actions.refresh",
+        ["f"] = "actions.focus_file",
+        ["."] = "actions.toggle_hidden",
+        ["q"] = "actions.close",
+        ["R"] = "actions.rename",
+        ["a"] = "actions.create",
+        ["d"] = "actions.delete",
+        ["x"] = "actions.cut",
+        ["c"] = "actions.copy",
+        ["p"] = "actions.paste",
+        ["y"] = "actions.copy_name",
+        ["Y"] = "actions.copy_path",
+        -- システムキーマップとの競合を回避
+        ["<C-r>"] = "actions.refresh", -- <C-l>の代替として
       },
     })
 

@@ -8,7 +8,7 @@ return {
 		require('treesj').setup({})
 	end,
 	keys = {
-		{ "<Leader>cj", function() require('treesj').join() end, desc = "行結合" },
-		{ "<Leader>cs", function() require('treesj').split() end, desc = "行分割" },
+		{ "<Leader>cj", function() require('treesj').join() end, desc = "✏️ 行結合" },
+		{ "<Leader>cs", function() require('treesj').split() end, desc = "✏️ 行分割" },
 	},
 }

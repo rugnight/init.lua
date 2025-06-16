@@ -8,9 +8,9 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     local map = vim.keymap.set
     -- Lua実行・テスト
-    map("n", "<localleader>r", ":luafile %<CR>", { desc = "現在のLuaファイルを実行", buffer = true })
-    map("n", "<localleader>l", ":Lazy<CR>", { desc = "Lazy.nvim開く", buffer = true })
-    map("n", "<localleader>s", ":source %<CR>", { desc = "設定ファイル再読込", buffer = true })
+    map("n", "<localleader>r", ":luafile %<CR>", { desc = "⚙️ 現在のLuaファイルを実行", buffer = true })
+    map("n", "<localleader>l", ":Lazy<CR>", { desc = "⚙️ Lazy.nvim開く", buffer = true })
+    map("n", "<localleader>s", ":source %<CR>", { desc = "⚙️ 設定ファイル再読込", buffer = true })
   end,
 })
 

@@ -3,7 +3,11 @@
     "allow": [
       "Bash(rg:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(nvim:*)",
+      "Bash(find:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

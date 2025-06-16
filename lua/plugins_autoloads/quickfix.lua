@@ -77,14 +77,14 @@ return {
           function()
             require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
           end,
-          desc = "コンテキスト拡張",
+          desc = "📋 コンテキスト拡張",
         },
         {
           "<",
           function()
             require("quicker").collapse()
           end,
-          desc = "コンテキスト縮小",
+          desc = "📋 コンテキスト縮小",
         },
       },
     },
@@ -137,12 +137,12 @@ return {
     opts = {},
     keys = {
       -- QuickFix統合キーマップ
-      { "<leader>qx", "<cmd>Trouble diagnostics toggle<cr>", desc = "診断一覧(Trouble)" },
-      { "<leader>qX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "バッファ診断(Trouble)" },
-      { "<leader>qs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "シンボル一覧(Trouble)" },
-      { "<leader>qr", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP参照(Trouble)" },
-      { "<leader>qL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List(Trouble)" },
-      { "<leader>qQ", "<cmd>Trouble qflist toggle<cr>", desc = "QuickFix List(Trouble)" },
+      { "<leader>qx", "<cmd>Trouble diagnostics toggle<cr>", desc = "🚨 診断一覧" },
+      { "<leader>qX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "🚨 バッファ診断" },
+      { "<leader>qs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "📋 シンボル一覧" },
+      { "<leader>qr", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "📋 LSP参照" },
+      { "<leader>qL", "<cmd>Trouble loclist toggle<cr>", desc = "📋 Location List" },
+      { "<leader>qQ", "<cmd>Trouble qflist toggle<cr>", desc = "📋 QuickFix List" },
     },
   },
 }
