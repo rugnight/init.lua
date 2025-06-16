@@ -60,9 +60,9 @@
 - `ff` - ファイル検索, `fg` - 文字列検索, `fr` - 最近のファイル
 - `fb` - バッファ検索, `fc` - コマンド検索, `fp` - プロジェクト選択
 
-### 🔍 LSP操作 (`<Leader>l*`)
-- **lspsaga統合**: `lf` - 参照・定義検索（フローティング）, `lr` - 参照一覧
-- **QuickFix連携**: `lR` - 参照→QuickFix, `l;` - 前回結果再表示
+### 🎯 LSP操作 (`<Leader>l*`) ⭐ **Telescope統合強化**
+- **Telescope参照検索**: `lr` - 参照検索（スマート表示）, `lR` - 参照検索（宣言除外）
+- **QuickFix連携**: `lq` - 参照→QuickFix直送, `l;` - 前回結果再表示
 - **基本操作**: `ld` - 定義移動, `lh` - ホバー, `la` - コードアクション
 - **高度機能**: `ln` - リネーム, `lo` - アウトライン, `lF` - フォーマット
 
@@ -78,7 +78,7 @@
 ### 🔀 Git操作 (`<Leader>g*`)
 - `gc` - コミット履歴, `gb` - ブランチ一覧, `gs` - Git状態
 
-### 🤖 AI操作 (`<Leader>a*`)
+### 🤖 AI操作 (`<Leader>a*`) ⭐ **統一化完了**
 - `aa` - AI質問, `ae` - AI編集, `ar` - AI更新
 - `ad` - AIデバッグ切替, `ah` - AIヒント切替, `as` - AIサイドバー切替
 
@@ -88,6 +88,7 @@
 
 ### 👁️ 表示/UI (`<Leader>v*`)
 - `vo` - アウトライン表示, `vz` - ゼンモード
+- `o` - アウトライン表示（通常ファイルのみ、特殊バッファ制御済み）
 
 ### ✏️ コード操作 (`<Leader>c*`)
 - `cj` - 行結合, `cs` - 行分割
@@ -97,9 +98,10 @@
 - 📝 メモ/ノート (`m*`), 🚨 診断/トラブル (`x*`)
 - ⚙️ 設定 (`i*`), 🔄 トグル (`t*`), 📋 バッファ (`b*`)
 
-### 🌟 Telescopeショートカット
+### 🌟 Telescopeショートカット ⭐ **LSP統合強化**
 - **QuickFix統合**: `<C-q>` - 検索結果→QuickFix, `<C-l>` - LocationList
 - **選択送信**: `<M-q>/<M-l>` - 選択項目のみ送信
+- **パス表示最適化**: smart/truncate表示でファイル名視認性向上
 
 ## パフォーマンス最適化
 ### 起動時間最適化（40-60%短縮達成）
@@ -111,6 +113,12 @@
 - **TreeSitter遅延**: ファイル読み込み時まで遅延
 - **Mason/LSP最適化**: 適切なイベントトリガーで最適化
 
+### 設定品質最適化（2024年12月最新）
+- **ウィンドウ移動強化**: `noremap = true`でプラグイン競合を根本解決
+- **不要ファイル整理**: 使用されていない`quickfix_*.lua`等を削除
+- **キーマップ統一**: 絵文字カテゴリ分類で視認性・学習効率向上
+- **設定一貫性**: 13ファイルにわたる日本語表記統一、which-key完全連携
+
 ### 主な最適化技術
 - `keys`, `cmd`, `event`を活用したlazy loading
 - プラグインextensionの分離と遅延読み込み
@@ -118,18 +126,19 @@
 - システムコールの遅延実行（`vim.defer_fn`活用）
 
 ## よく使用するコマンド
-### 📋 QuickFix中心ワークフロー
+### 📋 QuickFix中心ワークフロー ⭐ **統合強化版**
 - `<Leader>qG`: カーソル下文字列のプロジェクト全体検索
-- `<Leader>qr`: LSP参照→QuickFix
+- `<Leader>lq`: LSP参照→QuickFix直送（新）
 - `<Leader>qR`: 一括置換（検索→QuickFix→置換）
 - `<Leader>qS/qL`: セッション保存/復元
 - `<Leader>q;`: 前回のQuickFix結果再表示
 
-### 🔍 検索・ナビゲーション
+### 🔍 検索・ナビゲーション ⭐ **Telescope統合完了**
 - `<Leader>ff`: ファイル検索
 - `<Leader>fg`: 文字列検索（Telescope）→ `<C-q>`でQuickFix送信
-- `<Leader>lf`: LSP参照・定義検索（lspsaga フローティング）
-- `<Leader>vo`: アウトライン表示
+- `<Leader>lr`: LSP参照検索（Telescope、パス表示最適化）
+- `<Leader>lR`: LSP参照検索（宣言除外、短縮表示）
+- `<Leader>vo` / `<Leader>o`: アウトライン表示（特殊バッファ制御済み）
 
 ### ⚙️ 管理・設定
 - `:Lazy`: プラグイン管理
@@ -137,10 +146,11 @@
 - `<Leader>ic`: 設定ファイル編集
 - `<Leader>ir`: 設定再読込
 
-### 🎯 推奨ワークフロー
+### 🎯 推奨ワークフロー ⭐ **統合強化版**
 1. **プロジェクト全体リファクタリング**: `<Leader>qG` → QuickFix確認 → `<Leader>qR`
-2. **Telescope→QuickFix連携**: `<Leader>fg` → `<C-q>` → QuickFix編集
-3. **エラー修正**: `<Leader>qd` → QuickFix内で`dd`削除 → 順次修正
+2. **LSP参照→QuickFix連携**: `<Leader>lr` → `<C-q>` または `<Leader>lq`直送
+3. **Telescope→QuickFix連携**: `<Leader>fg` → `<C-q>` → QuickFix編集
+4. **エラー修正**: `<Leader>qd` → QuickFix内で`dd`削除 → 順次修正
 
 ## 革新的機能
 ### 🌟 編集可能QuickFix（quicker.nvim）
@@ -148,22 +158,29 @@
 - `>`/`<`でコンテキスト拡張/縮小
 - TreeSitter + LSPハイライト対応
 
-### 🔄 統合ワークフロー
-- **Telescope統合**: `<C-q>`で検索結果をQuickFixに直送
-- **LSP統合**: 参照・診断結果の自動QuickFix化
+### 🔄 統合ワークフロー ⭐ **2024年12月強化版**
+- **Telescope統合**: `<C-q>`で検索結果をQuickFixに直送、パス表示最適化
+- **LSP統合**: Telescope参照検索→QuickFix、競合解消済み
 - **セッション管理**: 作業状態の保存・復元
 - **一括操作**: 段階的な安全な一括置換
+- **UI制御**: アウトライン特殊バッファ制御、ウィンドウ移動競合解決
 
 ### 🚀 自動化機能
 - QuickFix結果の自動オープン・サイズ調整
-- プロジェクトルート自動検出（nvim-tree）
+- プロジェクトルート自動検出（Otree.nvim）
 - ウィンドウサイズの絶対位置基準リサイズ
 - LSP情報の統合表示（lualine）
+- キーマップ説明の絵文字自動分類（📁🎯📋🤖等）
 
 ## トラブルシューティング
 ### 非推奨API対応済み
 - `vim.lsp.get_active_clients()` → `vim.lsp.get_clients()`
 - `luarocks` 無効化で警告回避
+
+### プラグイン競合解決済み（2024年12月）
+- **ウィンドウ移動**: `noremap = true`でoil.nvim等との`<C-l>`競合解決
+- **アウトライン制御**: 特殊バッファ（Otree、QuickFix等）での誤動作防止
+- **LSP参照**: lspsaga→Telescope統合でキーマップ重複解消
 
 ### Windows環境最適化
 - ripgrepの一時ファイル問題解決（`vim.fn.systemlist`使用）
@@ -179,6 +196,11 @@ nvim --startuptime startup.log +q
 -- セッション保存場所: ~/.local/share/nvim/qf_sessions/
 -- 自動命名: qf_YYYYMMDD_HHMM.json
 ```
+
+### 設定品質管理
+- 不要ファイル整理済み（quickfix_*.lua等削除）
+- キーマップ説明統一（絵文字カテゴリ分類）
+- which-key連携完全化
 
 ## LSP統合環境
 ### モダンなLSPワークフロー
