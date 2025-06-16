@@ -39,5 +39,30 @@ return {
 			{ "<leader>k", group = "📑 ブックマーク" },
 			{ "<leader>q", group = "📋 QuickFix操作" },
 		})
+		
+		-- which-key表示時にsymbol-usageのVirtualTextを一時非表示
+		local symbol_usage_enabled = true
+		
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "WhichKeyShow",
+			callback = function()
+				local ok, symbol_usage = pcall(require, "symbol-usage")
+				if ok and symbol_usage_enabled then
+					symbol_usage.toggle()
+					symbol_usage_enabled = false
+				end
+			end,
+		})
+		
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "WhichKeyHide",
+			callback = function()
+				local ok, symbol_usage = pcall(require, "symbol-usage")
+				if ok and not symbol_usage_enabled then
+					symbol_usage.toggle()
+					symbol_usage_enabled = true
+				end
+			end,
+		})
 	end,
 }
