@@ -467,10 +467,10 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })
 
 -- ウィンドウ移動を簡単に
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "左のウィンドウへ移動" })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "下のウィンドウへ移動" })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "上のウィンドウへ移動" })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "右のウィンドウへ移動" })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "左のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "下のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "上のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "右のウィンドウへ移動", noremap = true, silent = true })
 
 -- ウィンドウサイズ調整（絶対的な位置基準）
 -- 高さ調整は従来通り
