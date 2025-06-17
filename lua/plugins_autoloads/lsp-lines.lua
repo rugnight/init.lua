@@ -12,6 +12,6 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>tl", function() require("lsp_lines").toggle() end, desc = "インライン診断切替" },
+		{ "<leader>ll", function() require("lsp_lines").toggle() end, desc = "🎯 インライン診断切替" },
 	},
 }

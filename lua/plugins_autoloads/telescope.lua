@@ -21,6 +21,28 @@ return {
             local telescope = require('telescope')
             local actions = require('telescope.actions')
 
+            -- 🎯 統一ファイル除外パターン定義
+            local EXCLUSION_PATTERNS = {
+                "--glob", "!**/.git/*",
+                "--glob", "!**/*.meta",
+                "--glob", "!**/*.dll",
+                "--glob", "!**/*.exe",
+                "--glob", "!**/*.so",
+                "--glob", "!**/*.dylib",
+                "--glob", "!**/*.pdb",
+                "--glob", "!**/*.mdb",
+                "--glob", "!**/Library/**",
+                "--glob", "!**/Temp/**",
+                "--glob", "!**/Logs/**",
+                "--glob", "!**/obj/**",
+                "--glob", "!**/bin/**",
+                "--glob", "!**/.vs/**",
+                "--glob", "!**/.vscode/**",
+                "--glob", "!**/node_modules/**",
+            }
+            
+            local MINIMAL_EXCLUSION = {"--glob", "!**/.git/*"}
+
             telescope.setup({
                 defaults = {
                     layout_strategy = "bottom_pane",
@@ -53,25 +75,7 @@ return {
                 pickers = {
                     find_files = {
                         hidden = true, -- 隠しファイル表示
-                        find_command = { 
-                            "rg", "--files", "--hidden", 
-                            "--glob", "!**/.git/*",
-                            "--glob", "!**/*.meta",
-                            "--glob", "!**/*.dll",
-                            "--glob", "!**/*.exe",
-                            "--glob", "!**/*.so",
-                            "--glob", "!**/*.dylib",
-                            "--glob", "!**/*.pdb",
-                            "--glob", "!**/*.mdb",
-                            "--glob", "!**/Library/**",
-                            "--glob", "!**/Temp/**",
-                            "--glob", "!**/Logs/**",
-                            "--glob", "!**/obj/**",
-                            "--glob", "!**/bin/**",
-                            "--glob", "!**/.vs/**",
-                            "--glob", "!**/.vscode/**",
-                            "--glob", "!**/node_modules/**",
-                        },
+                        find_command = vim.list_extend({"rg", "--files", "--hidden"}, EXCLUSION_PATTERNS),
                         mappings = {
                             i = {
                                 ["<C-i>"] = function(prompt_bufnr)
@@ -79,29 +83,11 @@ return {
                                     local find_command = current_picker.finder.command_generator()[1]
                                     if vim.tbl_contains(find_command, "--no-ignore") then
                                         -- gitignore除外モードに戻す（Unity除外含む）
-                                        current_picker:refresh({ 
-                                            "rg", "--files", "--hidden", 
-                                            "--glob", "!**/.git/*",
-                                            "--glob", "!**/*.meta",
-                                            "--glob", "!**/*.dll",
-                                            "--glob", "!**/*.exe",
-                                            "--glob", "!**/*.so",
-                                            "--glob", "!**/*.dylib",
-                                            "--glob", "!**/*.pdb",
-                                            "--glob", "!**/*.mdb",
-                                            "--glob", "!**/Library/**",
-                                            "--glob", "!**/Temp/**",
-                                            "--glob", "!**/Logs/**",
-                                            "--glob", "!**/obj/**",
-                                            "--glob", "!**/bin/**",
-                                            "--glob", "!**/.vs/**",
-                                            "--glob", "!**/.vscode/**",
-                                            "--glob", "!**/node_modules/**",
-                                        })
+                                        current_picker:refresh(vim.list_extend({"rg", "--files", "--hidden"}, EXCLUSION_PATTERNS))
                                         print("ファイル除外: ON (Unity/開発ファイル除外)")
                                     else
                                         -- すべて表示（最小限の除外のみ）
-                                        current_picker:refresh({ "rg", "--files", "--hidden", "--no-ignore", "--glob", "!**/.git/*" })
+                                        current_picker:refresh(vim.list_extend({"rg", "--files", "--hidden", "--no-ignore"}, MINIMAL_EXCLUSION))
                                         print("ファイル除外: OFF (全ファイル表示)")
                                     end
                                 end,
@@ -143,25 +129,7 @@ return {
                     },
                     live_grep = {
                         additional_args = function()
-                            return {
-                                "--hidden", 
-                                "--glob", "!**/.git/*",
-                                "--glob", "!**/*.meta",
-                                "--glob", "!**/*.dll",
-                                "--glob", "!**/*.exe",
-                                "--glob", "!**/*.so",
-                                "--glob", "!**/*.dylib",
-                                "--glob", "!**/*.pdb",
-                                "--glob", "!**/*.mdb",
-                                "--glob", "!**/Library/**",
-                                "--glob", "!**/Temp/**",
-                                "--glob", "!**/Logs/**",
-                                "--glob", "!**/obj/**",
-                                "--glob", "!**/bin/**",
-                                "--glob", "!**/.vs/**",
-                                "--glob", "!**/.vscode/**",
-                                "--glob", "!**/node_modules/**",
-                            }
+                            return vim.list_extend({"--hidden"}, EXCLUSION_PATTERNS)
                         end,
                         mappings = {
                             i = {
@@ -171,32 +139,14 @@ return {
                                     if additional_args and vim.tbl_contains(additional_args(), "--no-ignore") then
                                         -- gitignore除外モードに戻す（Unity除外含む）
                                         current_picker.finder.additional_args = function()
-                                            return {
-                                                "--hidden", 
-                                                "--glob", "!**/.git/*",
-                                                "--glob", "!**/*.meta",
-                                                "--glob", "!**/*.dll",
-                                                "--glob", "!**/*.exe",
-                                                "--glob", "!**/*.so",
-                                                "--glob", "!**/*.dylib",
-                                                "--glob", "!**/*.pdb",
-                                                "--glob", "!**/*.mdb",
-                                                "--glob", "!**/Library/**",
-                                                "--glob", "!**/Temp/**",
-                                                "--glob", "!**/Logs/**",
-                                                "--glob", "!**/obj/**",
-                                                "--glob", "!**/bin/**",
-                                                "--glob", "!**/.vs/**",
-                                                "--glob", "!**/.vscode/**",
-                                                "--glob", "!**/node_modules/**",
-                                            }
+                                            return vim.list_extend({"--hidden"}, EXCLUSION_PATTERNS)
                                         end
                                         current_picker:refresh()
                                         print("ファイル除外: ON (Unity/開発ファイル除外)")
                                     else
                                         -- gitignoreを無視してすべて検索
                                         current_picker.finder.additional_args = function()
-                                            return {"--hidden", "--no-ignore", "--glob", "!**/.git/*"}
+                                            return vim.list_extend({"--hidden", "--no-ignore"}, MINIMAL_EXCLUSION)
                                         end
                                         current_picker:refresh()
                                         print("ファイル除外: OFF (全ファイル検索)")
@@ -210,7 +160,7 @@ return {
                                     if additional_args and vim.tbl_contains(additional_args(), "--no-ignore") then
                                         -- gitignore除外モードに戻す
                                         current_picker.finder.additional_args = function()
-                                            return {"--hidden", "--glob", "!**/.git/*"}
+                                            return vim.list_extend({"--hidden"}, EXCLUSION_PATTERNS)
                                         end
                                         current_picker:refresh()
                                         print("gitignore除外: ON")

@@ -21,7 +21,11 @@ local function get_hostname()
   return hostname
 end
 
--- vim.opt.shell = "powershell"
+-- WSLのシェルを使用（一般的なWSL環境）
+vim.opt.shell = "bash"
+vim.opt.shellcmdflag = "-c"
+vim.opt.shellquote = ""
+vim.opt.shellxquote = ""
 
 
 vim.g.mapleader = ";"    -- リーダーキーを設定
@@ -517,6 +521,31 @@ vim.keymap.set("v", ">", ">gv", { desc = "インデント増加（選択保持�
 -- 行移動（ビジュアルモード）
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "選択行を下に移動", silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "選択行を上に移動", silent = true })
+
+-- ToggleTerm を使用したターミナル操作
+vim.keymap.set("n", "<Leader>tt", "<cmd>ToggleTerm<cr>", { desc = "🖥️ ターミナルトグル" })
+vim.keymap.set("n", "<Leader>tf", function()
+  if _G.toggle_terminal_at_file_dir then
+    _G.toggle_terminal_at_file_dir()
+  else
+    vim.notify("ToggleTerm plugin not loaded yet", vim.log.levels.WARN)
+  end
+end, { desc = "🖥️ 現在ファイル位置でターミナル" })
+
+vim.keymap.set("n", "<Leader>tp", function()
+  if _G.toggle_terminal_at_project_root then
+    _G.toggle_terminal_at_project_root()
+  else
+    vim.notify("ToggleTerm plugin not loaded yet", vim.log.levels.WARN)
+  end
+end, { desc = "🖥️ プロジェクトルートでターミナル" })
+
+vim.keymap.set("n", "<Leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", { desc = "🖥️ 水平ターミナル" })
+vim.keymap.set("n", "<Leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "🖥️ 垂直ターミナル" })
+
+-- 表示/UIトグル機能をvカテゴリに追加
+vim.keymap.set("n", "<Leader>vf", "za", { desc = "👁️ 折りたたみトグル" })
+vim.keymap.set("n", "<Leader>vF", "zA", { desc = "👁️ 再帰的折りたたみトグル" })
 
 -- require("plugins")
 require("ime")

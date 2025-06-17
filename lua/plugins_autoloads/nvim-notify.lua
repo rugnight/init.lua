@@ -35,6 +35,6 @@ return {
 		end
 	end,
 	keys = {
-		{ "<leader>tn", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "通知を閉じる" },
+		{ "<leader>vn", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "通知を閉じる" },
 	},
 }

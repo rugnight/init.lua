@@ -72,7 +72,4 @@ return {
 			path = string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
 		},
 	},
-	keys = {
-		{ "<leader>tf", function() require("fidget").setup({}) end, desc = "Fidget表示切替" },
-	},
 }

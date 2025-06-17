@@ -12,9 +12,7 @@ return {
 			end
 		})
 
-		-- キーマッピング
-		vim.keymap.set("n", "<Tab>", "za", { desc = "折りたたみのトグル" })
-		vim.keymap.set("n", "<S-Tab>", "zA", { desc = "再帰的な折りたたみのトグル" })
+		-- キーマッピング（vカテゴリに移動済み）
 
 		-- UFO固有のマッピング
 		vim.keymap.set('n', 'zR', require('ufo').openAllFolds)

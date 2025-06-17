@@ -31,7 +31,7 @@ return {
 			{ "<leader>m", group = "📝 メモ/ノート" },
 			{ "<leader>x", group = "🚨 診断/トラブル" },
 			{ "<leader>i", group = "⚙️ 設定" },
-			{ "<leader>t", group = "🔄 トグル" },
+			{ "<leader>t", group = "🖥️ ターミナル" },
 			{ "<leader>b", group = "📋 バッファ" },
 			{ "<leader>v", group = "👁️ 表示/UI" },
 			{ "<leader>c", group = "✏️ コード操作" },
