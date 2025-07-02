@@ -1,5 +1,15 @@
 -- === Google日本語入力対応 IME切替 (Windows) ===
 
+-- WSL環境では動作しないため早期リターン
+if vim.fn.has("wsl") == 1 or os.getenv("WSL_DISTRO_NAME") then
+  return
+end
+
+-- Windows環境でない場合も早期リターン
+if vim.fn.has("win32") == 0 and vim.fn.has("win64") == 0 then
+  return
+end
+
 local im_select_path = os.getenv("USERPROFILE") .. "\\.local\\bin\\im-select.exe"
 local im_select_url = "https://github.com/daipeihust/im-select"
 

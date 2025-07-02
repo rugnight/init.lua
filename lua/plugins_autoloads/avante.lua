@@ -40,8 +40,21 @@ return {
       },
     },
   },
-  --build = "make",
-  build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
+  -- 環境別ビルド設定
+  build = function()
+    -- WSL環境ではビルドをスキップ
+    if vim.fn.has("wsl") == 1 or os.getenv("WSL_DISTRO_NAME") then
+      return
+    end
+    
+    -- Windows環境ではPowerShellビルド
+    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+      return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+    end
+    
+    -- その他Unix系環境ではmakeビルド
+    return "make"
+  end,
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",

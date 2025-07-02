@@ -4,11 +4,17 @@ return {
 	---@type oil.SetupOpts
 	-- Optional dependencies
 	-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
-	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+	dependencies = { 
+		"nvim-tree/nvim-web-devicons", -- use if prefer nvim-web-devicons
+		"refractalize/oil-git-status.nvim"
+	},
 	cmd = "Oil",
 	keys = { { "-", "<CMD>Oil<CR>", desc = "📁 親ディレクトリを開く" } },
 	config = function()
 		opts = {
+			win_options = {
+				signcolumn = "yes:2",
+			},
 			keymaps = {
 				["?"] = "actions.show_help",
 				["<CR>"] = "actions.select",
@@ -34,6 +40,7 @@ return {
 		}
 
 		require("oil").setup(opts)
+		require("oil-git-status").setup()
 		-- キーマップは keys で定義済み
 	end,
 }

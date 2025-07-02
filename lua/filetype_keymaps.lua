@@ -84,3 +84,38 @@ vim.api.nvim_create_autocmd("FileType", {
     map("n", "q", ":close<CR>", { desc = "ヘルプを閉じる", buffer = true })
   end,
 })
+
+-- Claude Code バッファ専用キーマップ（改良版）
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter", "BufNewFile", "BufRead"}, {
+  pattern = "*",
+  callback = function()
+    local bufname = vim.fn.bufname()
+    local buftype = vim.bo.buftype
+    local term_var = vim.env.TERM_PROGRAM
+    
+    -- Claude Code検出条件を拡張
+    local is_claude_code = buftype == 'nofile' or 
+                          (bufname and (
+                            bufname:lower():match('claude') or 
+                            bufname:lower():match('anthropic') or
+                            bufname:lower():match('assistant') or
+                            bufname:lower():match('chat') or
+                            bufname == '' -- 無名バッファもチェック
+                          )) or
+                          (term_var and term_var:lower():match('claude'))
+    
+    if is_claude_code then
+      local map = vim.keymap.set
+      -- 即座にキーマップを設定（遅延なし）
+      map("i", "jk", "<Esc>", { desc = "🤖 jk→Esc", buffer = true, noremap = true, silent = true, nowait = true })
+      map("i", "kj", "<Esc>", { desc = "🤖 kj→Esc", buffer = true, noremap = true, silent = true, nowait = true })
+      map("i", "jj", "<Esc>", { desc = "🤖 jj→Esc", buffer = true, noremap = true, silent = true, nowait = true })
+      map("i", "<C-c>", "<Esc>", { desc = "🤖 Ctrl-c→Esc", buffer = true, noremap = true, silent = true, nowait = true })
+      
+      -- デバッグ用: キーマップが設定されたことを確認
+      vim.schedule(function()
+        print("Claude Code keymap set for buffer: " .. (bufname ~= '' and bufname or '[No Name]'))
+      end)
+    end
+  end,
+})

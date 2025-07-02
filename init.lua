@@ -518,6 +518,10 @@ end, { desc = "右側を拡張", silent = true })
 vim.keymap.set("v", "<", "<gv", { desc = "インデント減少（選択保持）" })
 vim.keymap.set("v", ">", ">gv", { desc = "インデント増加（選択保持）" })
 
+-- Claude Code用グローバルインサートモード脱出キー
+vim.keymap.set("i", "jk", "<Esc>", { desc = "🤖 jk→Esc（グローバル）", noremap = true, silent = true })
+vim.keymap.set("i", "kj", "<Esc>", { desc = "🤖 kj→Esc（グローバル）", noremap = true, silent = true })
+
 -- 行移動（ビジュアルモード）
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "選択行を下に移動", silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "選択行を上に移動", silent = true })
