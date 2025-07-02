@@ -50,7 +50,6 @@
 - **telescope-project.nvim**: プロジェクト管理
 
 ### 🎯 その他
-- **avante.nvim**: AI支援（カスタムキーマップ）
 - **which-key.nvim**: キーマップガイド（VirtualText競合解決済み）
 
 ## キーマップ体系
@@ -78,9 +77,10 @@
 ### 🔀 Git操作 (`<Leader>g*`)
 - `gc` - コミット履歴, `gb` - ブランチ一覧, `gs` - Git状態
 
-### 🤖 AI操作 (`<Leader>a*`) ⭐ **統一化完了**
-- `aa` - AI質問, `ae` - AI編集, `ar` - AI更新
-- `ad` - AIデバッグ切替, `ah` - AIヒント切替, `as` - AIサイドバー切替
+### 🤖 AI操作 (`<Leader>a*`) ⭐ **Claude Code統合**
+- `ac` - Claude Code起動, `ap` - ペースト, `at` - トグル
+- `af` - フォーカス, `ar` - 再開, `aC` - 続行
+- `ab` - バッファ追加, `as` - 選択範囲送信, `aa/ad` - 差分受け入れ/拒否
 
 ### 📑 ブックマーク (`<Leader>k*`)
 - `km` - マークトグル, `ki` - コメント付きマーク, `kc` - マーク削除

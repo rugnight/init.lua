@@ -40,19 +40,31 @@ return {
         },
         config = function()
             require("mason").setup()
-            require("mason-lspconfig").setup()
+            local mason_lspconfig = require("mason-lspconfig")
+            mason_lspconfig.setup()
 
             -- blink.cmpから機能を取得
             local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-            require("mason-lspconfig").setup_handlers {
-                -- デフォルトハンドラ
-                function (server_name)
+            -- setup_handlersが存在するかチェック
+            if mason_lspconfig.setup_handlers then
+                mason_lspconfig.setup_handlers {
+                    -- デフォルトハンドラ
+                    function (server_name)
+                        require("lspconfig")[server_name].setup {
+                            capabilities = capabilities
+                        }
+                    end,
+                }
+            else
+                -- フォールバック: 手動でLSPサーバーをセットアップ
+                local servers = mason_lspconfig.get_installed_servers()
+                for _, server_name in ipairs(servers) do
                     require("lspconfig")[server_name].setup {
                         capabilities = capabilities
                     }
-                end,
-            }
+                end
+            end
 
             -- LSPキーマップはlspsaga.nvimで統一済みのため削除
 
