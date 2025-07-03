@@ -101,21 +101,30 @@ quickfix_utils.setup_autocmds()
 local on_attach = function(client, bufnr)
   -- ホバー、定義ジャンプなどの基本的なLSPキーマップ
   local map = vim.keymap.set
-  local opts = { noremap = true, silent = true, buffer = bufnr, desc = "LSP: " }
-  map('n', 'K', vim.lsp.buf.hover, { desc = opts.desc .. "ホバー" })
-  map('n', 'gd', vim.lsp.buf.definition, { desc = opts.desc .. "定義へ移動" })
-  map('n', 'gD', vim.lsp.buf.declaration, { desc = opts.desc .. "宣言へ移動" })
-  map('n', 'gi', vim.lsp.buf.implementation, { desc = opts.desc .. "実装へ移動" })
-  map('n', 'gr', vim.lsp.buf.references, { desc = opts.desc .. "参照を検索" })
-  map('n', '<leader>rn', vim.lsp.buf.rename, { desc = opts.desc .. "リネーム" })
-  map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = opts.desc .. "コードアクション" })
-  map('n', '<leader>e', vim.diagnostic.open_float, { desc = "診断フロート表示" })
-  map('n', '[d', vim.diagnostic.goto_prev, { desc = "前の診断" })
-  map('n', ']d', vim.diagnostic.goto_next, { desc = "次の診断" })
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+  map('n', 'K', vim.lsp.buf.hover, { desc = "LSP: ホバー", buffer = bufnr })
+  map('n', 'gd', vim.lsp.buf.definition, { desc = "LSP: 定義へ移動", buffer = bufnr })
+  map('n', 'gD', vim.lsp.buf.declaration, { desc = "LSP: 宣言へ移動", buffer = bufnr })
+  map('n', 'gi', vim.lsp.buf.implementation, { desc = "LSP: 実装へ移動", buffer = bufnr })
+  map('n', 'gr', vim.lsp.buf.references, { desc = "LSP: 参照を検索", buffer = bufnr })
+  map('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP: リネーム", buffer = bufnr })
+  map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "LSP: コードアクション", buffer = bufnr })
+  map('n', '<leader>e', vim.diagnostic.open_float, { desc = "診断フロート表示", buffer = bufnr })
+  map('n', '[d', vim.diagnostic.goto_prev, { desc = "前の診断", buffer = bufnr })
+  map('n', ']d', vim.diagnostic.goto_next, { desc = "次の診断", buffer = bufnr })
 
   -- 標準補完のキーマップ設定
-  local i_opts = { buffer = bufnr }
   map('i', '<C-Space>', '<C-x><C-o>', { desc = "LSP補完", buffer = bufnr })
+
+  -- .入力時に自動でLSP補完を開始
+  map('i', '.', function()
+      vim.api.nvim_feedkeys('.', 'n', true)
+      vim.defer_fn(function()
+          if vim.fn.pumvisible() == 0 then
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', true)
+          end
+      end, 100)
+  end, { desc = "ドット補完", buffer = bufnr })
 
   -- Tabでの補完
   map('i', '<Tab>', function()
@@ -142,28 +151,30 @@ local on_attach = function(client, bufnr)
           return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
       end
   end, { expr = true, silent = true, buffer = bufnr })
+  
+  -- 入力中の自動補完（2文字以上で開始）
+  vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP" }, {
+      buffer = bufnr,
+      callback = function()
+          local line = vim.api.nvim_get_current_line()
+          local col = vim.api.nvim_win_get_cursor(0)[2]
+          local before_cursor = line:sub(1, col)
+          
+          local word = before_cursor:match("%w+$")
+          if word and #word >= 2 and vim.fn.pumvisible() == 0 and vim.bo[bufnr].buftype == '' then
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', true)
+          end
+      end
+  })
 end
 
 -- グローバルなon_attach関数として保存
 -- lspconfigがこれを参照できるようにする
 _G.on_attach = on_attach
 
--- 入力中の自動補完（2文字以上で開始）
-vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP" }, {
-    callback = function()
-        local line = vim.api.nvim_get_current_line()
-        local col = vim.api.nvim_win_get_cursor(0)[2]
-        local before_cursor = line:sub(1, col)
-        
-        local word = before_cursor:match("%w+$")
-        if word and #word >= 2 and vim.fn.pumvisible() == 0 and vim.bo.buftype == '' then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', true)
-        end
-    end
-})
-
 -- 補完メニューの見た目改善
 vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#3c3836', fg = '#ebdbb2' })
 vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#458588', fg = '#ebdbb2' })
 vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = '#665c54' })
 vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#a89984' })
+
