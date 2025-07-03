@@ -58,10 +58,8 @@ return {
 				implementation = { enabled = true },
 			})
 		end,
-		keys = {
-			{ "<leader>vl", function() 
-				require("symbol-usage").toggle()
-			end, desc = "シンボル使用状況切替" },
-		},
+			keys = {
+		{ "<leader>lU", function() require("virtual-text-info").toggle() end, desc = "🎯 シンボル使用状況" },
+	},
 	},
 }

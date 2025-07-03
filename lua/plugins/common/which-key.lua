@@ -4,24 +4,52 @@
 return {
 	"folke/which-key.nvim",
 	event = "VeryLazy",
-	opts = {
-		triggers = {
-			{ "<auto>", mode = "nixsotc" },
-			{ "m", mode = { "n" } },
-		}
-	},
-	keys = {
-		{
-			"<leader>?",
-			function()
-				require("which-key").show({ global = false })
-			end,
-			desc = "⚙️ ローカルキーマップ",
-		},
-	},
 	config = function()
 		local wk = require("which-key")
-		wk.setup()
+		
+		-- 明示的な設定でコンパクトな縦リスト表示
+		wk.setup({
+			preset = "helix", -- helix presetで縦リスト表示を試す
+			delay = 200,
+			expand = 0,
+			notify = false,
+			triggers = {
+				{ "<auto>", mode = "nixsotc" },
+				{ "m", mode = { "n" } },
+			},
+			win = {
+				border = "single",
+				padding = { 1, 1 },
+				wo = {
+					winblend = 0,
+				},
+			},
+			layout = {
+				width = { min = 20, max = 30 }, -- さらに幅を狭くして全て1列表示を強制
+				height = { min = 4, max = 25 },
+				spacing = 10,
+				align = "left",
+			},
+			-- 1列表示を強制
+			disable = {
+				buftypes = {},
+				filetypes = {},
+			},
+			-- 追加の1列表示設定
+			replace = {
+				["<space>"] = "SPC",
+				["<cr>"] = "RET",
+				["<tab>"] = "TAB",
+			},
+			show_help = false,
+			show_keys = true,
+			icons = {
+				breadcrumb = "»",
+				separator = "→",
+				group = "+",
+			},
+			sort = { "local", "order", "group", "alphanum", "mod" },
+		})
 		
 		-- グループ名を定義
 		wk.add({
@@ -65,4 +93,13 @@ return {
 			end,
 		})
 	end,
+	keys = {
+		{
+			"<leader>?",
+			function()
+				require("which-key").show({ global = false })
+			end,
+			desc = "⚙️ ローカルキーマップ",
+		},
+	},
 }

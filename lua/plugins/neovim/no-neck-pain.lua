@@ -4,8 +4,11 @@
 return {
 	"shortcuts/no-neck-pain.nvim",
 	version = "*",
+	keys = {
+		{ "<leader>wz", function() require("no-neck-pain").toggle() end, desc = "🪟 ゼンモード" },
+	},
 	config = function()
-		opts = {
+		local opts = {
 			width = 120,
 			minSideBufferWidth = 5,
 			autocmds = {
@@ -26,18 +29,9 @@ return {
 				bo = {
 					filetype = "md",
 				},
-				-- right = {
-					-- 	enabled = false,
-					-- },
-					-- left = {
-						-- 	enabled = false,
-						-- },
-					},
-
-				}
-
-				require("no-neck-pain").setup(opts)
-				vim.keymap.set("n", "<Leader>vz", "<cmd>NoNeckPain<CR>",       { desc = "ゼンモード" } )
-				--vim.keymap.set("n", "<Leader>s", ":NoNeckPainScratchPad<CR>", { desc = "スクラッチパッド" })
-			end,
+			},
 		}
+
+		require("no-neck-pain").setup(opts)
+	end,
+}
