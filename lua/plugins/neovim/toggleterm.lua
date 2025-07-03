@@ -2,7 +2,12 @@ return {
 	'akinsho/toggleterm.nvim',
 	version = "*",
 	keys = {
-		{ "<C-t>", "<cmd>ToggleTerm<cr>", desc = "🖥️ ターミナルトグル" },
+		{ "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "🖥️ ターミナルトグル" },
+		{ "<leader>tf", function() _G.toggle_terminal_at_file_dir() end, desc = "🖥️ 現在ファイル位置でターミナル" },
+		{ "<leader>tp", function() _G.toggle_terminal_at_project_root() end, desc = "🖥️ プロジェクトルートでターミナル" },
+		{ "<leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", desc = "🖥️ 水平ターミナル" },
+		{ "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "🖥️ 垂直ターミナル" },
+		{ "<C-t>", "<cmd>ToggleTerm<cr>", desc = "🖥️ ターミナルトグル (Ctrl+t)" },
 	},
 	cmd = {
 		"ToggleTerm",

@@ -33,7 +33,6 @@ vim.keymap.set("n", "<Leader>iM", ":messages<CR>", { desc="⚙️ 従来のメ�
 vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="⚙️ LSP情報表示" })
 
 -- 基本的なキーマップ
-vim.keymap.set("n", "<Leader>;", "<C-^>", { desc = "📋 直前のバッファと切替" })
 vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "📋 次のバッファ" })
 vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "📋 前のバッファ" })
 
@@ -63,27 +62,6 @@ vim.keymap.set("i", "kj", "<Esc>", { desc = "🤖 kj→Esc（グローバル）"
 -- 行移動（ビジュアルモード）
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "選択行を下に移動", silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "選択行を上に移動", silent = true })
-
--- ToggleTerm を使用したターミナル操作
-vim.keymap.set("n", "<Leader>tt", "<cmd>ToggleTerm<cr>", { desc = "🖥️ ターミナルトグル" })
-vim.keymap.set("n", "<Leader>tf", function()
-  if _G.toggle_terminal_at_file_dir then
-    _G.toggle_terminal_at_file_dir()
-  else
-    vim.notify("ToggleTerm plugin not loaded yet", vim.log.levels.WARN)
-  end
-end, { desc = "🖥️ 現在ファイル位置でターミナル" })
-
-vim.keymap.set("n", "<Leader>tp", function()
-  if _G.toggle_terminal_at_project_root then
-    _G.toggle_terminal_at_project_root()
-  else
-    vim.notify("ToggleTerm plugin not loaded yet", vim.log.levels.WARN)
-  end
-end, { desc = "🖥️ プロジェクトルートでターミナル" })
-
-vim.keymap.set("n", "<Leader>th", "<cmd>ToggleTerm size=15 direction=horizontal<cr>", { desc = "🖥️ 水平ターミナル" })
-vim.keymap.set("n", "<Leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "🖥️ 垂直ターミナル" })
 
 -- 表示/UIトグル機能をvカテゴリに追加
 vim.keymap.set("n", "<Leader>vf", "za", { desc = "👁️ 折りたたみトグル" })
