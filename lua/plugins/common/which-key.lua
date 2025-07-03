@@ -68,27 +68,35 @@ return {
 			{ "<leader>q", group = "📋 QuickFix操作" },
 		})
 		
-		-- which-key表示時にsymbol-usageのVirtualTextを一時非表示
+		-- which-key表示時にsymbol-usageのVirtualTextを一時非表示（安全なガード付き）
 		local symbol_usage_enabled = true
 		
+		local augroup = vim.api.nvim_create_augroup("WhichKeySymbolUsage", { clear = true })
+		
 		vim.api.nvim_create_autocmd("User", {
+			group = augroup,
 			pattern = "WhichKeyShow",
 			callback = function()
-				local ok, symbol_usage = pcall(require, "symbol-usage")
-				if ok and symbol_usage_enabled then
-					symbol_usage.toggle()
-					symbol_usage_enabled = false
+				if vim.fn.exists(":SymbolUsageToggle") == 2 then
+					local ok, symbol_usage = pcall(require, "symbol-usage")
+					if ok and symbol_usage_enabled and symbol_usage.toggle then
+						pcall(symbol_usage.toggle)
+						symbol_usage_enabled = false
+					end
 				end
 			end,
 		})
 		
 		vim.api.nvim_create_autocmd("User", {
+			group = augroup,
 			pattern = "WhichKeyHide",
 			callback = function()
-				local ok, symbol_usage = pcall(require, "symbol-usage")
-				if ok and not symbol_usage_enabled then
-					symbol_usage.toggle()
-					symbol_usage_enabled = true
+				if vim.fn.exists(":SymbolUsageToggle") == 2 then
+					local ok, symbol_usage = pcall(require, "symbol-usage")
+					if ok and not symbol_usage_enabled and symbol_usage.toggle then
+						pcall(symbol_usage.toggle)
+						symbol_usage_enabled = true
+					end
 				end
 			end,
 		})
