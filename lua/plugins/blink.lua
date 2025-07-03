@@ -1,8 +1,0 @@
--- https://eiji.page/blog/neovim-blink-cmp-intro/
---return {
---  'saghen/blink.cmp',
---  version = '*',
---  build = 'cargo build --release',
---  -- build = 'nix run .#build-plugin',
---  -- ...
---}

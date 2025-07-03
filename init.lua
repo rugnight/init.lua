@@ -1,3 +1,9 @@
+-- Neovim専用設定（VSCodeでは実行しない）
+-- 🔍 設定確認: :lua print("Neovim専用 init.lua 読み込み完了 - " .. vim.fn.stdpath("config") .. "/init.lua")
+if vim.g.vscode then
+  return
+end
+
 local fn = vim.fn
 
 vim.loader.enable()
@@ -8,6 +14,9 @@ CONFIG_PATH = vim.fn.stdpath("config")
 DATA_PATH = vim.fn.stdpath("data")
 CACHE_PATH = vim.fn.stdpath("cache")
 TERMINAL = vim.fn.expand("$TERMINAL")
+
+-- 共通設定を読み込み
+require('common_config')
 
 -- カスタム関数を読み込み
 MY_FUNCTIONS = require('my_functions')
@@ -151,3 +160,9 @@ require("ime")
 require("plugins_setup")
 require("filetype_keymaps")
 require("keymaps")
+
+-- 環境判別コマンド
+vim.api.nvim_create_user_command('Env', function() print("🖥️ Neovim専用環境") end, {})
+
+-- VSCode WhichKey同期機能を読み込み
+require('vscode_whichkey_sync')
