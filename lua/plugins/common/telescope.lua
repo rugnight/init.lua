@@ -8,7 +8,6 @@ return {
 			{ '<Leader>fg', function() require('telescope.builtin').live_grep() end, desc = '🔍 文字列検索' },
 			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '📁 最近のファイル' },
 			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = '📋 バッファ検索' },
-			{ '<Leader>fc', function() require('telescope.builtin').commands() end, desc = '🔍 コマンド検索' },
 			{ '<Leader>fp', function() 
 				require("telescope").load_extension("project")
 				vim.cmd('Telescope project') 
@@ -16,6 +15,40 @@ return {
 			{ '<leader>gc', function() require('telescope.builtin').git_commits() end, desc = '🔀 コミット履歴' },
 			{ '<leader>gb', function() require('telescope.builtin').git_branches() end, desc = '🔀 ブランチ一覧' },
 			{ '<leader>gs', function() require('telescope.builtin').git_status() end, desc = '🔀 Git状態' },
+			{ '<Leader>fk', function() 
+				require('telescope.builtin').keymaps({
+					prompt_title = "🔍 キーマップナビゲーター",
+					layout_config = {
+						height = 0.6,
+						width = 0.8,
+					},
+					attach_mappings = function(prompt_bufnr, map)
+						-- カスタムアクション: 選択したキーマップを実行
+						map('i', '<CR>', function()
+							local selection = require('telescope.actions.state').get_selected_entry()
+							if selection then
+								local key = selection.value.lhs
+								-- Telescopeを閉じる
+								require('telescope.actions').close(prompt_bufnr)
+								-- キーマップを実行
+								vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'n', true)
+							end
+						end)
+						-- 説明をプレビューで表示
+						map('i', '<C-p>', function()
+							local selection = require('telescope.actions.state').get_selected_entry()
+							if selection and selection.value.desc then
+								print("📝 " .. selection.value.desc)
+							end
+						end)
+						return true
+					end,
+				})
+			end, desc = '🔍 キーマップ検索' },
+			{ '<Leader><Leader>', function() 
+				require("telescope").load_extension("cmdline")
+				vim.cmd('Telescope cmdline')
+			end, desc = '🎯 Command Palette' },
 		},
 		config = function() 
             local telescope = require('telescope')
@@ -177,9 +210,41 @@ return {
                         },
                     },
                 },
+                extensions = {
+                    cmdline = {
+                        -- VSCodeライクなコマンドパレット見た目
+                        picker = {
+                            layout_strategy = "center",
+                            layout_config = {
+                                width = 0.4,
+                                height = 0.3,
+                                anchor = "S",
+                                prompt_position = "top",
+                            },
+                            prompt_title = "🎯 Command Palette",
+                            results_title = "Commands & History",
+                            sorting_strategy = "ascending",
+                            border = true,
+                            borderchars = {
+                                "─", "│", "─", "│", "╭", "╮", "╯", "╰"
+                            },
+                            -- プレビュー無効化
+                            previewer = false,
+                        },
+                        mappings = {
+                            complete = "<Tab>",
+                            run_selection = "<C-CR>",
+                            run_input = "<CR>",
+                        },
+                    },
+                },
             })
 
 		end,
+	},
+	{
+		"jonarrien/telescope-cmdline.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	},
 	{
 		"nvim-telescope/telescope-file-browser.nvim",
