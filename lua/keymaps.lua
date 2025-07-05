@@ -87,7 +87,7 @@ local on_attach = function(client, bufnr)
   map('n', 'gr', vim.lsp.buf.references, { desc = "LSP: 参照を検索", buffer = bufnr })
   map('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP: リネーム", buffer = bufnr })
   map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "LSP: コードアクション", buffer = bufnr })
-  map('n', '<leader>e', vim.diagnostic.open_float, { desc = "診断フロート表示", buffer = bufnr })
+  map('n', '<leader>xd', vim.diagnostic.open_float, { desc = "🚨 診断フロート表示", buffer = bufnr })
   map('n', '[d', vim.diagnostic.goto_prev, { desc = "前の診断", buffer = bufnr })
   map('n', ']d', vim.diagnostic.goto_next, { desc = "次の診断", buffer = bufnr })
 
