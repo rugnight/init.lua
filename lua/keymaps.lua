@@ -104,9 +104,12 @@ local on_attach = function(client, bufnr)
       end, 100)
   end, { desc = "ドット補完", buffer = bufnr })
 
-  -- Tabでの補完
+  -- Tab統合：スニペット展開 → LSP補完 → 通常Tab
   map('i', '<Tab>', function()
-      if vim.fn.pumvisible() == 1 then
+      local ls = require("luasnip")
+      if ls.expand_or_jumpable() then
+          ls.expand_or_jump()
+      elseif vim.fn.pumvisible() == 1 then
           return vim.api.nvim_replace_termcodes('<C-n>', true, false, true)
       else
           return vim.api.nvim_replace_termcodes('<Tab>', true, false, true)
@@ -114,7 +117,10 @@ local on_attach = function(client, bufnr)
   end, { expr = true, silent = true, buffer = bufnr })
 
   map('i', '<S-Tab>', function()
-      if vim.fn.pumvisible() == 1 then
+      local ls = require("luasnip")
+      if ls.jumpable(-1) then
+          ls.jump(-1)
+      elseif vim.fn.pumvisible() == 1 then
           return vim.api.nvim_replace_termcodes('<C-p>', true, false, true)
       else
           return vim.api.nvim_replace_termcodes('<S-Tab>', true, false, true)

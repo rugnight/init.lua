@@ -1,0 +1,11 @@
+{
+  "Test": {
+    "body": [
+      "protected override void Awake()",
+      "{",
+      "    base.Awake();",
+      "}"
+    ],
+    "prefix": "Test"
+  }
+}
