@@ -106,26 +106,50 @@ local on_attach = function(client, bufnr)
 
   -- Tab統合：スニペット展開 → LSP補完 → 通常Tab
   map('i', '<Tab>', function()
-      local ls = require("luasnip")
-      if ls.expand_or_jumpable() then
-          ls.expand_or_jump()
-      elseif vim.fn.pumvisible() == 1 then
-          return vim.api.nvim_replace_termcodes('<C-n>', true, false, true)
-      else
-          return vim.api.nvim_replace_termcodes('<Tab>', true, false, true)
+      -- 編集可能なバッファでのみスニペット展開を実行
+      local bo = vim.bo
+      local is_editable = bo.modifiable and not bo.readonly and 
+                         bo.buftype == '' and 
+                         bo.filetype ~= 'wilder_float' and
+                         bo.filetype ~= 'prompt'
+      
+      if is_editable then
+          local ls = require("luasnip")
+          if ls.expand_or_jumpable() then
+              ls.expand_or_jump()
+              return
+          end
       end
-  end, { expr = true, silent = true, buffer = bufnr })
+      
+      if vim.fn.pumvisible() == 1 then
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'n', true)
+      else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Tab>', true, false, true), 'n', true)
+      end
+  end, { silent = true, buffer = bufnr })
 
   map('i', '<S-Tab>', function()
-      local ls = require("luasnip")
-      if ls.jumpable(-1) then
-          ls.jump(-1)
-      elseif vim.fn.pumvisible() == 1 then
-          return vim.api.nvim_replace_termcodes('<C-p>', true, false, true)
-      else
-          return vim.api.nvim_replace_termcodes('<S-Tab>', true, false, true)
+      -- 編集可能なバッファでのみスニペット操作を実行
+      local bo = vim.bo
+      local is_editable = bo.modifiable and not bo.readonly and 
+                         bo.buftype == '' and 
+                         bo.filetype ~= 'wilder_float' and
+                         bo.filetype ~= 'prompt'
+      
+      if is_editable then
+          local ls = require("luasnip")
+          if ls.jumpable(-1) then
+              ls.jump(-1)
+              return
+          end
       end
-  end, { expr = true, silent = true, buffer = bufnr })
+      
+      if vim.fn.pumvisible() == 1 then
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
+      else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<S-Tab>', true, false, true), 'n', true)
+      end
+  end, { silent = true, buffer = bufnr })
 
   -- Enterで補完確定
   map('i', '<CR>', function()
