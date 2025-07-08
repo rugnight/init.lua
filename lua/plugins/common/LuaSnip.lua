@@ -6,6 +6,31 @@ return {
 		"rafamadriz/friendly-snippets", -- 大量の既製スニペット
 	},
 	keys = {
+		-- スニペット展開・ジャンプ（エラー修正版）
+		{ "<Tab>", function()
+			local ls = require("luasnip")
+			if ls.expand_or_jumpable() then
+				vim.schedule(function()
+					ls.expand_or_jump()
+				end)
+				return ""
+			else
+				return "<Tab>"
+			end
+		end, expr = true, silent = true, mode = "i" },
+		
+		{ "<S-Tab>", function()
+			local ls = require("luasnip")
+			if ls.jumpable(-1) then
+				vim.schedule(function()
+					ls.jump(-1)
+				end)
+				return ""
+			else
+				return "<S-Tab>"
+			end
+		end, expr = true, silent = true, mode = "i" },
+
 		{ "<C-l>", function()
 			local ls = require("luasnip")
 			if ls.choice_active() then
@@ -51,17 +76,26 @@ return {
 		
 		-- friendly-snippetsを読み込み
 		require("luasnip.loaders.from_vscode").lazy_load()
-		-- カスタムスニペットを読み込み（パス指定）
+		-- カスタムスニペット（Lua形式）を読み込み
 		require("luasnip.loaders.from_lua").load({
+			paths = { vim.fn.stdpath("config") .. "/luasnippets/" }
+		})
+		-- scissors作成のVSCodeスニペット（JSON形式）を読み込み
+		require("luasnip.loaders.from_vscode").load({
 			paths = { vim.fn.stdpath("config") .. "/luasnippets/" }
 		})
 		
 		-- スニペット再読み込みコマンド
 		vim.api.nvim_create_user_command("LuaSnipReload", function()
+			-- Lua形式のスニペット再読み込み
 			require("luasnip.loaders.from_lua").load({
 				paths = { vim.fn.stdpath("config") .. "/luasnippets/" }
 			})
-			print("LuaSnip snippets reloaded!")
+			-- VSCode形式（scissors）のスニペット再読み込み
+			require("luasnip.loaders.from_vscode").load({
+				paths = { vim.fn.stdpath("config") .. "/luasnippets/" }
+			})
+			print("LuaSnip snippets reloaded (Lua + VSCode formats)!")
 		end, { desc = "Reload LuaSnip snippets" })
 
 	end,
