@@ -24,6 +24,9 @@ return {
 
             -- LSPサーバーの基本設定
             local function on_attach(client, bufnr)
+                -- omnifuncを設定
+                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+                
                 local map = vim.keymap.set
                 local opts = { buffer = bufnr, silent = true }
                 
@@ -92,10 +95,20 @@ return {
             -- 標準補完の設定（シンプル版）
             vim.o.completeopt = "menu,menuone,noselect"
             
-            -- 入力中の自動補完（シンプル版）
+            -- 入力中の自動補完（安全版）
             vim.api.nvim_create_autocmd("TextChangedI", {
                 pattern = "*",
                 callback = function()
+                    -- LSPがアタッチされていない場合は何もしない
+                    if #vim.lsp.get_clients({ bufnr = 0 }) == 0 then
+                        return
+                    end
+                    
+                    -- omnifuncが設定されていない場合は何もしない
+                    if vim.bo.omnifunc == "" then
+                        return
+                    end
+                    
                     local line = vim.api.nvim_get_current_line()
                     local col = vim.api.nvim_win_get_cursor(0)[2]
                     local word_before = line:sub(1, col):match("[%w_]*$")
@@ -103,7 +116,7 @@ return {
                     -- 3文字以上の英数字入力時に自動補完を起動
                     if word_before and #word_before >= 3 and vim.fn.pumvisible() == 0 then
                         vim.defer_fn(function()
-                            if vim.fn.mode() == "i" then
+                            if vim.fn.mode() == "i" and vim.bo.omnifunc ~= "" then
                                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', false)
                             end
                         end, 150)

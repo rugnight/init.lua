@@ -33,11 +33,8 @@ return {
           require('telescope.builtin').lsp_references()
         end
       end, desc = "📋 前回の参照結果再表示" },
-    { "<Leader>ld", "<cmd>Lspsaga goto_definition<CR>", desc = "🎯 定義へ移動" },
+    -- Neovim 0.11デフォルトキーマップを活用（gd, K, grn, gra, grr, gri）
     { "<Leader>lp", "<cmd>Lspsaga peek_definition<CR>", desc = "🎯 定義プレビュー" },
-    { "<Leader>lh", "<cmd>Lspsaga hover_doc<CR>", desc = "🎯 ホバー情報" },
-    { "<Leader>ln", "<cmd>Lspsaga rename<CR>", desc = "🎯 リネーム" },
-    { "<Leader>la", "<cmd>Lspsaga code_action<CR>", desc = "🎯 コードアクション" },
     { "<Leader>lo", "<cmd>Lspsaga outline<CR>", desc = "👁️ アウトライン" },
     { "<Leader>ls", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "🚨 行診断表示" },
     { "<Leader>lF", function() vim.lsp.buf.format({ async = true }) end, desc = "✏️ コードフォーマット" },

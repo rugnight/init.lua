@@ -75,110 +75,18 @@ quickfix_utils.setup_autocmds()
 --- LSP & 補完 キーマップ
 ----------------------------------------------------------------------------------------------------
 
--- LSPがアタッチされた際の共通設定
-local on_attach = function(client, bufnr)
-  -- ホバー、定義ジャンプなどの基本的なLSPキーマップ
-  local map = vim.keymap.set
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-  map('n', 'K', vim.lsp.buf.hover, { desc = "LSP: ホバー", buffer = bufnr })
-  map('n', 'gd', vim.lsp.buf.definition, { desc = "LSP: 定義へ移動", buffer = bufnr })
-  map('n', 'gD', vim.lsp.buf.declaration, { desc = "LSP: 宣言へ移動", buffer = bufnr })
-  map('n', 'gi', vim.lsp.buf.implementation, { desc = "LSP: 実装へ移動", buffer = bufnr })
-  map('n', 'gr', vim.lsp.buf.references, { desc = "LSP: 参照を検索", buffer = bufnr })
-  map('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP: リネーム", buffer = bufnr })
-  map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = "LSP: コードアクション", buffer = bufnr })
-  map('n', '<leader>xd', vim.diagnostic.open_float, { desc = "🚨 診断フロート表示", buffer = bufnr })
-  map('n', '[d', vim.diagnostic.goto_prev, { desc = "前の診断", buffer = bufnr })
-  map('n', ']d', vim.diagnostic.goto_next, { desc = "次の診断", buffer = bufnr })
+-- Neovim 0.11のデフォルトキーマップを活用
+-- 以下のキーマップが標準で利用可能：
+-- grn: リネーム
+-- grr: 参照検索
+-- gri: 実装へ移動
+-- gra: コードアクション
+-- gd: 定義へ移動
+-- K: ホバー
+-- [d, ]d: 診断ナビゲーション
 
-  -- 標準補完のキーマップ設定
-  map('i', '<C-Space>', '<C-x><C-o>', { desc = "LSP補完", buffer = bufnr })
-
-  -- .入力時に自動でLSP補完を開始
-  map('i', '.', function()
-      vim.api.nvim_feedkeys('.', 'n', true)
-      vim.defer_fn(function()
-          if vim.fn.pumvisible() == 0 then
-              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', true)
-          end
-      end, 100)
-  end, { desc = "ドット補完", buffer = bufnr })
-
-  -- Tab統合：スニペット展開 → LSP補完 → 通常Tab
-  map('i', '<Tab>', function()
-      -- 編集可能なバッファでのみスニペット展開を実行
-      local bo = vim.bo
-      local is_editable = bo.modifiable and not bo.readonly and 
-                         bo.buftype == '' and 
-                         bo.filetype ~= 'wilder_float' and
-                         bo.filetype ~= 'prompt'
-      
-      if is_editable then
-          local ls = require("luasnip")
-          if ls.expand_or_jumpable() then
-              ls.expand_or_jump()
-              return
-          end
-      end
-      
-      if vim.fn.pumvisible() == 1 then
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'n', true)
-      else
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Tab>', true, false, true), 'n', true)
-      end
-  end, { silent = true, buffer = bufnr })
-
-  map('i', '<S-Tab>', function()
-      -- 編集可能なバッファでのみスニペット操作を実行
-      local bo = vim.bo
-      local is_editable = bo.modifiable and not bo.readonly and 
-                         bo.buftype == '' and 
-                         bo.filetype ~= 'wilder_float' and
-                         bo.filetype ~= 'prompt'
-      
-      if is_editable then
-          local ls = require("luasnip")
-          if ls.jumpable(-1) then
-              ls.jump(-1)
-              return
-          end
-      end
-      
-      if vim.fn.pumvisible() == 1 then
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
-      else
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<S-Tab>', true, false, true), 'n', true)
-      end
-  end, { silent = true, buffer = bufnr })
-
-  -- Enterで補完確定
-  map('i', '<CR>', function()
-      if vim.fn.pumvisible() == 1 then
-          return vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
-      else
-          return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
-      end
-  end, { expr = true, silent = true, buffer = bufnr })
-  
-  -- 入力中の自動補完（2文字以上で開始）
-  vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP" }, {
-      buffer = bufnr,
-      callback = function()
-          local line = vim.api.nvim_get_current_line()
-          local col = vim.api.nvim_win_get_cursor(0)[2]
-          local before_cursor = line:sub(1, col)
-          
-          local word = before_cursor:match("%w+$")
-          if word and #word >= 2 and vim.fn.pumvisible() == 0 and vim.bo[bufnr].buftype == '' then
-              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-x><C-o>', true, false, true), 'n', true)
-          end
-      end
-  })
-end
-
--- グローバルなon_attach関数として保存
--- lspconfigがこれを参照できるようにする
-_G.on_attach = on_attach
+-- 追加の診断キーマップ
+vim.keymap.set('n', '<leader>xd', vim.diagnostic.open_float, { desc = "🚨 診断フロート表示" })
 
 -- 補完メニューの見た目改善
 vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#3c3836', fg = '#ebdbb2' })
