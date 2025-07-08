@@ -54,6 +54,12 @@
 - **wilder.nvim**: コマンドライン入力補助（`:e ~/Doc<Tab>`等）
 - **which-key.nvim**: キーマップガイド（VirtualText競合解決済み）
 
+### 🤖 AI支援システム ⭐ **2025年1月拡張**
+- **Claude Code**: 統合開発環境との連携（ターミナル統合、差分表示）
+- **Gemini AI**: Google Gemini API連携（コード補完、説明、レビュー、テスト生成）
+- **統合キーマップ**: `<Leader>a*`カテゴリで両AI統一操作
+- **環境変数設定**: `GEMINI_API_KEY`でGemini API認証
+
 ## キーマップ体系
 記憶しやすいニーモニックルールに基づく13カテゴリ構成：
 
@@ -80,10 +86,10 @@
 ### 🔀 Git操作 (`<Leader>g*`)
 - `gc` - コミット履歴, `gb` - ブランチ一覧, `gs` - Git状態
 
-### 🤖 AI操作 (`<Leader>a*`) ⭐ **Claude Code統合**
-- `ac` - Claude Code起動, `ap` - ペースト, `at` - トグル
-- `af` - フォーカス, `ar` - 再開, `aC` - 続行
-- `ab` - バッファ追加, `as` - 選択範囲送信, `aa/ad` - 差分受け入れ/拒否
+### 🤖 AI操作 (`<Leader>a*`) ⭐ **Claude Code & Gemini統合**
+- **Claude Code**: `ac` - 起動, `ap` - ペースト, `at` - トグル, `af` - フォーカス, `ar` - 再開, `aC` - 続行
+- **Gemini AI**: `ag` - チャット, `aG` - コード補完, `ae` - コード説明, `au` - ユニットテスト生成, `av` - コードレビュー, `ah` - ヒント
+- **共通操作**: `ab` - バッファ追加, `as` - 選択範囲送信, `aa/ad` - 差分受け入れ/拒否
 
 ### 📑 ブックマーク (`<Leader>k*`)
 - `km` - マークトグル, `ki` - コメント付きマーク, `kc` - マーク削除
@@ -242,6 +248,23 @@ nvim --startuptime startup.log +q
 - 高速起動: lazy loading最適化
 - which-key: 視覚的キーマップガイド
 - Git統合: 基本機能はtelescope経由で軽量化
+
+### AI環境設定 ⭐ **新規追加**
+#### Gemini AI設定
+```bash
+# Google AI Studio（https://aistudio.google.com/app/apikey）でAPIキー取得
+export GEMINI_API_KEY="your_api_key_here"
+
+# Windows（PowerShell）
+$env:GEMINI_API_KEY="your_api_key_here"
+
+# または .bashrc/.zshrcに永続設定
+echo 'export GEMINI_API_KEY="your_api_key_here"' >> ~/.bashrc
+```
+
+#### Claude Code設定
+- Claude Codeは既存設定済み（`<Leader>a*`キーマップ）
+- ターミナル統合、差分表示機能使用可能
 
 ## Otree.nvim 設定知見
 
