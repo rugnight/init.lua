@@ -81,16 +81,16 @@ return {
         -- 基本ナビゲーション
         ["<CR>"] = "actions.select",
         ["l"] = "actions.select",
-        ["h"] = "actions.parent_dir",
+        ["h"] = "actions.close_dir",
         ["<Right>"] = "actions.goto_dir",
-        ["<Left>"] = "actions.parent_dir",
+        ["<Left>"] = "actions.close_dir",
         -- ファイル操作
         ["o"] = "actions.open_in_oil",
         ["O"] = "actions.open_in_oil_float",
         ["r"] = "actions.refresh",
         ["f"] = "actions.focus_file",
         ["."] = "actions.toggle_hidden",
-        ["q"] = "actions.close",  -- qキーで閉じる
+        ["q"] = "actions.close_win",  -- qキーで閉じる
         ["<Esc>"] = "actions.close", -- Escキーでも閉じる
         -- ファイル管理
         ["R"] = "actions.rename",
