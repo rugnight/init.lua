@@ -1,40 +1,39 @@
 ----------------------------------------------------------------------------------------------------
---- 通知表示を美しく（自動消去でEnter不要）
+--- 通知表示を美しく（noice.nvim統合対応）
 ----------------------------------------------------------------------------------------------------
 return {
 	"rcarriga/nvim-notify",
 	event = "VeryLazy",
 	config = function()
 		require("notify").setup({
-			-- 通知の自動消去時間（ミリ秒）
-			timeout = 3000,
-			-- 表示位置
-			top_down = true,
-			-- アニメーション
+			-- noice.nvim統合に最適化された設定
+			background_colour = "#000000",
+			fps = 30,
+			icons = {
+				DEBUG = "",
+				ERROR = "",
+				INFO = "",
+				TRACE = "✎",
+				WARN = ""
+			},
+			level = 2,
+			minimum_width = 50,
+			render = "compact", -- noice統合に適したレンダラー
 			stages = "fade_in_slide_out",
-			-- LSPメッセージを短縮表示
+			timeout = 3000,
+			top_down = true,
+			-- noice.nvimとの統合のため、LSPハンドラーは設定しない
 			on_open = function(win)
 				local config = vim.api.nvim_win_get_config(win)
 				config.focusable = false
 				vim.api.nvim_win_set_config(win, config)
 			end,
 		})
-		
-		-- LSPの情報メッセージを完全に抑制
-		vim.lsp.handlers["window/logMessage"] = function(err, result, ctx)
-			-- すべてのLSP logMessageを無視
-			return
-		end
-		
-		-- LSPの表示メッセージも抑制
-		vim.lsp.handlers["window/showMessage"] = function(err, result, ctx)
-			-- ERRORレベルのみ表示
-			if result and result.type == vim.lsp.protocol.MessageType.Error then
-				vim.notify(result.message, vim.log.levels.ERROR, { title = "LSP Error" })
-			end
-		end
+
+		-- デフォルトのnotify関数をnvim-notifyに設定
+		vim.notify = require("notify")
 	end,
 	keys = {
-		{ "<leader>vn", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "通知を閉じる" },
+		{ "<leader>vn", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "🔔 通知を閉じる" },
 	},
 }

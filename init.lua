@@ -153,7 +153,6 @@ vim.deprecate = function() end
 
 
 -- プラグインとキーマップ読み込み
-require("ime")
 require("plugins_setup")
 require("filetype_keymaps")
 require("keymaps")

@@ -78,30 +78,31 @@ return {
       -- デフォルトキーマップを無効化してウィンドウ移動キーとの競合を解消
       use_default_keymaps = false,
       keymaps = {
-        -- 基本ナビゲーション
+        -- 基本ナビゲーション（正しいアクション名を使用）
         ["<CR>"] = "actions.select",
         ["l"] = "actions.select",
         ["h"] = "actions.close_dir",
-        ["<Right>"] = "actions.goto_dir",
-        ["<Left>"] = "actions.close_dir",
-        -- ファイル操作
-        ["o"] = "actions.open_in_oil",
-        ["O"] = "actions.open_in_oil_float",
+        ["<C-l>"] = "actions.goto_dir",
+        ["<C-h>"] = "actions.goto_parent",
+        -- ディレクトリ操作
+        ["L"] = "actions.open_dirs",
+        ["H"] = "actions.close_dirs",
+        -- ツリー操作
         ["r"] = "actions.refresh",
         ["f"] = "actions.focus_file",
         ["."] = "actions.toggle_hidden",
         ["q"] = "actions.close_win",  -- qキーで閉じる
-        ["<Esc>"] = "actions.close", -- Escキーでも閉じる
-        -- ファイル管理
-        ["R"] = "actions.rename",
-        ["a"] = "actions.create",
-        ["d"] = "actions.delete",
-        ["x"] = "actions.cut",
-        ["c"] = "actions.copy",
-        ["p"] = "actions.paste",
-        ["y"] = "actions.copy_name",
-        ["Y"] = "actions.copy_path",
-        ["<C-r>"] = "actions.refresh",
+        ["<Esc>"] = "actions.close_win", -- Escキーでも閉じる
+        -- oil.nvim連携（正しいアクション名）
+        ["o"] = "actions.oil_dir",
+        ["O"] = "actions.oil_into_dir",
+        -- 分割・タブ操作
+        ["t"] = "actions.open_tab",
+        ["v"] = "actions.open_vsplit",
+        ["s"] = "actions.open_split",
+        -- ホームディレクトリ
+        ["<M-h>"] = "actions.goto_home_dir",
+        ["cd"] = "actions.change_home_dir",
       },
     })
 
