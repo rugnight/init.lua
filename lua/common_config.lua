@@ -1,5 +1,5 @@
 -- 共通設定ファイル
--- NeovimとVSCode-Neovimで共有する基本設定
+-- Neovimの基本設定
 
 -- エンコーディング
 vim.opt.fileencoding = "utf-8"
@@ -18,12 +18,6 @@ vim.opt.pumheight = 10
 -- フローティングウィンドウ
 vim.opt.winblend = 0
 
--- VSCode環境でのフローティングウィンドウ制限対応
-if vim.g.vscode then
-  -- VSCodeではフローティングウィンドウを無効化
-  vim.lsp.handlers["textDocument/hover"] = function() end
-  vim.lsp.handlers["textDocument/signatureHelp"] = function() end
-end
 
 -- mark情報等の保存
 vim.o.shada = "!,'100,<50,s10,h"

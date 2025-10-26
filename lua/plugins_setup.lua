@@ -1,10 +1,5 @@
--- Neovim専用プラグインマネージャー
+-- Neovimプラグインマネージャー
 -- https://github.com/folke/lazy.nvim
-
--- VSCode環境では実行しない
-if vim.g.vscode then
-  return
-end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -21,9 +16,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- lazy.nvimでプラグインを管理
 require("lazy").setup({
-  -- 'plugins.common'と'plugins.neovim'ディレクトリ内の.luaファイルを自動で読み込む
-  { import = "plugins.common" },
-  { import = "plugins.neovim" },
+  -- 'plugins'ディレクトリ内の.luaファイルを自動で読み込む
+  { import = "plugins" },
 }, {
   defaults = { lazy = true },  -- デフォルトで遅延読み込み
   ui = {

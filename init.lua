@@ -1,8 +1,5 @@
--- Neovim専用設定（VSCodeでは実行しない）
--- 🔍 設定確認: :lua print("Neovim専用 init.lua 読み込み完了 - " .. vim.fn.stdpath("config") .. "/init.lua")
-if vim.g.vscode then
-  return
-end
+-- Neovim設定ファイル
+-- 🔍 設定確認: :lua print("init.lua 読み込み完了 - " .. vim.fn.stdpath("config") .. "/init.lua")
 
 local fn = vim.fn
 
@@ -162,7 +159,4 @@ require("filetype_keymaps")
 require("keymaps")
 
 -- 環境判別コマンド
-vim.api.nvim_create_user_command('Env', function() print("🖥️ Neovim専用環境") end, {})
-
--- VSCode WhichKey同期機能を読み込み
-require('vscode_whichkey_sync')
+vim.api.nvim_create_user_command('Env', function() print("🖥️ Neovim環境") end, {})
