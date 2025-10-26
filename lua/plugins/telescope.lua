@@ -4,6 +4,11 @@ return {
 		tag = '0.1.8',
 		cmd = "Telescope",
 		keys = {
+			{ '<C-S-j>', function() require('telescope.builtin').buffers() end, desc = '📋 バッファ検索' },
+			{ '<C-S-f>', function() require('telescope.builtin').live_grep() end, desc = '🔍 文字列検索' },
+			{ '<C-S-p>', function() require('telescope.builtin').find_files() end, desc = '📁 ファイル検索' },
+			{ '<C-S-k>', function() require('telescope.builtin').oldfiles() end, desc = '📁 最近のファイル' },
+
 			{ '<Leader>ff', function() require('telescope.builtin').find_files() end, desc = '📁 ファイル検索' },
 			{ '<Leader>fg', function() require('telescope.builtin').live_grep() end, desc = '🔍 文字列検索' },
 			{ '<leader>fr', function() require('telescope.builtin').oldfiles() end, desc = '📁 最近のファイル' },
