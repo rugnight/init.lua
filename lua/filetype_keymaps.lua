@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     local map = vim.keymap.set
     -- コミットメッセージ補助
-    map("i", "<localleader>c", "🤖 Generated with [Claude Code](https://claude.ai/code)<CR><CR>Co-Authored-By: Claude <noreply@anthropic.com>", { desc = "Claude署名挿入", buffer = true })
+    map("i", "<localleader>c", "🤖 Generated with [Claude Code](https://claude.com/claude-code)<CR><CR>Co-Authored-By: Claude <noreply@anthropic.com>", { desc = "Claude署名挿入", buffer = true })
   end,
 })
 
@@ -85,36 +85,45 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Claude Code バッファ専用キーマップ（改良版）
-vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter", "BufNewFile", "BufRead"}, {
+-- Claude Code バッファ専用キーマップ
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter", "BufNewFile", "BufRead", "WinEnter"}, {
   pattern = "*",
   callback = function()
     local bufname = vim.fn.bufname()
     local buftype = vim.bo.buftype
     local term_var = vim.env.TERM_PROGRAM
-    
-    -- Claude Code検出条件を拡張
-    local is_claude_code = buftype == 'nofile' or 
+
+    -- Claude Code検出条件
+    local is_claude_code = buftype == 'nofile' or
                           (bufname and (
-                            bufname:lower():match('claude') or 
+                            bufname:lower():match('claude') or
                             bufname:lower():match('anthropic') or
                             bufname:lower():match('assistant') or
                             bufname:lower():match('chat') or
                             bufname == '' -- 無名バッファもチェック
                           )) or
                           (term_var and term_var:lower():match('claude'))
-    
+
     if is_claude_code then
       local map = vim.keymap.set
-      -- 即座にキーマップを設定（遅延なし）
-      map("i", "jk", "<Esc>", { desc = "🤖 jk→Esc", buffer = true, noremap = true, silent = true, nowait = true })
-      map("i", "kj", "<Esc>", { desc = "🤖 kj→Esc", buffer = true, noremap = true, silent = true, nowait = true })
+      -- Claude Code用快適入力キーマップ（インサートモード）
       map("i", "jj", "<Esc>", { desc = "🤖 jj→Esc", buffer = true, noremap = true, silent = true, nowait = true })
       map("i", "<C-c>", "<Esc>", { desc = "🤖 Ctrl-c→Esc", buffer = true, noremap = true, silent = true, nowait = true })
-      
-      -- デバッグ用: キーマップが設定されたことを確認
+      -- 統一ESCキー（<C-,>はグローバル設定に移動）
+
+      -- Claude Code用ターミナルモードキーマップ（競合回避版）
+      -- ESCは元の機能を保持、代替手段を提供
+      map("t", "<leader><Esc>", "<C-\\><C-n>", { desc = "🤖 Leader+Esc→Normal", buffer = true, noremap = true, silent = true })
+      -- <C-,>はグローバル設定を使用
+      map("t", "<M-,>", "<C-\\><C-n>", { desc = "🤖 Alt+,→Normal", buffer = true, noremap = true, silent = true })
+
+      -- Claude Code専用: フォーカス時に自動的にインサートモードに入る
       vim.schedule(function()
-        print("Claude Code keymap set for buffer: " .. (bufname ~= '' and bufname or '[No Name]'))
+        if vim.bo.buftype == "terminal" then
+          -- ターミナルモード（t）を追加した適切なカーソル設定
+          vim.api.nvim_set_option_value("guicursor", "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,t:ver25,a:blinkwait700-blinkoff400-blinkon250", {scope = "local"})
+          vim.cmd("startinsert")
+        end
       end)
     end
   end,

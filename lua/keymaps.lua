@@ -39,13 +39,61 @@ vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "📋 前のバッフ�
 -- 検索ハイライトを簡単に消す
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })
 
--- ウィンドウ移動を簡単に
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "左のウィンドウへ移動", noremap = true, silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "下のウィンドウへ移動", noremap = true, silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "上のウィンドウへ移動", noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "右のウィンドウへ移動", noremap = true, silent = true })
+-- 統一ESCキー（全モードで一貫性）
+vim.keymap.set("i", "<C-,>", "<Esc>", { desc = "統一ESC（Ctrl+,）", noremap = true, silent = true })
+vim.keymap.set("t", "<C-,>", "<C-\\><C-n>", { desc = "統一ESC（Ctrl+,）", noremap = true, silent = true })
 
--- ウィンドウサイズ調整（絶対的な位置基準）
+-- ウィンドウ移動を矢印キーで統一（全モード対応）
+vim.keymap.set("n", "<Left>", "<C-w>h", { desc = "左のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<Down>", "<C-w>j", { desc = "下のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<Up>", "<C-w>k", { desc = "上のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("n", "<Right>", "<C-w>l", { desc = "右のウィンドウへ移動", noremap = true, silent = true })
+
+-- インサートモードでも同じ矢印キーでウィンドウ移動
+vim.keymap.set("i", "<Left>", "<C-o><C-w>h", { desc = "左のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("i", "<Down>", "<C-o><C-w>j", { desc = "下のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("i", "<Up>", "<C-o><C-w>k", { desc = "上のウィンドウへ移動", noremap = true, silent = true })
+vim.keymap.set("i", "<Right>", "<C-o><C-w>l", { desc = "右のウィンドウへ移動", noremap = true, silent = true })
+
+-- ターミナルモードでも同じ矢印キーでウィンドウ移動（移動後のモード調整付き）
+vim.keymap.set("t", "<Left>", function()
+  vim.cmd("wincmd h")
+  -- 移動先がターミナルバッファの場合、自動的にインサートモードに入る
+  vim.schedule(function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd("startinsert")
+    end
+  end)
+end, { desc = "左のウィンドウへ移動", noremap = true, silent = true })
+
+vim.keymap.set("t", "<Down>", function()
+  vim.cmd("wincmd j")
+  vim.schedule(function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd("startinsert")
+    end
+  end)
+end, { desc = "下のウィンドウへ移動", noremap = true, silent = true })
+
+vim.keymap.set("t", "<Up>", function()
+  vim.cmd("wincmd k")
+  vim.schedule(function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd("startinsert")
+    end
+  end)
+end, { desc = "上のウィンドウへ移動", noremap = true, silent = true })
+
+vim.keymap.set("t", "<Right>", function()
+  vim.cmd("wincmd l")
+  vim.schedule(function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd("startinsert")
+    end
+  end)
+end, { desc = "右のウィンドウへ移動", noremap = true, silent = true })
+
+-- ウィンドウサイズ調整はCtrl+矢印キーに変更
 vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "ウィンドウ高さ増加", silent = true })
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "ウィンドウ高さ減少", silent = true })
 vim.keymap.set("n", "<C-Left>", window_utils.expand_left, { desc = "左側を拡張", silent = true })
@@ -55,9 +103,6 @@ vim.keymap.set("n", "<C-Right>", window_utils.expand_right, { desc = "右側を�
 vim.keymap.set("v", "<", "<gv", { desc = "インデント減少（選択保持）" })
 vim.keymap.set("v", ">", ">gv", { desc = "インデント増加（選択保持）" })
 
--- Claude Code用グローバルインサートモード脱出キー
-vim.keymap.set("i", "jk", "<Esc>", { desc = "🤖 jk→Esc（グローバル）", noremap = true, silent = true })
-vim.keymap.set("i", "kj", "<Esc>", { desc = "🤖 kj→Esc（グローバル）", noremap = true, silent = true })
 
 -- 行移動（ビジュアルモード）
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "選択行を下に移動", silent = true })

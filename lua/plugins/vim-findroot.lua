@@ -3,7 +3,8 @@
 --------------------------------------------------
 return {
 	'mattn/vim-findroot',
-	config = function() 
+	lazy = false, -- プロジェクトルート検出のため即座に読み込み
+	config = function()
 		vim.g.findroot_patterns = {
 			'.git/',
 			'.svn/',

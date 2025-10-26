@@ -57,12 +57,14 @@ return {
 		function _G.set_terminal_keymaps()
 			local opts = {buffer = 0}
 			vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-			vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-			vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-			vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-			vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-			vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+			-- 矢印キーでのウィンドウ移動はグローバル設定を使用
 			vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+
+			-- ターミナル用カーソル形状設定（ターミナルモード専用）
+			vim.defer_fn(function()
+				-- ターミナルモード（t）を追加した設定
+				vim.api.nvim_set_option_value("guicursor", "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,t:ver25,a:blinkwait700-blinkoff400-blinkon250", {scope = "local"})
+			end, 50)
 		end
 		
 		vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

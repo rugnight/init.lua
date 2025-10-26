@@ -27,11 +27,28 @@ local function get_hostname()
   return hostname
 end
 
--- WSLのシェルを使用（一般的なWSL環境）
-vim.opt.shell = "bash"
-vim.opt.shellcmdflag = "-c"
-vim.opt.shellquote = ""
-vim.opt.shellxquote = ""
+-- Windows環境用シェル設定
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+  -- PowerShell Core (pwsh) または Windows PowerShell (powershell)
+  if vim.fn.executable("pwsh") == 1 then
+    vim.opt.shell = "pwsh"
+  elseif vim.fn.executable("powershell") == 1 then
+    vim.opt.shell = "powershell"
+  else
+    vim.opt.shell = "cmd"
+  end
+  vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+  vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+  vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+else
+  -- Unix系システム（Linux, macOS）
+  vim.opt.shell = "bash"
+  vim.opt.shellcmdflag = "-c"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+end
 
 
 vim.g.mapleader = ";"    -- リーダーキーを設定
@@ -44,6 +61,9 @@ vim.opt.sidescrolloff = 8 -- 水平スクロール時の余裕
 vim.opt.showmode = false -- 現在のModeを表示しない
 vim.o.mouse = "a"        -- マウス操作を有効に
 vim.opt.cursorline = true -- カーソル行をハイライト
+
+-- カーソル形状設定（ターミナルモードもインサートモードと同じ縦線に）
+vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,t:ver25,a:blinkwait700-blinkoff400-blinkon250"
 vim.opt.wrap = false     -- 行の折り返しを無効
 vim.opt.linebreak = true -- 折り返し時に単語で区切る
 
@@ -150,6 +170,7 @@ end
 
 -- 非推奨API警告を抑制
 vim.deprecate = function() end
+
 
 
 -- プラグインとキーマップ読み込み

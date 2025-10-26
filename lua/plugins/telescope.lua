@@ -45,9 +45,15 @@ return {
 					end,
 				})
 			end, desc = '🔍 キーマップ検索' },
-			{ '<Leader><Leader>', function() 
-				require("telescope").load_extension("cmdline")
-				vim.cmd('Telescope cmdline')
+			{ '<Leader><Leader>', function()
+				local ok, err = pcall(function()
+					vim.cmd('Telescope cmdline')
+				end)
+				if not ok then
+					vim.notify("Command Palette実行エラー: " .. (err or "不明なエラー"), vim.log.levels.ERROR)
+					-- フォールバック: 通常のコマンドライン
+					vim.cmd(":")
+				end
 			end, desc = '🎯 Command Palette' },
 		},
 		config = function() 
@@ -212,29 +218,25 @@ return {
                 },
                 extensions = {
                     cmdline = {
-                        -- VSCodeライクなコマンドパレット見た目
+                        -- 安全な基本設定
                         picker = {
-                            layout_strategy = "center",
+                            layout_strategy = "bottom_pane",
                             layout_config = {
-                                width = 0.4,
                                 height = 0.3,
-                                anchor = "S",
-                                prompt_position = "top",
                             },
                             prompt_title = "🎯 Command Palette",
-                            results_title = "Commands & History",
                             sorting_strategy = "ascending",
-                            border = true,
-                            borderchars = {
-                                "─", "│", "─", "│", "╭", "╮", "╯", "╰"
-                            },
-                            -- プレビュー無効化
                             previewer = false,
+                            results_title = false,
                         },
                         mappings = {
                             complete = "<Tab>",
-                            run_selection = "<C-CR>",
+                            run_selection = "<CR>",
                             run_input = "<CR>",
+                        },
+                        -- エラー回避のための安全設定
+                        overseer = {
+                            enabled = false,
                         },
                     },
                 },
@@ -245,6 +247,15 @@ return {
 	{
 		"jonarrien/telescope-cmdline.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+		config = function()
+			-- extension読み込み時のエラーハンドリング
+			local ok, err = pcall(function()
+				require("telescope").load_extension("cmdline")
+			end)
+			if not ok then
+				vim.notify("telescope-cmdline extension読み込み失敗: " .. (err or "不明なエラー"), vim.log.levels.WARN)
+			end
+		end,
 	},
 	{
 		"nvim-telescope/telescope-file-browser.nvim",
