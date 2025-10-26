@@ -36,6 +36,10 @@ vim.keymap.set("n", "<Leader>iL", ":LspInfo<CR>", { desc="⚙️ LSP情報表示
 vim.keymap.set("n", "<Leader>bn", ":bnext<CR>", { desc = "📋 次のバッファ" })
 vim.keymap.set("n", "<Leader>bp", ":bprev<CR>", { desc = "📋 前のバッファ" })
 
+-- バッファ切り替え（素早いアクセス）
+vim.keymap.set("n", "<C-j>", ":bnext<CR>", { desc = "📋 次のバッファ", noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", ":bprev<CR>", { desc = "📋 前のバッファ", noremap = true, silent = true })
+
 -- 検索ハイライトを簡単に消す
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト解除", silent = true })
 
