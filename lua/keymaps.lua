@@ -47,6 +47,14 @@ vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "検索ハイライト�
 vim.keymap.set("i", "<C-,>", "<Esc>", { desc = "統一ESC（Ctrl+,）", noremap = true, silent = true })
 vim.keymap.set("t", "<C-,>", "<C-\\><C-n>", { desc = "統一ESC（Ctrl+,）", noremap = true, silent = true })
 
+-- Ctrl+CをESCの代替として設定（全モード対応）
+vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+vim.keymap.set("v", "<C-c>", "<Esc>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+vim.keymap.set("s", "<C-c>", "<Esc>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+vim.keymap.set("x", "<C-c>", "<Esc>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+vim.keymap.set("o", "<C-c>", "<Esc>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+vim.keymap.set("t", "<C-c>", "<C-\\><C-n>", { desc = "統一ESC（Ctrl+C）", noremap = true, silent = true })
+
 -- ウィンドウ移動を矢印キーで統一（全モード対応）
 vim.keymap.set("n", "<Left>", "<C-w>h", { desc = "左のウィンドウへ移動", noremap = true, silent = true })
 vim.keymap.set("n", "<Down>", "<C-w>j", { desc = "下のウィンドウへ移動", noremap = true, silent = true })

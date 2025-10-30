@@ -106,6 +106,7 @@ return {
                             ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
                             ["<M-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
                             ["<C-h>"] = "which_key", -- gitignoreトグル用
+                            ["<C-c>"] = actions.close, -- Ctrl+CでTelescope終了
                         },
                         n = {
                             ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
@@ -113,6 +114,7 @@ return {
                             ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
                             ["<M-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
                             ["<C-h>"] = "which_key", -- gitignoreトグル用
+                            ["<C-c>"] = actions.close, -- Ctrl+CでTelescope終了
                         },
                     },
                 },
@@ -217,6 +219,43 @@ return {
                                         print("gitignore除外: OFF")
                                     end
                                 end,
+                            },
+                        },
+                    },
+                    -- バッファ選択時のデフォルトモード設定
+                    buffers = {
+                        initial_mode = "normal", -- デフォルトをノーマルモードに設定
+                        sort_mru = true, -- 最近使用順でソート
+                        sort_lastused = true, -- 最後に使用したものを上位に
+                        show_all_buffers = true, -- すべてのバッファを表示
+                        -- パス表示設定：プロジェクトルートからの相対パス表示
+                        path_display = function(opts, path)
+                            -- 現在の作業ディレクトリを取得
+                            local cwd = vim.fn.getcwd()
+
+                            -- パスを正規化（バックスラッシュをスラッシュに統一）
+                            local normalized_path = path:gsub("\\", "/")
+                            local normalized_cwd = cwd:gsub("\\", "/")
+
+                            -- プロジェクト内のファイルかチェック
+                            if vim.startswith(normalized_path, normalized_cwd) then
+                                -- プロジェクトルートからの相対パス表示
+                                local relative_path = vim.fn.fnamemodify(path, ":~:.")
+                                -- 先頭の"./"を削除
+                                relative_path = relative_path:gsub("^%./", "")
+                                return relative_path
+                            else
+                                -- プロジェクト外ファイルはファイル名のみ表示
+                                return vim.fn.fnamemodify(path, ":t")
+                            end
+                        end,
+                        mappings = {
+                            i = {
+                                ["<C-x>"] = actions.delete_buffer, -- インサートモードでバッファ削除
+                            },
+                            n = {
+                                ["dd"] = actions.delete_buffer, -- ノーマルモードでバッファ削除
+                                ["<C-x>"] = actions.delete_buffer, -- 代替削除キー
                             },
                         },
                     },

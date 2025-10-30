@@ -216,7 +216,7 @@ return {
           enter = true,
           size = "20%",
         },
-        -- mini通知設定
+        -- mini通知設定（穏やかな表示）
         mini = {
           position = {
             row = -2,
@@ -228,16 +228,22 @@ return {
           border = {
             style = "none",
           },
+          timeout = 2000, -- 2秒で自動消去（穏やか）
+          reverse = false, -- 新しいメッセージを下に表示
           win_options = {
             winblend = 30,
           },
         },
       },
 
-      -- 通知設定（nvim-notifyとの統合）
+      -- 通知設定（nvim-notifyとの統合、穏やかな設定）
       notify = {
         enabled = true,
         view = "notify",
+        timeout = 3000, -- 3秒で自動消去
+        max_width = 50, -- 最大幅制限
+        max_height = 10, -- 最大高さ制限
+        level = vim.log.levels.INFO, -- INFO以上のみ表示（DEBUG等を除外）
       },
 
       -- パフォーマンス最適化
@@ -281,10 +287,10 @@ return {
       end
     end, { silent = true, expr = true, desc = "Scroll backward" })
 
-    -- :Noice コマンドでメッセージ履歴表示
-    vim.keymap.set("n", "<leader>nh", "<cmd>Noice history<cr>", { desc = "🔔 Noice履歴表示" })
-    vim.keymap.set("n", "<leader>nl", "<cmd>Noice last<cr>", { desc = "🔔 Noice最新メッセージ" })
-    vim.keymap.set("n", "<leader>nd", "<cmd>Noice dismiss<cr>", { desc = "🔔 Noice通知消去" })
+    -- 📋 Noice基本操作
+    vim.keymap.set("n", "<leader>nm", "<cmd>Noice history<cr>", { desc = "🔔 全メッセージ履歴" })
+    vim.keymap.set("n", "<leader>nl", "<cmd>Noice last<cr>", { desc = "🔔 最新メッセージ" })
+    vim.keymap.set("n", "<leader>nd", "<cmd>Noice dismiss<cr>", { desc = "🔔 通知消去" })
 
     -- Warning/Error専用の表示機能（改良版）
     vim.keymap.set("n", "<leader>nw", function()
@@ -318,9 +324,24 @@ return {
       end, 100)
     end, { desc = "🔔 履歴内検索" })
 
+    -- Telescopeでメッセージ履歴を見やすく表示
+    vim.keymap.set("n", "<leader>nt", function()
+      pcall(function()
+        require("noice").cmd("telescope")
+      end)
+    end, { desc = "🔔 メッセージ履歴（Telescope）" })
+
+    -- 最近の情報メッセージのみ表示
+    vim.keymap.set("n", "<leader>ni", function()
+      require("noice").cmd("history")
+      vim.defer_fn(function()
+        -- INFO レベルのメッセージを検索
+        vim.api.nvim_feedkeys("/\\(INFO\\|info\\|Info\\)", "n", false)
+      end, 100)
+    end, { desc = "🔔 情報メッセージ履歴" })
+
     -- 高度なnoice機能
     vim.keymap.set("n", "<leader>ns", "<cmd>Noice stats<cr>", { desc = "🔔 Noice統計情報" })
-    vim.keymap.set("n", "<leader>nt", "<cmd>Noice telescope<cr>", { desc = "🔔 Noice Telescope統合" })
 
     -- Escキーでnoice通知を消去（安全な実装）
     vim.keymap.set({ "n", "i" }, "<Esc>", function()
