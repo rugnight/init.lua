@@ -52,7 +52,7 @@
 ### 🎯 コマンド・入力支援
 - **telescope-cmdline.nvim**: VSCodeライクなコマンドパレット（`<Leader><Leader>`）
 - **wilder.nvim**: コマンドライン入力補助（`:e ~/Doc<Tab>`等）
-- **which-key.nvim**: キーマップガイド（VirtualText競合解決済み）
+- **wf.nvim**: キーマップガイド（Helix風右下表示、ファジー検索対応）
 
 ### 🤖 AI支援システム ⭐ **2025年1月拡張**
 - **Claude Code**: 統合開発環境との連携（ターミナル統合、差分表示）
@@ -98,7 +98,7 @@
 ### 👁️ 表示/UI (`<Leader>v*`)
 - `vo` - アウトライン表示, `vz` - ゼンモード
 - `o` - アウトライン表示（通常ファイルのみ、特殊バッファ制御済み）
-- `vl` - シンボル使用状況切替（which-key連携済み）
+- `vl` - シンボル使用状況切替
 
 ### ✏️ コード操作 (`<Leader>c*`)
 - `cj` - 行結合, `cs` - 行分割
@@ -133,7 +133,7 @@
 - **ウィンドウ移動強化**: `noremap = true`でプラグイン競合を根本解決
 - **不要ファイル整理**: 使用されていない`quickfix_*.lua`等を削除
 - **キーマップ統一**: 絵文字カテゴリ分類で視認性・学習効率向上
-- **設定一貫性**: 13ファイルにわたる日本語表記統一、which-key完全連携
+- **設定一貫性**: 13ファイルにわたる日本語表記統一、wf.nvim完全連携
 
 ### 主な最適化技術
 - `keys`, `cmd`, `event`を活用したlazy loading
@@ -206,7 +206,6 @@
 - **ウィンドウ移動**: `noremap = true`でoil.nvim等との`<C-l>`競合解決
 - **アウトライン制御**: 特殊バッファ（Otree、QuickFix等）での誤動作防止
 - **LSP参照**: lspsaga→Telescope統合でキーマップ重複解消
-- **VirtualText表示**: which-key表示時のsymbol-usage自動制御で視認性向上
 - **Otree操作**: qキー閉じる機能とトグル完全実装
 
 ### Windows環境最適化
@@ -227,7 +226,7 @@ nvim --startuptime startup.log +q
 ### 設定品質管理
 - 不要ファイル整理済み（quickfix_*.lua等削除）
 - キーマップ説明統一（絵文字カテゴリ分類）
-- which-key連携完全化
+- wf.nvim連携完全化
 
 ## LSP統合環境
 ### モダンなLSPワークフロー
@@ -246,7 +245,7 @@ nvim --startuptime startup.log +q
 クロスプラットフォーム対応（Windows、macOS、Linux）
 - Windows: IME自動切替対応
 - 高速起動: lazy loading最適化
-- which-key: 視覚的キーマップガイド
+- wf.nvim: 視覚的キーマップガイド（Helix風、ファジー検索）
 - Git統合: 基本機能はtelescope経由で軽量化
 
 ### AI環境設定 ⭐ **新規追加**

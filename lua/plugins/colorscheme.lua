@@ -25,7 +25,7 @@ return {
           normalfloat = false,   -- フローティングウィンドウは不透明
           neotree = not is_gui,  -- ファイルツリーの透明度
           nvimtree = not is_gui, -- nvim-treeの透明度
-          whichkey = false,      -- which-keyは不透明
+          wf = false,            -- wf.nvimは不透明
           telescope = false,     -- telescopeは不透明
           lazy = false,          -- lazyは不透明
         },

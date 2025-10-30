@@ -15,7 +15,9 @@
       "WebFetch(domain:github.com)",
       "Bash(touch:*)",
       "Bash(grep:*)",
-      "Read(//c/Users/rugni/AppData/Roaming/npm/**)"
+      "Read(//c/Users/rugni/AppData/Roaming/npm/**)",
+      "Read(//c/Users/rugni/.data/nvim-data/lazy/nvim-lspconfig/lsp/**)",
+      "Bash(ren:*)"
     ],
     "deny": []
   }

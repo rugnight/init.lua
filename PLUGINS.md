@@ -102,7 +102,7 @@
 | ファイル | プラグイン | 概要 |
 |---------|-----------|------|
 | **bookmarks.lua** | tomasky/bookmarks.nvim | ブックマーク機能 |
-| **which-key.lua** | folke/which-key.nvim | キーマップガイド |
+| **wf.lua** | Cassin01/wf.nvim | キーマップガイド（Helix風、ファジー検索対応） |
 
 ---
 

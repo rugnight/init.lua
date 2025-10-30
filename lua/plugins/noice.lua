@@ -322,9 +322,12 @@ return {
     vim.keymap.set("n", "<leader>ns", "<cmd>Noice stats<cr>", { desc = "🔔 Noice統計情報" })
     vim.keymap.set("n", "<leader>nt", "<cmd>Noice telescope<cr>", { desc = "🔔 Noice Telescope統合" })
 
-    -- Escキーでnoice通知を消去
+    -- Escキーでnoice通知を消去（安全な実装）
     vim.keymap.set({ "n", "i" }, "<Esc>", function()
-      require("noice").cmd("dismiss")
+      -- pcallで安全にdismissを実行
+      pcall(function()
+        require("noice").cmd("dismiss")
+      end)
       return "<Esc>"
     end, { expr = true, desc = "Dismiss noice and normal Esc" })
 

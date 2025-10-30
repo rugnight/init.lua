@@ -15,6 +15,35 @@ return {
         },
         config = function()
             require("mason").setup()
+
+            -- csharp_lsの問題のある設定を事前にオーバーライド
+            local lspconfig = require("lspconfig")
+            local util = require("lspconfig.util")
+
+            -- csharp_lsのカスタム設定（vim.fs.root問題を回避）
+            lspconfig.configs.csharp_ls = {
+                default_config = {
+                    cmd = { 'csharp-ls' },
+                    root_dir = util.root_pattern("*.sln", "*.csproj", ".git"),
+                    filetypes = { 'cs' },
+                    init_options = {
+                        AutomaticWorkspaceInit = true,
+                    },
+                    settings = {},
+                },
+                docs = {
+                    description = [[
+C# language server
+
+csharp-ls requires the dotnet-sdk to be installed.
+The preferred way to install csharp-ls is with `dotnet tool install --global csharp-ls`.
+]],
+                    default_config = {
+                        root_dir = [[root_pattern("*.sln", "*.csproj", ".git")]],
+                    },
+                },
+            }
+
             local mason_lspconfig = require("mason-lspconfig")
             mason_lspconfig.setup()
 
@@ -75,6 +104,7 @@ return {
                 mason_lspconfig.setup_handlers {
                     -- デフォルトハンドラ
                     function (server_name)
+                        -- csharp_lsは既にオーバーライド済みなので、通常設定で問題なし
                         require("lspconfig")[server_name].setup {
                             on_attach = on_attach,
                             capabilities = capabilities

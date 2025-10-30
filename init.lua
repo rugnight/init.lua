@@ -171,6 +171,8 @@ end
 -- 非推奨API警告を抑制
 vim.deprecate = function() end
 
+-- csharp_lsの問題のあるファイルを無効化済み（.disabled拡張子に変更）
+
 
 
 -- プラグインとキーマップ読み込み

@@ -16,24 +16,6 @@ return {
       },
     })
 
-    -- ClaudeCodeバッファで<C-,>でフォーカスを外す設定
-    vim.api.nvim_create_autocmd({"TermOpen", "BufEnter"}, {
-      pattern = "*",
-      callback = function()
-        if vim.bo.buftype == "terminal" then
-          local bufname = vim.api.nvim_buf_get_name(0)
-          if string.match(bufname:lower(), "claude") or string.match(bufname:lower(), "claudecode") then
-            -- ClaudeCodeバッファで<C-,>を前のバッファに移動するキーマップに設定
-            vim.keymap.set("t", "<C-,>", "<C-\\><C-n><C-w>p", {
-              buffer = 0,
-              desc = "ClaudeCodeからフォーカスを外す",
-              noremap = true,
-              silent = true
-            })
-          end
-        end
-      end,
-    })
   end,
   keys = {
     { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "🤖 Claude Code", mode = { "n", "v" } },
