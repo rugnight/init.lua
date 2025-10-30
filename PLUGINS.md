@@ -4,8 +4,8 @@
 このドキュメントは、当Neovim設定で使用している全プラグインの一覧と概要を記載しています。
 プラグインの追加・削除・変更時には、このドキュメントを更新してください。
 
-**最終更新**: 2025年10月26日
-**総プラグイン数**: 46個（38ファイル）
+**最終更新**: 2025年10月30日
+**総プラグイン数**: 47個（39ファイル）
 
 ---
 
@@ -28,6 +28,7 @@
 | **dashboard.lua** | nvimdev/dashboard-nvim | スタートスクリーン |
 | **nvim-web-devicons.lua** | nvim-tree/nvim-web-devicons | ファイルアイコン |
 | **nvim-notify.lua** | rcarriga/nvim-notify | 通知システム |
+| **tint.lua** | levouh/tint.nvim | 非アクティブウィンドウ暗色化（分割時視認性向上） |
 | **noice.lua** | folke/noice.nvim | 統合UI（messages・cmdline・popupmenu） |
 | **hlchunk.lua** | shellRaining/hlchunk.nvim | インデントガイド・チャンク強調 |
 
