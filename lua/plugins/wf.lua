@@ -14,7 +14,7 @@ return {
 			theme = "default", -- テーマ: default, space, chad
 		})
 
-		-- which_keyビルトイン機能を使用してリーダーキーにマッピング
+		-- which_keyビルトイン機能を使用して複数のプレフィックスキーにマッピング
 		local which_key = require("wf.builtin.which_key")
 
 		-- メインのリーダーキーマッピング（動的リーダーキー取得）
@@ -26,6 +26,78 @@ return {
 				noremap = true,
 				silent = true,
 				desc = "[wf.nvim] which-key /"
+			}
+		)
+
+		-- gプレフィックス（goto系キーマップ）
+		vim.keymap.set("n", "g",
+			which_key({
+				text_insert_in_advance = "g"
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] g prefix"
+			}
+		)
+
+		-- zプレフィックス（fold系キーマップ）
+		vim.keymap.set("n", "z",
+			which_key({
+				text_insert_in_advance = "z"
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] z prefix"
+			}
+		)
+
+		-- [プレフィックス（前へ移動系）
+		vim.keymap.set("n", "[",
+			which_key({
+				text_insert_in_advance = "["
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] [ prefix"
+			}
+		)
+
+		-- ]プレフィックス（次へ移動系）
+		vim.keymap.set("n", "]",
+			which_key({
+				text_insert_in_advance = "]"
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] ] prefix"
+			}
+		)
+
+		-- "プレフィックス（レジスタ）
+		vim.keymap.set("n", '"',
+			which_key({
+				text_insert_in_advance = '"'
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] register"
+			}
+		)
+
+		-- 'プレフィックス（マーク）
+		vim.keymap.set("n", "'",
+			which_key({
+				text_insert_in_advance = "'"
+			}),
+			{
+				noremap = true,
+				silent = true,
+				desc = "[wf.nvim] mark"
 			}
 		)
 
