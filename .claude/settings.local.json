@@ -17,7 +17,9 @@
       "Bash(grep:*)",
       "Read(//c/Users/rugni/AppData/Roaming/npm/**)",
       "Read(//c/Users/rugni/.data/nvim-data/lazy/nvim-lspconfig/lsp/**)",
-      "Bash(ren:*)"
+      "Bash(ren:*)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": []
   }

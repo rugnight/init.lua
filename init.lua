@@ -102,7 +102,7 @@ vim.opt.writebackup = false             -- バックアップファイルを作�
 vim.opt.undodir = CACHE_PATH .. "/undo" -- set an undo directory
 vim.opt.undofile = true                 -- enable persistent undo
 vim.opt.updatetime = 250                -- CursorHoldイベントの間隔（ミリ秒）
-vim.opt.timeoutlen = 300                -- キーマップのタイムアウト（素早い入力とwf.nvim表示のバランス）
+vim.opt.timeoutlen = 200                -- キーマップのタイムアウト（素早い入力優先、wf.nvim重複表示回避）
 
 -- 折り畳み設定
 --vim.o.foldmethod = 'marker'
@@ -112,6 +112,16 @@ vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
+
+-- 差分表示設定（水平分割で1画面に表示）
+vim.opt.diffopt = {
+  'internal',        -- 内部diff使用
+  'filler',          -- 削除行を表示
+  'closeoff',        -- 最後のウィンドウが閉じたら差分モード終了
+  'iwhite',          -- 空白の違いを無視
+  'algorithm:patience', -- patience差分アルゴリズム
+  'horizontal',      -- 水平分割（上下に表示、1画面内に収まりやすい）
+}
 
 -- mark情報等の保存: AppData\Local\nvim-data\shada
 vim.o.shada = "!,'100,<50,s10,h"
