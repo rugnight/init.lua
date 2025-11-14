@@ -12,15 +12,50 @@ return {
 		-- wf.nvimのセットアップ
 		wf.setup({
 			theme = "default", -- テーマ: default, space, chad
+			-- 表示設定の最適化（候補が多い場合）
+			-- n_columns = 3, -- 列数を増やす（デフォルト: 1）
+			-- max_height = 0.8, -- ウィンドウの最大高さ（画面の80%）
 		})
 
 		-- which_keyビルトイン機能を使用して複数のプレフィックスキーにマッピング
 		local which_key = require("wf.builtin.which_key")
 
-		-- メインのリーダーキーマッピング（動的リーダーキー取得）
+		-- カテゴリグループ定義（wf.nvim用）
+		-- 辞書形式でプレフィックスとグループ名を対応付け
+		local leader_key_group_dict = {
+			[vim.g.mapleader .. "f"] = "[📁 ファイル検索]",
+			[vim.g.mapleader .. "l"] = "[🎯 LSP操作]",
+			[vim.g.mapleader .. "q"] = "[📋 QuickFix]",
+			[vim.g.mapleader .. "g"] = "[🔀 Git]",
+			[vim.g.mapleader .. "a"] = "[🤖 AI]",
+			[vim.g.mapleader .. "k"] = "[📑 ブックマーク]",
+			[vim.g.mapleader .. "v"] = "[👁️ 表示/UI]",
+			[vim.g.mapleader .. "c"] = "[✏️ コード]",
+			[vim.g.mapleader .. "m"] = "[📝 メモ]",
+			[vim.g.mapleader .. "n"] = "[🔔 通知/ログ]",
+			[vim.g.mapleader .. "u"] = "[🎮 UnrealEngine]",
+			[vim.g.mapleader .. "x"] = "[🚨 診断]",
+			[vim.g.mapleader .. "i"] = "[⚙️ 設定]",
+			[vim.g.mapleader .. "t"] = "[🔄 トグル]",
+			[vim.g.mapleader .. "b"] = "[📋 バッファ]",
+		}
+
+		-- 標準キーのグループ定義
+		local standard_key_group_dict = {
+			["g"] = "[移動・編集]",
+			["gr"] = "[LSP操作]",
+			["z"] = "[折りたたみ・画面位置]",
+			["["] = "[前へ移動]",
+			["]"] = "[次へ移動]",
+			['"'] = "[レジスタ]",
+			["'"] = "[マーク]",
+		}
+
+		-- メインのリーダーキーマッピング（グループ化対応）
 		vim.keymap.set("n", "<leader>",
 			which_key({
-				text_insert_in_advance = vim.g.mapleader
+				text_insert_in_advance = vim.g.mapleader,
+				key_group_dict = leader_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -32,7 +67,8 @@ return {
 		-- gプレフィックス（goto系キーマップ）
 		vim.keymap.set("n", "g",
 			which_key({
-				text_insert_in_advance = "g"
+				text_insert_in_advance = "g",
+				key_group_dict = standard_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -41,13 +77,27 @@ return {
 			}
 		)
 
+		-- grプレフィックス（LSP系キーマップ: Neovim 0.11デフォルト）
+		vim.keymap.set("n", "gr",
+			which_key({
+				text_insert_in_advance = "gr",
+				key_group_dict = standard_key_group_dict
+			}),
+			{
+				noremap = false,
+				silent = true,
+				desc = "[wf.nvim] gr prefix (LSP)"
+			}
+		)
+
 		-- zプレフィックス（fold系キーマップ）
 		vim.keymap.set("n", "z",
 			which_key({
-				text_insert_in_advance = "z"
+				text_insert_in_advance = "z",
+				key_group_dict = standard_key_group_dict
 			}),
 			{
-				noremap = true,
+				noremap = false,
 				silent = true,
 				desc = "[wf.nvim] z prefix"
 			}
@@ -56,7 +106,8 @@ return {
 		-- [プレフィックス（前へ移動系）
 		vim.keymap.set("n", "[",
 			which_key({
-				text_insert_in_advance = "["
+				text_insert_in_advance = "[",
+				key_group_dict = standard_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -68,7 +119,8 @@ return {
 		-- ]プレフィックス（次へ移動系）
 		vim.keymap.set("n", "]",
 			which_key({
-				text_insert_in_advance = "]"
+				text_insert_in_advance = "]",
+				key_group_dict = standard_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -80,7 +132,8 @@ return {
 		-- "プレフィックス（レジスタ）
 		vim.keymap.set("n", '"',
 			which_key({
-				text_insert_in_advance = '"'
+				text_insert_in_advance = '"',
+				key_group_dict = standard_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -92,7 +145,8 @@ return {
 		-- 'プレフィックス（マーク）
 		vim.keymap.set("n", "'",
 			which_key({
-				text_insert_in_advance = "'"
+				text_insert_in_advance = "'",
+				key_group_dict = standard_key_group_dict
 			}),
 			{
 				noremap = true,
@@ -100,6 +154,29 @@ return {
 				desc = "[wf.nvim] mark"
 			}
 		)
+
+		-- カテゴリキーのマッピング（text_insert_in_advanceでカテゴリキーまで入力済みにする）
+		local categories = {
+			{ "f", "📁 ファイル検索" }, { "l", "🎯 LSP操作" }, { "q", "📋 QuickFix" },
+			{ "g", "🔀 Git" }, { "a", "🤖 AI" }, { "k", "📑 ブックマーク" },
+			{ "v", "👁️ 表示/UI" }, { "c", "✏️ コード" }, { "m", "📝 メモ" },
+			{ "n", "🔔 通知/ログ" }, { "u", "🎮 UnrealEngine" }, { "x", "🚨 診断" },
+			{ "i", "⚙️ 設定" }, { "t", "🔄 トグル" }, { "b", "📋 バッファ" },
+		}
+
+		for _, cat in ipairs(categories) do
+			vim.keymap.set("n", "<leader>" .. cat[1],
+				which_key({
+					text_insert_in_advance = vim.g.mapleader .. cat[1],
+					key_group_dict = leader_key_group_dict
+				}),
+				{
+					noremap = true,
+					silent = true,
+					desc = cat[2]
+				}
+			)
+		end
 
 		-- ローカルキーマップ表示（<leader>?）
 		vim.keymap.set("n", "<leader>?", function()

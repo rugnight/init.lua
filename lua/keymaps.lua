@@ -124,6 +124,92 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "選択行を上に移動"
 vim.keymap.set("n", "<Leader>vf", "za", { desc = "👁️ 折りたたみトグル" })
 vim.keymap.set("n", "<Leader>vF", "zA", { desc = "👁️ 再帰的折りたたみトグル" })
 
+-- ========================================
+-- wf.nvim候補表示用: Vim標準コマンドの日本語説明マップ
+-- 注意: 以下は翻訳目的のみ。標準動作を変更しない（noremap=false）
+-- ========================================
+
+-- z系（折りたたみ・画面位置）
+local z_maps = {
+	{ "za", "折りたたみトグル" }, { "zc", "折りたたみを閉じる" }, { "zo", "折りたたみを開く" },
+	{ "zz", "カーソルを画面中央に" }, { "zt", "カーソルを画面上部に" }, { "zb", "カーソルを画面下部に" },
+	{ "zj", "次の折りたたみへ移動" }, { "zk", "前の折りたたみへ移動" },
+}
+for _, map in ipairs(z_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- g系（移動・編集）
+local g_maps = {
+	{ "gg", "ファイル先頭へ移動" }, { "gf", "カーソル下のファイルを開く" },
+	{ "gj", "表示行で下に移動" }, { "gk", "表示行で上に移動" },
+	{ "ge", "前の単語末尾へ移動" }, { "gE", "前のWORD末尾へ移動" },
+	{ "gv", "前回のビジュアル選択を再選択" },
+	{ "g;", "前の変更位置へ移動" }, { "g,", "次の変更位置へ移動" },
+	{ "gI", "行頭に挿入" }, { "gJ", "スペースなしで行結合" },
+	-- LSP系（Neovim 0.11デフォルトキーマップ）
+	{ "gd", "定義へジャンプ" }, { "gD", "宣言へジャンプ" },
+	{ "gi", "実装へジャンプ" }, { "gr", "参照" },
+}
+for _, map in ipairs(g_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- gr系（LSP: Neovim 0.11デフォルトキーマップ）
+local gr_maps = {
+	{ "grn", "変数リネーム" }, { "gra", "コードアクション" },
+	{ "grr", "参照" }, { "gri", "実装へジャンプ" },
+}
+for _, map in ipairs(gr_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- 単体キー（LSP等）
+vim.keymap.set("n", "K", "K", { noremap = false, desc = "ホバー情報 / マニュアル" })
+
+-- [系（前へ移動）
+local bracket_open_maps = {
+	{ "[[", "前のセクションへ移動" }, { "[]", "前のセクション終わりへ移動" },
+	{ "[m", "前のメソッド開始へ移動" }, { "[M", "前のメソッド終了へ移動" },
+	{ "[(", "前の未閉じ(へ移動" }, { "[{", "前の未閉じ{へ移動" },
+	{ "[s", "前のスペルミスへ移動" },
+}
+for _, map in ipairs(bracket_open_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- ]系（次へ移動）
+local bracket_close_maps = {
+	{ "]]", "次のセクションへ移動" }, { "][", "次のセクション終わりへ移動" },
+	{ "]m", "次のメソッド開始へ移動" }, { "]M", "次のメソッド終了へ移動" },
+	{ "])", "次の未閉じ)へ移動" }, { "]}", "次の未閉じ}へ移動" },
+	{ "]s", "次のスペルミスへ移動" },
+}
+for _, map in ipairs(bracket_close_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- "系（レジスタ）- 主要なもののみ
+local register_maps = {
+	{ '""', "無名レジスタ" }, { '"0', "最後にヤンクしたテキスト" },
+	{ '"+', "システムクリップボード" }, { '"*', "選択クリップボード" },
+	{ '"%', "現在のファイル名" }, { '"#', "代替ファイル名" },
+	{ '".', "最後に挿入したテキスト" }, { '":', "最後に実行したコマンド" },
+}
+for _, map in ipairs(register_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
+-- '系（マーク）- 主要なもののみ
+local mark_maps = {
+	{ "''", "前回のジャンプ位置" }, { "'[", "前回の変更開始位置" }, { "']", "前回の変更終了位置" },
+	{ "'<", "前回のビジュアル選択開始" }, { "'>", "前回のビジュアル選択終了" },
+	{ "'.", "最後に変更した位置" },
+}
+for _, map in ipairs(mark_maps) do
+	vim.keymap.set("n", map[1], map[1], { noremap = false, desc = map[2] })
+end
+
 -- QuickFix関連キーマップとautocmdを設定
 quickfix_utils.setup_keymaps()
 quickfix_utils.setup_autocmds()

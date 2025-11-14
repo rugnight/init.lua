@@ -102,7 +102,7 @@ vim.opt.writebackup = false             -- バックアップファイルを作�
 vim.opt.undodir = CACHE_PATH .. "/undo" -- set an undo directory
 vim.opt.undofile = true                 -- enable persistent undo
 vim.opt.updatetime = 250                -- CursorHoldイベントの間隔（ミリ秒）
-vim.opt.timeoutlen = 400                -- キーマップのタイムアウト
+vim.opt.timeoutlen = 300                -- キーマップのタイムアウト（素早い入力とwf.nvim表示のバランス）
 
 -- 折り畳み設定
 --vim.o.foldmethod = 'marker'
